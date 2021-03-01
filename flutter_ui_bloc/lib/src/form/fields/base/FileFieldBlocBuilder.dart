@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:built_collection/built_collection.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
@@ -33,37 +30,6 @@ class PersistentFileItem extends FileValue {
       hasDeleteMark: hasDeleteMark ?? this.hasDeleteMark,
     );
   }
-}
-
-Future<Iterable<ReadableFile>> pickFiles(
-  BuildContext context, {
-  BuiltList<ReadableFile> oldFiles,
-  FileType type = FileType.any,
-  List<String> allowedExtensions,
-  @required bool isMultiple,
-}) async {
-  final files = await FilePicker.platform.pickFiles(
-    allowMultiple: isMultiple,
-    type: type,
-    allowedExtensions: allowedExtensions,
-    allowCompression: false,
-    withData: kIsWeb,
-    withReadStream: false,
-  );
-  if (files == null) return null;
-  return files.files.map((file) {
-    if (file.path != null) {
-      return LocalReadableFile(file: File(file.path));
-    } else if (file.readStream != null) {
-      return StreamReadableFile(
-        bytesStream: file.readStream,
-        name: file.name,
-        size: Future.value(file.size),
-      );
-    } else {
-      return MemoryReadableFile(bytes: file.bytes, name: file.name);
-    }
-  });
 }
 
 class ListFileFieldBlocBuilder extends StatefulWidget
@@ -111,9 +77,6 @@ class ListFileFieldBlocBuilder extends StatefulWidget
 
   final FieldValueBuilder<FileValue> builder;
 
-  @override
-  _ListFileFieldBlocBuilderState createState() => _ListFileFieldBlocBuilderState();
-
   const ListFileFieldBlocBuilder({
     Key key,
     @required this.fileFieldBloc,
@@ -134,6 +97,9 @@ class ListFileFieldBlocBuilder extends StatefulWidget
 
   @override
   SingleFieldBloc get fieldBloc => fileFieldBloc;
+
+  @override
+  _ListFileFieldBlocBuilderState createState() => _ListFileFieldBlocBuilderState();
 
   static _ListFileFieldBlocBuilderState of(BuildContext context) {
     return context.findAncestorStateOfType<_ListFileFieldBlocBuilderState>();
@@ -241,8 +207,8 @@ class _ListFileFieldBlocBuilderState extends State<ListFileFieldBlocBuilder>
 
     return FileValueMenuButton(
       value: value,
-      child: FileValueView(
-        value: value,
+      child: ReadableFileView(
+        file: value.file,
       ),
     );
   }
@@ -279,16 +245,16 @@ class FileValuePlaceHolder extends StatelessWidget {
   }
 }
 
-class FileValueView extends StatelessWidget {
-  final FileValue value;
+class ReadableFileView extends StatelessWidget {
+  final ReadableFile file;
 
-  const FileValueView({Key key, @required this.value})
-      : assert(value != null),
+  const ReadableFileView({Key key, @required this.file})
+      : assert(file != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final file = value.file;
+    final file = this.file;
     if (file is NetworkReadableFile) {
       return Image.network(file.uri);
     } else if (file is MemoryReadableFile) {
@@ -311,6 +277,8 @@ class FileValueMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final value = this.value;
+
     return PopupMenuButton<_Option>(
       onSelected: (option) {
         switch (option) {
