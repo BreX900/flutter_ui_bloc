@@ -42,7 +42,7 @@ class FormBlocPhotoPicker {
     int imageQuality,
   }) async {
     final file = await _picker.getImage(
-      source: ImageSource.camera,
+      source: ImageSource.gallery,
       maxWidth: maxWidth,
       maxHeight: maxHeight,
       preferredCameraDevice: preferredCameraDevice,
