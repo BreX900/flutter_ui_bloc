@@ -73,6 +73,11 @@ class InputFileFieldBlocBuilder extends StatefulWidget
 
   @override
   _InputFileFieldBlocBuilderState createState() => _InputFileFieldBlocBuilderState();
+
+  @override
+  InputDecoration buildDecoration(BuildContext context, FieldBlocState state, bool isEnabled) {
+    return super.buildDecoration(context, state, isEnabled);
+  }
 }
 
 class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
