@@ -1,12 +1,10 @@
-library flutter_ui_bloc;
-
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart' hide ImagePicker;
+import 'package:image_picker/image_picker.dart' as ip;
 import 'package:pure_extensions/path_extensions.dart';
-
-export 'package:image_picker/image_picker.dart';
 
 class PickedReadableFile extends ReadableFile {
   final PickedFile pickedFile;
@@ -26,23 +24,24 @@ class PickedReadableFile extends ReadableFile {
   Future<int> get size => throw UnimplementedError('Not implemented in image_picker package');
 }
 
-class FormBlocPhotoPicker {
-  static final _picker = ImagePicker();
+class FieldImagePicker {
+  static final _picker = ip.ImagePicker();
 
-  const FormBlocPhotoPicker._();
+  const FieldImagePicker._();
 
-  static const FormBlocPhotoPicker instance = FormBlocPhotoPicker._();
+  static const FieldImagePicker instance = FieldImagePicker._();
 
-  factory FormBlocPhotoPicker() => instance;
+  factory FieldImagePicker() => instance;
 
-  Future<ReadableFile> pickSinglePhoto({
+  Future<ReadableFile> pickSingleImage({
+    @required ImageSource source,
     CameraDevice preferredCameraDevice = CameraDevice.rear,
     double maxWidth,
     double maxHeight,
     int imageQuality,
   }) async {
     final file = await _picker.getImage(
-      source: ImageSource.gallery,
+      source: source,
       maxWidth: maxWidth,
       maxHeight: maxHeight,
       preferredCameraDevice: preferredCameraDevice,

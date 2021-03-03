@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
-import 'package:flutter_ui_bloc/photo_picker.dart';
+import 'package:flutter_ui_bloc/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,7 +55,7 @@ class TestPage extends StatelessWidget {
               inputFieldBloc: bloc.inputFileFB,
               decoration: InputDecoration(labelText: "ciao"),
               // picker: (context, _) => FormBlocFilePicker().pickSingleFile(type: FileType.image),
-              picker: (context, _) => FormBlocPhotoPicker().pickSinglePhoto(),
+              picker: (context, _) => FieldImagePicker().pickSingleImage(),
             ),
             Expanded(child: Text("test")),
           ],
