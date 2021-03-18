@@ -1,31 +1,6 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:built_collection/built_collection.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:pure_extensions/pure_extensions.dart';
-
-class PickedReadableFile extends ReadableFile {
-  final PlatformFile file;
-  File _$file;
-  File get _file => _$file ?? (file.path != null ? File(file.path) : null);
-
-  PickedReadableFile(this.file);
-
-  @override
-  String get name => file.name;
-
-  bool get canOpenManyReadStream => _file != null;
-
-  @override
-  Stream<List<int>> onReadBytes() => _file?.openRead() ?? file.readStream;
-
-  @override
-  Future<Uint8List> readBytes() async => file.bytes;
-
-  @override
-  Future<int> get size async => file.size;
-}
+import 'package:flutter/foundation.dart';
 
 class FieldFilePicker {
   const FieldFilePicker._();
@@ -34,37 +9,50 @@ class FieldFilePicker {
 
   factory FieldFilePicker() => instance;
 
-  Future<Iterable<ReadableFile>> pickMultiFile({
-    BuiltList<ReadableFile> oldFiles,
+  Future<List<XFile>> pickMultiFile({
     FileType type = FileType.any,
     List<String> allowedExtensions,
   }) async {
-    final files = await FilePicker.platform.pickFiles(
+    return await _pick(
       allowMultiple: true,
       type: type,
       allowedExtensions: allowedExtensions,
-      allowCompression: false,
-      withData: true,
-      withReadStream: false,
     );
-    if (files == null) return null;
-    return files.files.map((file) => PickedReadableFile(file));
   }
 
-  Future<ReadableFile> pickSingleFile({
-    ReadableFile oldFile,
+  Future<XFile> pickSingleFile({
+    FileType type = FileType.any,
+    List<String> allowedExtensions,
+  }) async {
+    final files = await _pick(
+      allowMultiple: false,
+      type: type,
+      allowedExtensions: allowedExtensions,
+    );
+    if (files == null) return null;
+    return files.single;
+  }
+
+  Future<List<XFile>> _pick({
+    @required bool allowMultiple,
     FileType type = FileType.any,
     List<String> allowedExtensions,
   }) async {
     final files = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
+      allowMultiple: allowMultiple,
       type: type,
       allowedExtensions: allowedExtensions,
       allowCompression: false,
-      withData: true,
+      withData: kIsWeb,
       withReadStream: false,
     );
-    if (files == null) return null;
-    return files.files.map((file) => PickedReadableFile(file)).single;
+    if (files == null) return const <XFile>[];
+    return files.files.map((file) {
+      if (file.path != null) {
+        return XFile(file.path, name: file.name, length: file.size);
+      } else {
+        return XFile.fromData(file.bytes, name: file.name, length: file.size);
+      }
+    }).toList();
   }
 }

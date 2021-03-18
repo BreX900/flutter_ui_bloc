@@ -1,15 +1,15 @@
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/utils/utils.dart';
 import 'package:flutter_ui_bloc/src/form/fields/common/BaseFieldBlocBuilder.dart';
 import 'package:flutter_ui_bloc/src/form/fields/utils.dart';
-import 'package:pure_extensions/pure_extensions.dart';
 
 class InputFileFieldBlocBuilder extends StatefulWidget
     with DecorationOnFieldBlocBuilder
     implements FocusFieldBlocBuilder {
-  final InputFieldBloc<ReadableFile, Object> inputFieldBloc;
+  final InputFieldBloc<XFile, Object> inputFieldBloc;
 
   /// [DecorationOnFieldBlocBuilder.errorBuilder]
   @override
@@ -46,9 +46,9 @@ class InputFileFieldBlocBuilder extends StatefulWidget
   @override
   final Icon clearIcon;
 
-  final FieldValuePicker<ReadableFile> picker;
+  final FieldValuePicker<XFile> picker;
 
-  final FieldValueBuilder<ReadableFile> builder;
+  final FieldValueBuilder<XFile> builder;
 
   const InputFileFieldBlocBuilder({
     Key key,
@@ -85,8 +85,8 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
   @override
   void onHasFocus() {}
 
-  void _updateValue(ReadableFile file) {
-    final updateValue = fieldBlocBuilderOnChange<ReadableFile>(
+  void _updateValue(XFile file) {
+    final updateValue = fieldBlocBuilderOnChange<XFile>(
       isEnabled: widget.isEnabled,
       nextFocusNode: widget.nextFocusNode,
       onChanged: widget.inputFieldBloc.updateValue,
@@ -107,8 +107,8 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
       child: CanShowFieldBlocBuilder(
         fieldBloc: widget.inputFieldBloc,
         animate: widget.animateWhenCanShow,
-        builder: (context, _) => BlocBuilder<InputFieldBloc<ReadableFile, dynamic>,
-            InputFieldBlocState<ReadableFile, dynamic>>(
+        builder: (context, _) =>
+            BlocBuilder<InputFieldBloc<XFile, dynamic>, InputFieldBlocState<XFile, dynamic>>(
           cubit: widget.inputFieldBloc,
           builder: (context, state) {
             final isEnabled = fieldBlocIsEnabled(
@@ -124,7 +124,7 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
                 child: InputDecorator(
                   decoration: widget.buildDecoration(context, state, isEnabled),
                   isEmpty: state.value == null,
-                  child: state.value == null ? null : _buildValue(state.value),
+                  child: state.value == null ? null : _buildValue(isEnabled, state.value),
                 ),
               ),
             );
@@ -134,9 +134,12 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
     );
   }
 
-  Widget _buildValue(ReadableFile file) {
-    if (widget.builder != null) return widget.builder(context, file);
+  Widget _buildValue(bool isEnabled, XFile file) {
+    final child = widget.builder != null ? widget.builder(context, file) : Text(file.name);
 
-    return Text(file.name);
+    return DefaultFieldBlocBuilderTextStyle(
+      isEnabled: isEnabled,
+      child: child,
+    );
   }
 }

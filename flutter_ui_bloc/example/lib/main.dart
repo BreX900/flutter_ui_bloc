@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui_bloc/file_picker.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
-import 'package:flutter_ui_bloc/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 }
 
 class TestFormBloc extends FormBloc<int, int> {
-  final inputFileFB = InputFieldBloc<ReadableFile, int>();
+  final inputFileFB = InputFieldBloc<XFile, int>();
 
   TestFormBloc() {
     addFieldBlocs(fieldBlocs: [inputFileFB]);
@@ -54,8 +54,9 @@ class TestPage extends StatelessWidget {
             InputFileFieldBlocBuilder(
               inputFieldBloc: bloc.inputFileFB,
               decoration: InputDecoration(labelText: "ciao"),
-              // picker: (context, _) => FormBlocFilePicker().pickSingleFile(type: FileType.image),
-              picker: (context, _) => FieldImagePicker().pickSingleImage(),
+              picker: (context, _) => FieldFilePicker().pickSingleFile(type: FileType.image),
+              // picker: (context, _) =>
+              //     FieldImagePicker().pickSingleImage(source: ImageSource.gallery),
             ),
             Expanded(child: Text("test")),
           ],

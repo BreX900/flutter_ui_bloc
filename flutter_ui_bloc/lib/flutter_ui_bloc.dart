@@ -1,7 +1,7 @@
 library flutter_ui_bloc;
 
+export 'package:cross_file/cross_file.dart';
 export 'package:flutter_form_bloc/flutter_form_bloc.dart';
-export 'package:pure_extensions/pure_extensions.dart' show ReadableFile;
 
 export 'src/form/fields/base/ChipGroupFieldBlocBuilder.dart';
 export 'src/form/fields/base/CircularCheckboxFieldBlocBuilder.dart';
