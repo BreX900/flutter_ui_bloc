@@ -1,3 +1,6 @@
+## [0.1.1]
+- Update dependencies
+
 ## [0.1.0]
 - Replaced **ReadableField** with **XFile** of [cross_file](https://pub.dev/packages/cross_file) package
 

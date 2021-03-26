@@ -1,6 +1,6 @@
 name: flutter_ui_bloc
 description: A new Flutter project.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/BreX900/flutter_ui_bloc
 repository: https://github.com/BreX900/flutter_ui_bloc
 
@@ -23,8 +23,8 @@ dependencies:
 
   bloc: ^6.1.1
   flutter_bloc: ^6.1.2
-  value_bloc: ^0.4.3
-  flutter_value_bloc: ^0.4.3
+  value_bloc: ^0.5.0
+  flutter_value_bloc: ^0.5.0
   form_bloc: ^0.19.1
   flutter_form_bloc: ^0.19.0
 
