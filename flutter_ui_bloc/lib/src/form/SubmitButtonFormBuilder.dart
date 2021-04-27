@@ -22,7 +22,7 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
-    this.iconBuilder = buildIcon,
+    this.iconBuilder,
     @required this.childBuilder,
   })  : type = _SubmitButtonType.text,
         super(key: key);
@@ -35,7 +35,7 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
-    this.iconBuilder = buildIcon,
+    this.iconBuilder,
     @required this.childBuilder,
   })  : type = _SubmitButtonType.elevated,
         super(key: key);
@@ -48,17 +48,10 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
-    this.iconBuilder = buildIcon,
+    this.iconBuilder,
     @required this.childBuilder,
   })  : type = _SubmitButtonType.outlined,
         super(key: key);
-
-  static Widget buildIcon(BuildContext context, FormBlocState state) {
-    if (state is FormBlocSubmissionFailed) {
-      return Icon(Icons.error_outline);
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +68,7 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
                 ? TextButton.icon(
                     onPressed: onPressed,
                     onLongPress: onLongPress,
+                    style: style,
                     focusNode: focusNode,
                     autofocus: autofocus,
                     clipBehavior: clipBehavior,
@@ -84,6 +78,7 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
                 : TextButton(
                     onPressed: onPressed,
                     onLongPress: onLongPress,
+                    style: style,
                     focusNode: focusNode,
                     autofocus: autofocus,
                     clipBehavior: clipBehavior,
@@ -94,6 +89,7 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
                 ? ElevatedButton.icon(
                     onPressed: onPressed,
                     onLongPress: onLongPress,
+                    style: style,
                     focusNode: focusNode,
                     autofocus: autofocus,
                     clipBehavior: clipBehavior,
@@ -103,6 +99,7 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
                 : ElevatedButton(
                     onPressed: onPressed,
                     onLongPress: onLongPress,
+                    style: style,
                     focusNode: focusNode,
                     autofocus: autofocus,
                     clipBehavior: clipBehavior,
@@ -110,18 +107,20 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
                   );
           case _SubmitButtonType.outlined:
             return icon != null
-                ? OutlineButton.icon(
+                ? OutlinedButton.icon(
                     onPressed: onPressed,
                     onLongPress: onLongPress,
+                    style: style,
                     focusNode: focusNode,
                     autofocus: autofocus,
                     clipBehavior: clipBehavior,
                     label: child,
                     icon: icon,
                   )
-                : OutlineButton(
+                : OutlinedButton(
                     onPressed: onPressed,
                     onLongPress: onLongPress,
+                    style: style,
                     focusNode: focusNode,
                     autofocus: autofocus,
                     clipBehavior: clipBehavior,
