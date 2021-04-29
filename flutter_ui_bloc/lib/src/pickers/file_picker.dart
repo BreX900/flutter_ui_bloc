@@ -11,7 +11,7 @@ class FieldFilePicker {
 
   Future<List<XFile>> pickMultiFile({
     FileType type = FileType.any,
-    List<String> allowedExtensions,
+    List<String>? allowedExtensions,
   }) async {
     return await _pick(
       allowMultiple: true,
@@ -20,23 +20,23 @@ class FieldFilePicker {
     );
   }
 
-  Future<XFile> pickSingleFile({
+  Future<XFile?> pickSingleFile({
     FileType type = FileType.any,
-    List<String> allowedExtensions,
+    List<String>? allowedExtensions,
   }) async {
     final files = await _pick(
       allowMultiple: false,
       type: type,
       allowedExtensions: allowedExtensions,
     );
-    if (files == null) return null;
+    if (files.isEmpty) return null;
     return files.single;
   }
 
   Future<List<XFile>> _pick({
-    @required bool allowMultiple,
+    required bool allowMultiple,
     FileType type = FileType.any,
-    List<String> allowedExtensions,
+    List<String>? allowedExtensions,
   }) async {
     final files = await FilePicker.platform.pickFiles(
       allowMultiple: allowMultiple,
@@ -49,9 +49,9 @@ class FieldFilePicker {
     if (files == null) return const <XFile>[];
     return files.files.map((file) {
       if (file.path != null) {
-        return XFile(file.path, name: file.name, length: file.size);
+        return XFile(file.path!, name: file.name, length: file.size);
       } else {
-        return XFile.fromData(file.bytes, name: file.name, length: file.size);
+        return XFile.fromData(file.bytes!, name: file.name, length: file.size);
       }
     }).toList();
   }

@@ -6,61 +6,61 @@ enum _SubmitButtonType { text, elevated, outlined }
 class SubmitButtonFormBlocBuilder extends StatelessWidget {
   final _SubmitButtonType type;
   final FormBloc formBloc;
-  final VoidCallback onLongPress;
-  final ButtonStyle style;
-  final FocusNode focusNode;
+  final VoidCallback? onLongPress;
+  final ButtonStyle? style;
+  final FocusNode? focusNode;
   final bool autofocus;
   final Clip clipBehavior;
-  final BlocWidgetBuilder<FormBlocState> iconBuilder;
+  final BlocWidgetBuilder<FormBlocState>? iconBuilder;
   final BlocWidgetBuilder<FormBlocState> childBuilder;
 
   const SubmitButtonFormBlocBuilder.text({
-    Key key,
-    @required this.formBloc,
+    Key? key,
+    required this.formBloc,
     this.onLongPress,
     this.style,
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
     this.iconBuilder,
-    @required this.childBuilder,
-  })  : type = _SubmitButtonType.text,
+    required this.childBuilder,
+  })   : type = _SubmitButtonType.text,
         super(key: key);
 
   const SubmitButtonFormBlocBuilder.elevated({
-    Key key,
-    @required this.formBloc,
+    Key? key,
+    required this.formBloc,
     this.onLongPress,
     this.style,
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
     this.iconBuilder,
-    @required this.childBuilder,
-  })  : type = _SubmitButtonType.elevated,
+    required this.childBuilder,
+  })   : type = _SubmitButtonType.elevated,
         super(key: key);
 
   const SubmitButtonFormBlocBuilder.outlined({
-    Key key,
-    @required this.formBloc,
+    Key? key,
+    required this.formBloc,
     this.onLongPress,
     this.style,
     this.focusNode,
     this.autofocus = false,
     this.clipBehavior = Clip.none,
     this.iconBuilder,
-    @required this.childBuilder,
-  })  : type = _SubmitButtonType.outlined,
+    required this.childBuilder,
+  })   : type = _SubmitButtonType.outlined,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormBloc, FormBlocState>(
-      cubit: formBloc,
+      bloc: formBloc,
       builder: (context, state) {
         final onPressed = state.canSubmit ? formBloc.submit : null;
         final child = childBuilder(context, state);
-        final icon = iconBuilder != null ? iconBuilder(context, state) : null;
+        final icon = iconBuilder != null ? iconBuilder!(context, state) : null;
 
         switch (type) {
           case _SubmitButtonType.text:
@@ -127,26 +127,26 @@ class SubmitButtonFormBlocBuilder extends StatelessWidget {
                     child: child,
                   );
         }
-        throw 'Not support null';
       },
     );
   }
 }
 
-class FloatingSubmitButtonFormBuilder extends StatelessWidget {
-  final FormBloc formBloc;
+class FloatingSubmitButtonFormBuilder<B extends FormBloc> extends StatelessWidget {
+  final B? formBloc;
   final Widget child;
 
   const FloatingSubmitButtonFormBuilder({
-    Key key,
-    @required this.formBloc,
+    Key? key,
+    this.formBloc,
     this.child = const Icon(Icons.check),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FormBloc, FormBlocState>(
-      cubit: formBloc,
+    final formBloc = this.formBloc ?? BlocProvider.of<B>(context);
+    return BlocBuilder<B, FormBlocState>(
+      bloc: formBloc,
       builder: (context, state) {
         if (state is FormBlocSubmissionFailed) {
           return FloatingActionButton(
@@ -168,15 +168,15 @@ class IconSubmitButtonFormBuilder extends StatelessWidget {
   final Widget icon;
 
   const IconSubmitButtonFormBuilder({
-    Key key,
-    @required this.formBloc,
+    Key? key,
+    required this.formBloc,
     this.icon = const Icon(Icons.check),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FormBloc, FormBlocState>(
-      cubit: formBloc,
+      bloc: formBloc,
       builder: (context, state) {
         if (state is FormBlocSubmissionFailed) {
           return IconButton(

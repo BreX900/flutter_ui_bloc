@@ -10,10 +10,10 @@ class DurationFieldBlocBuilder extends StatelessWidget {
   final InputFieldBloc<Duration, dynamic> durationFieldBloc;
 
   /// [InputFieldBlocBuilder.focusNode]
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   /// [InputFieldBlocBuilder.nextFocusNode]
-  final FocusNode nextFocusNode;
+  final FocusNode? nextFocusNode;
 
   /// [InputFieldBlocBuilder.isEnabled]
   final bool isEnabled;
@@ -22,7 +22,7 @@ class DurationFieldBlocBuilder extends StatelessWidget {
   final bool enableOnlyWhenFormBlocCanSubmit;
 
   /// [InputFieldBlocBuilder.padding]
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets? padding;
 
   /// [InputFieldBlocBuilder.decoration]
   final InputDecoration decoration;
@@ -31,54 +31,57 @@ class DurationFieldBlocBuilder extends StatelessWidget {
   final List<DurationPickerRequest> requests;
 
   /// @macro [FieldValuePicker]
-  final FieldValuePicker<Duration> picker;
+  final FieldValuePicker<Duration?>? picker;
 
   /// @macro [FieldValueBuilder]
-  final FieldValueBuilder<Duration> builder;
+  final FieldValueBuilder<Duration?>? builder;
 
   DurationFieldBlocBuilder({
-    Key key,
-    @required this.durationFieldBloc,
+    Key? key,
+    required this.durationFieldBloc,
     this.focusNode,
     this.nextFocusNode,
     this.isEnabled = true,
     this.enableOnlyWhenFormBlocCanSubmit = false,
     this.padding,
     this.decoration = const InputDecoration(),
-    @required this.requests,
+    required this.requests,
     this.picker,
     this.builder,
-  })  : assert(requests != null && requests.isNotEmpty),
+  })  : assert(requests.isNotEmpty),
         super(key: key);
+
+  Future<Duration?> pickValue(BuildContext context, Duration? value) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) => _Picker(
+        duration: value,
+        requests: requests,
+      ),
+    );
+  }
+
+  Widget buildValue(BuildContext context, Duration? value) {
+    if (value == null) return Text('');
+    final b = StringBuffer();
+    if (value.inDays > 0) b.write('Days: ${value.inDays} - ');
+    b.write('Time: ${(value.inHours % 24)}:'
+        '${(value.inMinutes % 60).toString().padLeft(2, "0")}');
+    return Text(b.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InputFieldBlocBuilder<Duration>(
-      inputFieldBloc: durationFieldBloc,
+    return InputFieldBlocBuilder<Duration?>(
+      inputFieldBloc: durationFieldBloc as InputFieldBloc<Duration?, Object>,
       focusNode: focusNode,
       nextFocusNode: nextFocusNode,
       isEnabled: isEnabled,
       enableOnlyWhenFormBlocCanSubmit: enableOnlyWhenFormBlocCanSubmit,
       padding: padding,
       decoration: decoration,
-      picker: picker ??
-          (context, value) {
-            return showModalBottomSheet(
-              context: context,
-              builder: (context) => _Picker(
-                duration: value,
-                requests: requests,
-              ),
-            );
-          },
-      builder: builder ??
-          (context, value) {
-            final b = StringBuffer();
-            if (value.inDays > 0) b.write('Days: ${value.inDays} - ');
-            b.write('Time: ${(value.inHours % 24)}:'
-                '${(value.inMinutes % 60).toString().padLeft(2, "0")}');
-            return Text(b.toString());
-          },
+      picker: picker ?? pickValue,
+      builder: builder ?? buildValue,
     );
   }
 }
@@ -91,43 +94,42 @@ class DurationPickerRequest {
   final int max;
 
   DurationPickerRequest.days({this.min = 0, this.max = 364})
-      : assert(min != null && min >= 0),
-        assert(max != null),
+      : assert(min >= 0),
         assert(min > max),
         type = _DurationPickerRequestType.days;
 
   DurationPickerRequest.hours({this.min = 0, this.max = 24})
-      : assert(min != null && min >= 0),
-        assert(max != null && max <= 24),
+      : assert(min >= 0),
+        assert(max <= 24),
         assert(min > max),
         type = _DurationPickerRequestType.hours;
 
   DurationPickerRequest.minutes({this.min = 0, this.max = 60})
-      : assert(min != null && min >= 0),
-        assert(max != null && max <= 60),
+      : assert(min >= 0),
+        assert(max <= 60),
         assert(min > max),
         type = _DurationPickerRequestType.minutes;
 
   DurationPickerRequest.seconds({this.min = 0, this.max = 60})
-      : assert(min != null && min >= 0),
-        assert(max != null && max <= 60),
+      : assert(min >= 0),
+        assert(max <= 60),
         assert(min > max),
         type = _DurationPickerRequestType.seconds;
 }
 
 class _Picker extends StatefulWidget {
-  final Duration duration;
+  final Duration? duration;
   final List<DurationPickerRequest> requests;
 
-  const _Picker({Key key, @required this.duration, @required this.requests}) : super(key: key);
+  const _Picker({Key? key, required this.duration, required this.requests}) : super(key: key);
 
   @override
   __PickerState createState() => __PickerState();
 }
 
 class __PickerState extends State<_Picker> {
-  DurationBuilder b;
-  Map<_DurationPickerRequestType, FixedExtentScrollController> controllers;
+  late DurationBuilder b;
+  late Map<_DurationPickerRequestType, FixedExtentScrollController> controllers;
 
   @override
   void initState() {
@@ -172,7 +174,6 @@ class __PickerState extends State<_Picker> {
       case _DurationPickerRequestType.seconds:
         return b.seconds;
     }
-    throw 'Not support $type';
   }
 
   @override
@@ -183,13 +184,13 @@ class __PickerState extends State<_Picker> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () => Navigator.of(context).pop(null),
                 child: Text('Cancel'),
               ),
             ),
             Expanded(
-              child: RaisedButton(
+              child: TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(b.build());
                 },

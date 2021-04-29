@@ -7,11 +7,11 @@ class SubmitButtonTheme {
   final ButtonStyle style;
 
   const SubmitButtonTheme({
-    @required this.iconBuilder,
-    @required this.style,
+    required this.iconBuilder,
+    required this.style,
   });
 
-  static Widget buildIcon(BuildContext context, FormBlocState state) {
+  static Widget? buildIcon(BuildContext context, FormBlocState state) {
     if (state is FormBlocSubmissionFailed) {
       return Icon(Icons.error_outline);
     }
@@ -23,6 +23,6 @@ class UiBlocTheme {
   final SubmitButtonTheme submitButton;
 
   const UiBlocTheme({
-    @required this.submitButton,
+    required this.submitButton,
   });
 }

@@ -5,13 +5,13 @@ import 'package:flutter_form_bloc/src/utils/utils.dart';
 
 class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
   /// {@macro flutter_form_bloc.FieldBlocBuilder.fieldBloc}
-  final BooleanFieldBloc<Object> booleanFieldBloc;
+  final BooleanFieldBloc<Object>? booleanFieldBloc;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.nextFocusNode}
-  final FocusNode nextFocusNode;
+  final FocusNode? nextFocusNode;
 
   /// {@macro  flutter_form_bloc.FieldBlocBuilder.animateWhenCanShow}
-  final bool animateWhenCanShow;
+  final bool? animateWhenCanShow;
 
   /// {@template flutter_form_bloc.FieldBlocBuilderControlAffinity}
   /// Where to place the control in widgets
@@ -26,16 +26,16 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
   ///
   /// Defaults to [ThemeData.toggleableActiveColor].
   /// {@endtemplate}
-  final Color checkColor;
+  final Color? checkColor;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.checkboxActiveColor}
-  final Color activeColor;
+  final Color? activeColor;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.errorBuilder}
-  final FieldBlocErrorBuilder errorBuilder;
+  final FieldBlocErrorBuilder? errorBuilder;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.padding}
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets? padding;
 
   /// {@template flutter_form_bloc.FieldBlocBuilder.checkboxBody}
   /// The widget on the right side of the checkbox
@@ -43,8 +43,8 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
   final Widget body;
 
   const CircularCheckboxFieldBlocBuilder({
-    Key key,
-    @required this.booleanFieldBloc,
+    Key? key,
+    required this.booleanFieldBloc,
     this.nextFocusNode,
     this.animateWhenCanShow,
     this.isEnabled = true,
@@ -53,7 +53,7 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
     this.errorBuilder,
     this.controlAffinity = FieldBlocBuilderControlAffinity.leading,
     this.padding,
-    @required this.body,
+    required this.body,
   }) : super(key: key);
 
   @override
@@ -61,12 +61,12 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
     if (booleanFieldBloc == null) return const SizedBox.shrink();
 
     return CanShowFieldBlocBuilder(
-      fieldBloc: booleanFieldBloc,
-      animate: animateWhenCanShow,
+      fieldBloc: booleanFieldBloc!,
+      animate: animateWhenCanShow!,
       builder: (context, _) => DefaultFieldBlocBuilderPadding(
         padding: padding,
         child: BlocBuilder<BooleanFieldBloc, BooleanFieldBlocState>(
-          cubit: booleanFieldBloc,
+          bloc: booleanFieldBloc,
           builder: (context, state) {
             return InputDecorator(
               decoration: Style.inputDecorationWithoutBorder.copyWith(
@@ -78,9 +78,9 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
                     : null,
                 errorText: Style.getErrorText(
                   context: context,
-                  errorBuilder: errorBuilder,
+                  errorBuilder: errorBuilder!,
                   fieldBlocState: state,
-                  fieldBloc: booleanFieldBloc,
+                  fieldBloc: booleanFieldBloc!,
                 ),
               ),
               child: DefaultFieldBlocBuilderTextStyle(
@@ -98,17 +98,17 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
   }
 
   Widget _buildCheckbox({
-    @required BuildContext context,
-    @required BooleanFieldBlocState state,
+    required BuildContext context,
+    required BooleanFieldBlocState state,
   }) {
     return CircularCheckbox(
       checkColor: checkColor,
       activeColor: activeColor,
-      value: state.value,
+      value: state.value!,
       onChanged: fieldBlocBuilderOnChange<bool>(
         isEnabled: isEnabled,
-        nextFocusNode: nextFocusNode,
-        onChanged: booleanFieldBloc.updateValue,
+        nextFocusNode: nextFocusNode!,
+        onChanged: booleanFieldBloc!.updateValue,
       ),
     );
   }
@@ -117,16 +117,16 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
 // Todo: improve with [RenderToggleable]
 class CircularCheckbox extends StatelessWidget {
   final bool value;
-  final Color checkColor;
-  final Color activeColor;
-  final ValueChanged<bool> onChanged;
+  final Color? checkColor;
+  final Color? activeColor;
+  final ValueChanged<bool>? onChanged;
 
   const CircularCheckbox({
-    Key key,
-    @required this.value,
+    Key? key,
+    required this.value,
     this.checkColor,
     this.activeColor,
-    @required this.onChanged,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -153,7 +153,7 @@ class CircularCheckbox extends StatelessWidget {
           );
 
     return InkResponse(
-      onTap: onChanged != null ? () => onChanged(!value) : onChanged,
+      onTap: onChanged != null ? () => onChanged!(value) : null,
       child: FittedBox(
         fit: BoxFit.none,
         alignment: Alignment.center,

@@ -5,7 +5,7 @@ import 'package:flutter_form_bloc/src/utils/utils.dart';
 import 'package:form_bloc/form_bloc.dart';
 
 abstract class FocusFieldBlocBuilder extends StatefulWidget {
-  FocusNode get focusNode;
+  FocusNode? get focusNode;
 }
 
 mixin FocusFieldBlocBuilderState<W extends FocusFieldBlocBuilder> on State<W> {
@@ -34,7 +34,7 @@ mixin FocusFieldBlocBuilderState<W extends FocusFieldBlocBuilder> on State<W> {
 
   void onHasFocus();
 
-  Widget buildFocus({@required Widget child}) {
+  Widget buildFocus({required Widget child}) {
     return Focus(
       focusNode: _effectiveFocusNode,
       child: child,
@@ -57,12 +57,12 @@ mixin DecorationOnFieldBlocBuilder {
   InputDecoration get decoration;
 
   /// When [suffixButton] is [SuffixButton.clearText], this icon will be displayed.
-  Widget get clearIcon;
+  Widget? get clearIcon;
 
   /// This function take the `context` and the [FieldBlocState.error]
   /// and must return a String error to display in the widget when
   /// has an error. By default is [defaultErrorBuilder].
-  FieldBlocErrorBuilder get errorBuilder;
+  FieldBlocErrorBuilder? get errorBuilder;
 
   InputDecoration buildDecoration(BuildContext context, FieldBlocState state, bool isEnabled) {
     InputDecoration decoration = this.decoration;

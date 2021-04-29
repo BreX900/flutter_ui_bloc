@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
 
 class AddChekSuffixInputFieldBlocBuilder extends StatelessWidget {
-  final InputFieldBloc<Object, Object> inputFieldBloc;
-  final Color color;
-  final double opacity;
-  final double size;
-  final Widget Function(BuildContext context, bool hasValue) builder;
+  final InputFieldBloc<Object, Object>? inputFieldBloc;
+  final Color? color;
+  final double? opacity;
+  final double? size;
+  final Widget Function(BuildContext context, bool hasValue)? builder;
 
   const AddChekSuffixInputFieldBlocBuilder({
-    Key key,
-    @required this.inputFieldBloc,
+    Key? key,
+    required this.inputFieldBloc,
     this.color,
     this.opacity,
     this.size,
@@ -27,10 +27,10 @@ class AddChekSuffixInputFieldBlocBuilder extends StatelessWidget {
         opacity: opacity,
         size: size,
       ),
-      child: BlocBuilder<InputFieldBloc<Object, Object>, InputFieldBlocState<Object, Object>>(
-        cubit: inputFieldBloc,
+      child: BlocBuilder<InputFieldBloc<Object?, Object>, InputFieldBlocState<Object?, Object>>(
+        bloc: inputFieldBloc,
         builder: (context, state) {
-          if (builder != null) return builder(context, state.hasValue);
+          if (builder != null) return builder!(context, state.hasValue);
 
           if (state.hasValue) {
             return const Icon(Icons.check);

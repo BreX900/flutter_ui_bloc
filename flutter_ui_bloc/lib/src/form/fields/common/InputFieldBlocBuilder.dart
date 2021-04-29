@@ -14,8 +14,8 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
     with DecorationOnFieldBlocBuilder
     implements FocusFieldBlocBuilder {
   const InputFieldBlocBuilder({
-    Key key,
-    @required this.inputFieldBloc,
+    Key? key,
+    required this.inputFieldBloc,
     this.enableOnlyWhenFormBlocCanSubmit = false,
     this.isEnabled = true,
     this.errorBuilder,
@@ -26,19 +26,16 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
     this.clearIcon,
     this.nextFocusNode,
     this.focusNode,
-    @required this.picker,
-    @required this.builder,
-  })  : assert(enableOnlyWhenFormBlocCanSubmit != null),
-        assert(isEnabled != null),
-        assert(decoration != null),
-        super(key: key);
+    required this.picker,
+    required this.builder,
+  }) : super(key: key);
 
   /// The `fieldBloc` for rebuild the widget when its state changes.
-  final InputFieldBloc<T, Object> inputFieldBloc;
+  final InputFieldBloc<T, Object>? inputFieldBloc;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.errorBuilder}
   @override
-  final FieldBlocErrorBuilder errorBuilder;
+  final FieldBlocErrorBuilder? errorBuilder;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.enableOnlyWhenFormBlocCanSubmit}
   final bool enableOnlyWhenFormBlocCanSubmit;
@@ -47,7 +44,7 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
   final bool isEnabled;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.padding}
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets? padding;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.decoration}
   @override
@@ -57,26 +54,26 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
   final bool animateWhenCanShow;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.nextFocusNode}
-  final FocusNode nextFocusNode;
+  final FocusNode? nextFocusNode;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.focusNode}
   @override
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   @override
   final bool showClearIcon;
 
   @override
-  final Icon clearIcon;
+  final Icon? clearIcon;
 
   /// @macro [FieldValuePicker]
-  final FieldValuePicker<T> picker;
+  final FieldValuePicker<T?> picker;
 
   /// @macro [FieldValueBuilder]
-  final FieldValueBuilder<T> builder;
+  final FieldValueBuilder<T?> builder;
 
   @override
-  SingleFieldBloc get fieldBloc => inputFieldBloc;
+  SingleFieldBloc get fieldBloc => inputFieldBloc!;
 
   @override
   _InputFieldBlocBuilderState<T> createState() => _InputFieldBlocBuilderState<T>();
@@ -87,8 +84,8 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
   void updateValue(T value) {
     final updateValue = fieldBlocBuilderOnChange<T>(
       isEnabled: widget.isEnabled,
-      nextFocusNode: widget.nextFocusNode,
-      onChanged: widget.inputFieldBloc.updateValue,
+      nextFocusNode: widget.nextFocusNode!,
+      onChanged: widget.inputFieldBloc!.updateValue,
     );
     if (updateValue != null) updateValue(value);
   }
@@ -98,7 +95,7 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
 
   void pick(BuildContext context) async {
     FocusScope.of(context).requestFocus(FocusNode());
-    final result = await widget.picker(context, widget.inputFieldBloc.value);
+    final result = await widget.picker(context, widget.inputFieldBloc!.value);
     if (result == null) return;
     updateValue(result);
   }
@@ -114,11 +111,11 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
 
     return buildFocus(
         child: CanShowFieldBlocBuilder(
-      fieldBloc: widget.inputFieldBloc,
+      fieldBloc: widget.inputFieldBloc!,
       animate: widget.animateWhenCanShow,
       builder: (_, __) {
-        return BlocBuilder<InputFieldBloc<T, Object>, InputFieldBlocState<T, Object>>(
-          cubit: widget.inputFieldBloc,
+        return BlocBuilder<InputFieldBloc<T?, Object>, InputFieldBlocState<T?, Object>>(
+          bloc: widget.inputFieldBloc,
           builder: (context, state) {
             final isEnabled = fieldBlocIsEnabled(
               isEnabled: widget.isEnabled,
@@ -130,7 +127,7 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
 
             if (state.value == null && widget.decoration.hintText != null) {
               child = Text(
-                widget.decoration.hintText,
+                widget.decoration.hintText!,
                 style: widget.decoration.hintStyle,
                 overflow: TextOverflow.ellipsis,
                 maxLines: widget.decoration.hintMaxLines,
@@ -143,8 +140,8 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
                 style: Style.getDefaultTextStyle(
                   context: context,
                   isEnabled: isEnabled,
-                ),
-                child: _buildValue(state.value),
+                )!,
+                child: _buildValue(state.value!),
               );
             }
 

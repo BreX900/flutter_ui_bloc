@@ -8,15 +8,14 @@ typedef FieldValueBuilder<T> = Widget Function(BuildContext context, T currentVa
 
 /// Makes the whole FieldBlocBuilder clickable
 class InkWellFieldBlocBuilder extends StatelessWidget {
-  final BooleanFieldBloc<Object> booleanFieldBloc;
+  final BooleanFieldBloc<Object>? booleanFieldBloc;
   final Widget child;
 
   const InkWellFieldBlocBuilder({
-    Key key,
-    @required this.booleanFieldBloc,
-    @required this.child,
-  })  : assert(child != null),
-        super(key: key);
+    Key? key,
+    required this.booleanFieldBloc,
+    required this.child,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class InkWellFieldBlocBuilder extends StatelessWidget {
           return child;
         }
         return InkWell(
-          onTap: () => booleanFieldBloc.updateValue(!booleanFieldBloc.value),
+          onTap: () => booleanFieldBloc!.updateValue(booleanFieldBloc!.value!),
           child: child,
         );
       },

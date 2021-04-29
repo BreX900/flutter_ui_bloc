@@ -13,7 +13,7 @@ class InputFileFieldBlocBuilder extends StatefulWidget
 
   /// [DecorationOnFieldBlocBuilder.errorBuilder]
   @override
-  final FieldBlocErrorBuilder errorBuilder;
+  final FieldBlocErrorBuilder? errorBuilder;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.enableOnlyWhenFormBlocCanSubmit}
   final bool enableOnlyWhenFormBlocCanSubmit;
@@ -22,7 +22,7 @@ class InputFileFieldBlocBuilder extends StatefulWidget
   final bool isEnabled;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.padding}
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets? padding;
 
   /// [DecorationOnFieldBlocBuilder.decoration]
   @override
@@ -32,11 +32,11 @@ class InputFileFieldBlocBuilder extends StatefulWidget
   final bool animateWhenCanShow;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.nextFocusNode}
-  final FocusNode nextFocusNode;
+  final FocusNode? nextFocusNode;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.focusNode}
   @override
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   /// [DecorationOnFieldBlocBuilder.showClearIcon]
   @override
@@ -44,15 +44,15 @@ class InputFileFieldBlocBuilder extends StatefulWidget
 
   /// [DecorationOnFieldBlocBuilder.clearIcon]
   @override
-  final Icon clearIcon;
+  final Icon? clearIcon;
 
-  final FieldValuePicker<XFile> picker;
+  final FieldValuePicker<XFile?> picker;
 
-  final FieldValueBuilder<XFile> builder;
+  final FieldValueBuilder<XFile>? builder;
 
   const InputFileFieldBlocBuilder({
-    Key key,
-    @required this.inputFieldBloc,
+    Key? key,
+    required this.inputFieldBloc,
     this.enableOnlyWhenFormBlocCanSubmit = true,
     this.focusNode,
     this.nextFocusNode,
@@ -62,11 +62,10 @@ class InputFileFieldBlocBuilder extends StatefulWidget
     this.padding,
     this.decoration = const InputDecoration(),
     this.clearIcon,
-    @required this.picker,
+    required this.picker,
     this.errorBuilder,
     this.builder,
-  })  : assert(picker != null),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   SingleFieldBloc get fieldBloc => inputFieldBloc;
@@ -108,8 +107,8 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
         fieldBloc: widget.inputFieldBloc,
         animate: widget.animateWhenCanShow,
         builder: (context, _) =>
-            BlocBuilder<InputFieldBloc<XFile, dynamic>, InputFieldBlocState<XFile, dynamic>>(
-          cubit: widget.inputFieldBloc,
+            BlocBuilder<InputFieldBloc<XFile?, dynamic>, InputFieldBlocState<XFile?, dynamic>>(
+          bloc: widget.inputFieldBloc,
           builder: (context, state) {
             final isEnabled = fieldBlocIsEnabled(
               isEnabled: widget.isEnabled,
@@ -124,7 +123,7 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
                 child: InputDecorator(
                   decoration: widget.buildDecoration(context, state, isEnabled),
                   isEmpty: state.value == null,
-                  child: state.value == null ? null : _buildValue(isEnabled, state.value),
+                  child: state.value == null ? null : _buildValue(isEnabled, state.value!),
                 ),
               ),
             );
@@ -135,7 +134,7 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
   }
 
   Widget _buildValue(bool isEnabled, XFile file) {
-    final child = widget.builder != null ? widget.builder(context, file) : Text(file.name);
+    final child = widget.builder != null ? widget.builder!(context, file) : Text(file.name);
 
     return DefaultFieldBlocBuilderTextStyle(
       isEnabled: isEnabled,

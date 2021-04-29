@@ -9,10 +9,10 @@ import 'package:flutter_ui_bloc/src/form/fields/common/BaseFieldBlocBuilder.dart
 class ChipGroupFieldBlocBuilder<T> extends StatefulWidget
     with DecorationOnFieldBlocBuilder
     implements FocusFieldBlocBuilder {
-  final MultiSelectFieldBloc<T, dynamic> multiSelectFieldBloc;
+  final MultiSelectFieldBloc<T, Object?>? multiSelectFieldBloc;
 
   @override
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.enableOnlyWhenFormBlocCanSubmit}
   final bool enableOnlyWhenFormBlocCanSubmit;
@@ -24,19 +24,19 @@ class ChipGroupFieldBlocBuilder<T> extends StatefulWidget
   final bool animateWhenCanShow;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.padding}
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets? padding;
 
   @override
   final InputDecoration decoration;
 
   @override
-  final FieldBlocErrorBuilder errorBuilder;
+  final FieldBlocErrorBuilder? errorBuilder;
 
   final Widget Function(BuildContext context, T value) labelBuilder;
 
   const ChipGroupFieldBlocBuilder({
-    Key key,
-    @required this.multiSelectFieldBloc,
+    Key? key,
+    required this.multiSelectFieldBloc,
     this.focusNode,
     this.enableOnlyWhenFormBlocCanSubmit = false,
     this.isEnabled = true,
@@ -44,17 +44,17 @@ class ChipGroupFieldBlocBuilder<T> extends StatefulWidget
     this.padding,
     this.decoration = const InputDecoration(),
     this.errorBuilder,
-    @required this.labelBuilder,
+    required this.labelBuilder,
   }) : super(key: key);
 
   @override
   _ChipGroupFieldBlocBuilderState<T> createState() => _ChipGroupFieldBlocBuilderState<T>();
 
   @override
-  Widget get clearIcon => null;
+  Widget? get clearIcon => null;
 
   @override
-  SingleFieldBloc get fieldBloc => multiSelectFieldBloc;
+  SingleFieldBloc get fieldBloc => multiSelectFieldBloc!;
 
   @override
   bool get showClearIcon => false;
@@ -70,11 +70,11 @@ class _ChipGroupFieldBlocBuilderState<T> extends State<ChipGroupFieldBlocBuilder
     if (widget.multiSelectFieldBloc == null) return const SizedBox.shrink();
 
     return CanShowFieldBlocBuilder(
-      fieldBloc: widget.multiSelectFieldBloc,
+      fieldBloc: widget.multiSelectFieldBloc!,
       animate: widget.animateWhenCanShow,
       builder: (_, __) {
         return BlocBuilder<MultiSelectFieldBloc<T, dynamic>, MultiSelectFieldBlocState<T, dynamic>>(
-          cubit: widget.multiSelectFieldBloc,
+          bloc: widget.multiSelectFieldBloc,
           builder: (context, state) {
             final isEnabled = fieldBlocIsEnabled(
               isEnabled: widget.isEnabled,
@@ -89,13 +89,13 @@ class _ChipGroupFieldBlocBuilderState<T> extends State<ChipGroupFieldBlocBuilder
                 isEmpty: false,
                 child: Wrap(
                   spacing: 8.0,
-                  children: state.items.map((i) {
+                  children: state.items!.map((i) {
                     return ChoiceChip(
-                      selected: state.value.contains(i),
+                      selected: state.value!.contains(i),
                       onSelected: isEnabled
                           ? ((isSelected) => isSelected
-                              ? widget.multiSelectFieldBloc.select(i)
-                              : widget.multiSelectFieldBloc.deselect(i))
+                              ? widget.multiSelectFieldBloc!.select(i)
+                              : widget.multiSelectFieldBloc!.deselect(i))
                           : null,
                       label: widget.labelBuilder(context, i),
                     );

@@ -1,5 +1,4 @@
 import 'package:cross_file/cross_file.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart' hide ImagePicker;
 import 'package:image_picker/image_picker.dart' as ip;
 
@@ -12,12 +11,12 @@ class FieldImagePicker {
 
   factory FieldImagePicker() => instance;
 
-  Future<XFile> pickSingleImage({
-    @required ImageSource source,
+  Future<XFile?> pickSingleImage({
+    required ImageSource source,
     CameraDevice preferredCameraDevice = CameraDevice.rear,
-    double maxWidth,
-    double maxHeight,
-    int imageQuality,
+    double? maxWidth,
+    double? maxHeight,
+    int? imageQuality,
   }) async {
     final file = await _picker.getImage(
       source: source,

@@ -4,22 +4,22 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_form_bloc/src/utils/utils.dart';
 
 class SliderFieldBlocBuilder extends StatelessWidget {
-  final InputFieldBloc<double, Object> sliderFieldBloc;
+  final InputFieldBloc<double, Object>? sliderFieldBloc;
   final bool isEnabled;
 
   /// {@macro  flutter_form_bloc.FieldBlocBuilder.animateWhenCanShow}
   final bool animateWhenCanShow;
   final bool enableOnlyWhenFormBlocCanSubmit;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsets? padding;
   final InputDecoration decoration;
   final double min;
   final double max;
-  final int divisions;
-  final String Function(BuildContext context, double value) valueStringifier;
+  final int? divisions;
+  final String Function(BuildContext context, double value)? valueStringifier;
 
   const SliderFieldBlocBuilder({
-    Key key,
-    @required this.sliderFieldBloc,
+    Key? key,
+    required this.sliderFieldBloc,
     this.min = 0.0,
     this.max = 1.0,
     this.divisions,
@@ -36,11 +36,11 @@ class SliderFieldBlocBuilder extends StatelessWidget {
     if (sliderFieldBloc == null) return const SizedBox.shrink();
 
     return CanShowFieldBlocBuilder(
-      fieldBloc: sliderFieldBloc,
+      fieldBloc: sliderFieldBloc!,
       animate: animateWhenCanShow,
       builder: (context, _) {
-        return BlocBuilder<InputFieldBloc<double, dynamic>, InputFieldBlocState<double, dynamic>>(
-          cubit: sliderFieldBloc,
+        return BlocBuilder<InputFieldBloc<double?, dynamic>, InputFieldBlocState<double?, dynamic>>(
+          bloc: sliderFieldBloc,
           builder: (context, state) {
             final isEnabled = fieldBlocIsEnabled(
               isEnabled: this.isEnabled,
@@ -58,8 +58,8 @@ class SliderFieldBlocBuilder extends StatelessWidget {
                   min: min,
                   max: max,
                   divisions: divisions,
-                  onChanged: isEnabled ? sliderFieldBloc.updateValue : null,
-                  label: valueStringifier != null ? valueStringifier(context, value) : null,
+                  onChanged: isEnabled ? sliderFieldBloc!.updateValue : null,
+                  label: valueStringifier != null ? valueStringifier!(context, value) : null,
                 ),
               ),
             );
