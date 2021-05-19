@@ -4,17 +4,35 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_form_bloc/src/utils/utils.dart';
 
 class SliderFieldBlocBuilder extends StatelessWidget {
-  final InputFieldBloc<double, Object>? sliderFieldBloc;
+  final InputFieldBloc<double, dynamic>? sliderFieldBloc;
+
+  /// [TextFieldBlocBuilder.isEnabled]
   final bool isEnabled;
 
-  /// {@macro  flutter_form_bloc.FieldBlocBuilder.animateWhenCanShow}
+  /// [TextFieldBlocBuilder.readOnly]
+  final bool readOnly;
+
+  /// [TextFieldBlocBuilder.animateWhenCanShow]
   final bool animateWhenCanShow;
+
+  /// [TextFieldBlocBuilder.animateWhenCanShow]
   final bool enableOnlyWhenFormBlocCanSubmit;
+
+  /// [TextFieldBlocBuilder.padding]
   final EdgeInsets? padding;
+
+  /// [TextField.decoration]
   final InputDecoration decoration;
+
+  /// [Slider.min]
   final double min;
+
+  /// [Slider.max]
   final double max;
+
+  /// [Slider.divisions]
   final int? divisions;
+
   final String Function(BuildContext context, double value)? valueStringifier;
 
   const SliderFieldBlocBuilder({
@@ -25,6 +43,7 @@ class SliderFieldBlocBuilder extends StatelessWidget {
     this.divisions,
     this.valueStringifier,
     this.isEnabled = true,
+    this.readOnly = false,
     this.animateWhenCanShow = true,
     this.enableOnlyWhenFormBlocCanSubmit = false,
     this.padding,
@@ -39,7 +58,7 @@ class SliderFieldBlocBuilder extends StatelessWidget {
       fieldBloc: sliderFieldBloc!,
       animate: animateWhenCanShow,
       builder: (context, _) {
-        return BlocBuilder<InputFieldBloc<double?, dynamic>, InputFieldBlocState<double?, dynamic>>(
+        return BlocBuilder<InputFieldBloc<double, dynamic>, InputFieldBlocState<double?, dynamic>>(
           bloc: sliderFieldBloc,
           builder: (context, state) {
             final isEnabled = fieldBlocIsEnabled(
@@ -48,6 +67,7 @@ class SliderFieldBlocBuilder extends StatelessWidget {
               fieldBlocState: state,
             );
             final value = state.value ?? 0.5;
+
             return DefaultFieldBlocBuilderPadding(
               padding: padding,
               child: InputDecorator(
@@ -58,8 +78,8 @@ class SliderFieldBlocBuilder extends StatelessWidget {
                   min: min,
                   max: max,
                   divisions: divisions,
-                  onChanged: isEnabled ? sliderFieldBloc!.updateValue : null,
-                  label: valueStringifier != null ? valueStringifier!(context, value) : null,
+                  onChanged: isEnabled && !readOnly ? sliderFieldBloc!.updateValue : null,
+                  label: valueStringifier?.call(context, value),
                 ),
               ),
             );

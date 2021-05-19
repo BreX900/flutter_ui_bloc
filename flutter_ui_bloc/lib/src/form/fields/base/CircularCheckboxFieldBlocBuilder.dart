@@ -5,7 +5,7 @@ import 'package:flutter_form_bloc/src/utils/utils.dart';
 
 class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
   /// {@macro flutter_form_bloc.FieldBlocBuilder.fieldBloc}
-  final BooleanFieldBloc<Object>? booleanFieldBloc;
+  final BooleanFieldBloc<dynamic>? booleanFieldBloc;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.nextFocusNode}
   final FocusNode? nextFocusNode;
@@ -65,7 +65,7 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
       animate: animateWhenCanShow!,
       builder: (context, _) => DefaultFieldBlocBuilderPadding(
         padding: padding,
-        child: BlocBuilder<BooleanFieldBloc, BooleanFieldBlocState>(
+        child: BlocBuilder<BooleanFieldBloc<dynamic>, BooleanFieldBlocState<dynamic>>(
           bloc: booleanFieldBloc,
           builder: (context, state) {
             return InputDecorator(

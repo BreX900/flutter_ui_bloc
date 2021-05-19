@@ -1,6 +1,6 @@
+import 'package:cross_file_picker/cross_file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
-import 'package:flutter_ui_bloc/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,6 +17,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(),
+          ),
         ),
         home: TestPage(),
       ),
@@ -25,16 +28,21 @@ class MyApp extends StatelessWidget {
 }
 
 class TestFormBloc extends FormBloc<int, int> {
-  final inputFileFB = InputFieldBloc<XFile, int>();
+  final fileFieldBloc = InputFieldBloc<XFile, Never>();
+  final sliderFieldBloc = InputFieldBloc<double, Never>(
+    initialValue: 0.5,
+  );
+  final durationFieldBloc = InputFieldBloc<Duration, Never>();
 
   TestFormBloc() {
-    addFieldBlocs(fieldBlocs: [inputFileFB]);
-    inputFileFB.stream.listen(print);
+    addFieldBlocs(fieldBlocs: [fileFieldBloc, sliderFieldBloc, durationFieldBloc]);
+    fileFieldBloc.stream.listen(print);
   }
 
   @override
-  void onSubmitting() {
-    // TODO: implement onSubmitting
+  void onSubmitting() async {
+    await Future.delayed(Duration(seconds: 3));
+    emitSuccess(canSubmitAgain: true);
   }
 }
 
@@ -52,13 +60,25 @@ class TestPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             InputFileFieldBlocBuilder(
-              inputFieldBloc: bloc.inputFileFB,
+              inputFieldBloc: bloc.fileFieldBloc,
               decoration: InputDecoration(labelText: "ciao"),
-              // picker: (context, _) => FieldFilePicker().pickSingleFile(type: FileType.image),
-              picker: (context, _) =>
-                  FieldImagePicker().pickSingleImage(source: ImageSource.gallery),
+              picker: (context, _) => CrossFilePicker().pickSingleFile(type: FileType.image),
+              // picker: (context, _) =>
+              //     CrossFilePicker().pickSingleImage(source: ImageSource.gallery),
             ),
-            Expanded(child: Text("test")),
+            SliderFieldBlocBuilder(
+              sliderFieldBloc: bloc.sliderFieldBloc,
+              decoration: InputDecoration(
+                labelText: 'Slider',
+              ),
+            ),
+            DurationFieldBlocBuilder(
+              durationFieldBloc: bloc.durationFieldBloc,
+              requests: [],
+              decoration: InputDecoration(
+                labelText: 'Duration',
+              ),
+            ),
           ],
         ),
       ),

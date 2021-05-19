@@ -27,7 +27,7 @@ class AddChekSuffixInputFieldBlocBuilder extends StatelessWidget {
         opacity: opacity,
         size: size,
       ),
-      child: BlocBuilder<InputFieldBloc<Object?, Object>, InputFieldBlocState<Object?, Object>>(
+      child: BlocBuilder<InputFieldBloc<Object?, dynamic>, InputFieldBlocState<Object?, dynamic>>(
         bloc: inputFieldBloc,
         builder: (context, state) {
           if (builder != null) return builder!(context, state.hasValue);

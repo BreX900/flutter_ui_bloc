@@ -1,21 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
-class FormBlocBuilder<B extends FormBloc<S, F>, S, F> extends StatelessWidget {
-  final B? formBloc;
-  final BlocWidgetBuilder<FormBlocState<S, F>> builder;
-
-  const FormBlocBuilder({
+class FormBlocBuilder<B extends FormBloc<S, F>, S, F> extends BlocBuilder<B, FormBlocState<S, F>> {
+  FormBlocBuilder({
     Key? key,
-    this.formBloc,
-    required this.builder,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<B, FormBlocState<S, F>>(
-      bloc: formBloc,
-      builder: builder,
-    );
-  }
+    B? formBloc,
+    BlocBuilderCondition<FormBlocState<S, F>>? buildWhen,
+    required BlocWidgetBuilder<FormBlocState<S, F>> builder,
+  }) : super(key: key, bloc: formBloc, buildWhen: buildWhen, builder: builder);
 }

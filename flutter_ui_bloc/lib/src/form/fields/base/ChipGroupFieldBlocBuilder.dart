@@ -9,7 +9,7 @@ import 'package:flutter_ui_bloc/src/form/fields/common/BaseFieldBlocBuilder.dart
 class ChipGroupFieldBlocBuilder<T> extends StatefulWidget
     with DecorationOnFieldBlocBuilder
     implements FocusFieldBlocBuilder {
-  final MultiSelectFieldBloc<T, Object?>? multiSelectFieldBloc;
+  final MultiSelectFieldBloc<T, dynamic>? multiSelectFieldBloc;
 
   @override
   final FocusNode? focusNode;
@@ -19,6 +19,9 @@ class ChipGroupFieldBlocBuilder<T> extends StatefulWidget
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.isEnabled}
   final bool isEnabled;
+
+  /// {@macro flutter_form_bloc.FieldBlocBuilder.isEnabled}
+  final bool readOnly;
 
   /// {@macro  flutter_form_bloc.FieldBlocBuilder.animateWhenCanShow}
   final bool animateWhenCanShow;
@@ -40,6 +43,7 @@ class ChipGroupFieldBlocBuilder<T> extends StatefulWidget
     this.focusNode,
     this.enableOnlyWhenFormBlocCanSubmit = false,
     this.isEnabled = true,
+    this.readOnly = false,
     this.animateWhenCanShow = true,
     this.padding,
     this.decoration = const InputDecoration(),
@@ -82,6 +86,9 @@ class _ChipGroupFieldBlocBuilderState<T> extends State<ChipGroupFieldBlocBuilder
               fieldBlocState: state,
             );
 
+            final values = state.value!;
+            final items = state.items!;
+
             return DefaultFieldBlocBuilderPadding(
               padding: widget.padding,
               child: InputDecorator(
@@ -89,10 +96,10 @@ class _ChipGroupFieldBlocBuilderState<T> extends State<ChipGroupFieldBlocBuilder
                 isEmpty: false,
                 child: Wrap(
                   spacing: 8.0,
-                  children: state.items!.map((i) {
+                  children: items.map((i) {
                     return ChoiceChip(
-                      selected: state.value!.contains(i),
-                      onSelected: isEnabled
+                      selected: values.contains(i),
+                      onSelected: isEnabled || !widget.readOnly
                           ? ((isSelected) => isSelected
                               ? widget.multiSelectFieldBloc!.select(i)
                               : widget.multiSelectFieldBloc!.deselect(i))

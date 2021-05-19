@@ -1,7 +1,11 @@
 # flutter_ui_bloc
 
-## PhotoPicker
-If you want use `PhotoPicker` see [photo_picker package](https://pub.dev/packages/image_picker)
+FieldBuilder:
+- ChipGroupFieldBlocBuilder: This use a [ChoiceChip](https://flutter.dev/images/widget-catalog/material-chip.png) with multiple selection
+- DurationFieldBlocBuilder: Show a `Duration` and pick it
+- InputFileFieldBlocBuilder: Show a file name and pick a `XFile`(file/image/video)
+- SliderFieldBlocBuilder: This use a [Slider](https://flutter.dev/images/widget-catalog/material-slider.png)
 
-## FilePicker
-If you want use `FilePicker` see [file_picker package](https://pub.dev/packages/file_picker)
+## InputFileFieldBlocBuilder
+
+You can use a [cross_file_picker](https://pub.dev/packages/cross_file_picker) for this fields

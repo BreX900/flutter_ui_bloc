@@ -7,7 +7,7 @@ import 'package:pure_extensions/pure_extensions.dart';
 
 class DurationFieldBlocBuilder extends StatelessWidget {
   /// [InputFieldBlocBuilder.inputFieldBloc]
-  final InputFieldBloc<Duration, dynamic> durationFieldBloc;
+  final InputFieldBloc<Duration?, dynamic> durationFieldBloc;
 
   /// [InputFieldBlocBuilder.focusNode]
   final FocusNode? focusNode;
@@ -28,6 +28,7 @@ class DurationFieldBlocBuilder extends StatelessWidget {
   final InputDecoration decoration;
 
   /// Defines which properties of [Duration] should be requested from the user
+  /// If requests is empty the field is in [TextField.readOnly]
   final List<DurationPickerRequest> requests;
 
   /// @macro [FieldValuePicker]
@@ -48,8 +49,7 @@ class DurationFieldBlocBuilder extends StatelessWidget {
     required this.requests,
     this.picker,
     this.builder,
-  })  : assert(requests.isNotEmpty),
-        super(key: key);
+  }) : super(key: key);
 
   Future<Duration?> pickValue(BuildContext context, Duration? value) {
     return showModalBottomSheet(
@@ -73,10 +73,11 @@ class DurationFieldBlocBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InputFieldBlocBuilder<Duration?>(
-      inputFieldBloc: durationFieldBloc as InputFieldBloc<Duration?, Object>,
+      inputFieldBloc: durationFieldBloc,
       focusNode: focusNode,
       nextFocusNode: nextFocusNode,
       isEnabled: isEnabled,
+      readOnly: requests.isEmpty,
       enableOnlyWhenFormBlocCanSubmit: enableOnlyWhenFormBlocCanSubmit,
       padding: padding,
       decoration: decoration,

@@ -1,6 +1,6 @@
 name: flutter_ui_bloc
 description: A new Flutter project.
-version: 0.2.0+1
+version: 0.3.0+1
 homepage: https://github.com/BreX900/flutter_ui_bloc
 repository: https://github.com/BreX900/flutter_ui_bloc
 
@@ -19,13 +19,10 @@ dependencies:
 #    path: ../../dart_extensions/pure_extensions
   built_collection: ^5.0.0
 
-  file_picker: ^3.0.1
-  image_picker: ^0.7.4
-
   bloc: ^7.0.0
   flutter_bloc: ^7.0.0
-  form_bloc: ^0.20.0-nullsafety.1
-  flutter_form_bloc: ^0.20.0-nullsafety.1
+  form_bloc: ^0.20.1
+  flutter_form_bloc: ^0.20.1
 
   provider: ^5.0.0
 

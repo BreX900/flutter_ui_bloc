@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/src/can_show_field_bloc_builder.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/utils/utils.dart';
+import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/fields/utils.dart';
 import 'package:form_bloc/form_bloc.dart';
 
@@ -18,6 +19,7 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
     required this.inputFieldBloc,
     this.enableOnlyWhenFormBlocCanSubmit = false,
     this.isEnabled = true,
+    this.readOnly = false,
     this.errorBuilder,
     this.padding,
     this.decoration = const InputDecoration(),
@@ -31,7 +33,7 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
   }) : super(key: key);
 
   /// The `fieldBloc` for rebuild the widget when its state changes.
-  final InputFieldBloc<T, Object>? inputFieldBloc;
+  final InputFieldBloc<T, dynamic>? inputFieldBloc;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.errorBuilder}
   @override
@@ -42,6 +44,9 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.isEnabled}
   final bool isEnabled;
+
+  /// {@macro flutter_form_bloc.FieldBlocBuilder.readOnly}
+  final bool readOnly;
 
   /// {@macro flutter_form_bloc.FieldBlocBuilder.padding}
   final EdgeInsets? padding;
@@ -110,55 +115,49 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
     if (widget.inputFieldBloc == null) return const SizedBox.shrink();
 
     return buildFocus(
-        child: CanShowFieldBlocBuilder(
-      fieldBloc: widget.inputFieldBloc!,
-      animate: widget.animateWhenCanShow,
-      builder: (_, __) {
-        return BlocBuilder<InputFieldBloc<T?, Object>, InputFieldBlocState<T?, Object>>(
-          bloc: widget.inputFieldBloc,
-          builder: (context, state) {
-            final isEnabled = fieldBlocIsEnabled(
-              isEnabled: widget.isEnabled,
-              enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
-              fieldBlocState: state,
-            );
-
-            Widget child;
-
-            if (state.value == null && widget.decoration.hintText != null) {
-              child = Text(
-                widget.decoration.hintText!,
-                style: widget.decoration.hintStyle,
-                overflow: TextOverflow.ellipsis,
-                maxLines: widget.decoration.hintMaxLines,
+      child: CanShowFieldBlocBuilder(
+        fieldBloc: widget.inputFieldBloc!,
+        animate: widget.animateWhenCanShow,
+        builder: (_, __) {
+          return BlocBuilder<InputFieldBloc<T, dynamic>, InputFieldBlocState<T?, dynamic>>(
+            bloc: widget.inputFieldBloc,
+            builder: (context, state) {
+              final isEnabled = fieldBlocIsEnabled(
+                isEnabled: widget.isEnabled,
+                enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
+                fieldBlocState: state,
               );
-            } else {
-              child = DefaultTextStyle(
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                style: Style.getDefaultTextStyle(
-                  context: context,
-                  isEnabled: isEnabled,
-                )!,
-                child: _buildValue(state.value!),
-              );
-            }
+              final value = state.value;
+              Widget? child;
 
-            return DefaultFieldBlocBuilderPadding(
-              padding: widget.padding,
-              child: GestureDetector(
-                onTap: !isEnabled ? null : () => pick(context),
-                child: InputDecorator(
-                  decoration: widget.buildDecoration(context, state, isEnabled),
-                  isEmpty: state.value == null && widget.decoration.hintText == null,
-                  child: child,
+              if (value != null) {
+                child = DefaultTextStyle(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  style: Style.getDefaultTextStyle(
+                    context: context,
+                    isEnabled: isEnabled,
+                  )!,
+                  child: _buildValue(value),
+                );
+              }
+
+              return DefaultFieldBlocBuilderPadding(
+                padding: widget.padding,
+                child: GestureDetector(
+                  onTap: isEnabled && !widget.readOnly ? () => pick(context) : null,
+                  child: InputDecorator(
+                    decoration: widget.buildDecoration(context, state, isEnabled),
+                    isEmpty: value == null,
+                    child: child,
+                  ),
                 ),
-              ),
-            );
-          },
-        );
-      },
-    ));
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }

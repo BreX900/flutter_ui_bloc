@@ -9,7 +9,7 @@ import 'package:flutter_ui_bloc/src/form/fields/utils.dart';
 class InputFileFieldBlocBuilder extends StatefulWidget
     with DecorationOnFieldBlocBuilder
     implements FocusFieldBlocBuilder {
-  final InputFieldBloc<XFile, Object> inputFieldBloc;
+  final InputFieldBloc<XFile, dynamic>? inputFieldBloc;
 
   /// [DecorationOnFieldBlocBuilder.errorBuilder]
   @override
@@ -68,7 +68,7 @@ class InputFileFieldBlocBuilder extends StatefulWidget
   }) : super(key: key);
 
   @override
-  SingleFieldBloc get fieldBloc => inputFieldBloc;
+  SingleFieldBloc get fieldBloc => inputFieldBloc!;
 
   @override
   _InputFileFieldBlocBuilderState createState() => _InputFileFieldBlocBuilderState();
@@ -88,47 +88,50 @@ class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
     final updateValue = fieldBlocBuilderOnChange<XFile>(
       isEnabled: widget.isEnabled,
       nextFocusNode: widget.nextFocusNode,
-      onChanged: widget.inputFieldBloc.updateValue,
+      onChanged: widget.inputFieldBloc!.updateValue,
     );
     if (updateValue != null) updateValue(file);
   }
 
   void pick() async {
     FocusScope.of(context).requestFocus(FocusNode());
-    final file = await widget.picker(context, widget.inputFieldBloc.value);
+    final file = await widget.picker(context, widget.inputFieldBloc!.value);
     if (file == null) return;
     _updateValue(file);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.inputFieldBloc == null) return const SizedBox.shrink();
+
     return buildFocus(
       child: CanShowFieldBlocBuilder(
-        fieldBloc: widget.inputFieldBloc,
+        fieldBloc: widget.inputFieldBloc!,
         animate: widget.animateWhenCanShow,
-        builder: (context, _) =>
-            BlocBuilder<InputFieldBloc<XFile?, dynamic>, InputFieldBlocState<XFile?, dynamic>>(
-          bloc: widget.inputFieldBloc,
-          builder: (context, state) {
-            final isEnabled = fieldBlocIsEnabled(
-              isEnabled: widget.isEnabled,
-              enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
-              fieldBlocState: state,
-            );
+        builder: (context, _) {
+          return BlocBuilder<InputFieldBloc<XFile, dynamic>, InputFieldBlocState<XFile?, dynamic>>(
+            bloc: widget.inputFieldBloc,
+            builder: (context, state) {
+              final isEnabled = fieldBlocIsEnabled(
+                isEnabled: widget.isEnabled,
+                enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
+                fieldBlocState: state,
+              );
 
-            return DefaultFieldBlocBuilderPadding(
-              padding: widget.padding,
-              child: InkWell(
-                onTap: pick,
-                child: InputDecorator(
-                  decoration: widget.buildDecoration(context, state, isEnabled),
-                  isEmpty: state.value == null,
-                  child: state.value == null ? null : _buildValue(isEnabled, state.value!),
+              return DefaultFieldBlocBuilderPadding(
+                padding: widget.padding,
+                child: InkWell(
+                  onTap: pick,
+                  child: InputDecorator(
+                    decoration: widget.buildDecoration(context, state, isEnabled),
+                    isEmpty: state.value == null,
+                    child: state.value == null ? null : _buildValue(isEnabled, state.value!),
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          );
+        },
       ),
     );
   }

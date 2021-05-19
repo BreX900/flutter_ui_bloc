@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1+1"
+  cross_file_picker:
+    dependency: "direct main"
+    description:
+      path: "../../../cross_file_picker"
+      relative: true
+    source: path
+    version: "0.0.1+1"
   crypto:
     dependency: transitive
     description:
@@ -131,7 +138,7 @@ packages:
       name: flutter_form_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.20.0-nullsafety.1"
+    version: "0.20.1"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
@@ -171,7 +178,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.2+1"
+    version: "0.2.0+1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -183,7 +190,7 @@ packages:
       name: form_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.20.0-nullsafety.1"
+    version: "0.20.1"
   http:
     dependency: transitive
     description:
@@ -204,7 +211,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.4"
+    version: "0.7.5+2"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -306,10 +313,10 @@ packages:
   pure_extensions:
     dependency: transitive
     description:
-      path: "../../../dart_extensions/pure_extensions"
-      relative: true
-    source: path
-    version: "2.1.2"
+      name: pure_extensions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   quiver:
     dependency: transitive
     description:
@@ -323,7 +330,7 @@ packages:
       name: rational
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0+1"
   rxdart:
     dependency: transitive
     description:

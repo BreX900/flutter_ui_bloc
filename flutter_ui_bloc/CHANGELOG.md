@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.3.0]
+- Improved fields with `readOnly` attribute
+- Removed `file_picker` and `image_picker` dependencies and moved it to `cross_file_picker`
+
 ## [0.2.0]
 - Migrated to null-safety
 

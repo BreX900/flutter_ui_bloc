@@ -27,6 +27,11 @@ dependencies:
   flutter_ui_bloc:
     path: ../
 
+#  cross_file_picker: ^0.0.1
+  cross_file_picker:
+    path: ../../../cross_file_picker
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
