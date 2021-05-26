@@ -69,11 +69,11 @@ class ListFileFieldBlocBuilder extends StatefulWidget
 
   /// [DecorationOnFieldBlocBuilder.showClearIcon]
   @override
-  final bool showClearIcon;
+  final SuffixButton? suffixButton;
 
   /// [DecorationOnFieldBlocBuilder.clearIcon]
   @override
-  final Icon? clearIcon;
+  final Widget clearIcon;
 
   final FieldValuePicker<Iterable<FileValue>> picker;
 
@@ -87,10 +87,10 @@ class ListFileFieldBlocBuilder extends StatefulWidget
     this.nextFocusNode,
     this.isEnabled = true,
     this.animateWhenCanShow = true,
-    this.showClearIcon = true,
+    this.suffixButton,
     this.padding,
     this.decoration = const InputDecoration(),
-    this.clearIcon,
+    this.clearIcon = const Icon(Icons.clear),
     required this.picker,
     this.errorBuilder,
     this.builder,
@@ -125,7 +125,7 @@ class _ListFileFieldBlocBuilderState extends State<ListFileFieldBlocBuilder>
   void pick() async {
     FocusScope.of(context).requestFocus(FocusNode());
     final files = await widget.picker(context, widget.fileFieldBloc!.value!);
-    if (files.isEmpty) return;
+    if (files == null || files.isEmpty) return;
     _updateValue(widget.fileFieldBloc!.value!.rebuild((b) => b..addAll(files)));
   }
 
@@ -174,7 +174,7 @@ class _ListFileFieldBlocBuilderState extends State<ListFileFieldBlocBuilder>
                       return AspectRatio(aspectRatio: 1, child: _buildPlaceHolder());
                     }
 
-                    return _buildValue(value: state.value![index]);
+                    return _buildValue(state.value![index]);
                   },
                 );
               }
@@ -203,7 +203,7 @@ class _ListFileFieldBlocBuilderState extends State<ListFileFieldBlocBuilder>
     return FileValuePlaceHolder(onTap: () => pick());
   }
 
-  Widget _buildValue({required FileValue value}) {
+  Widget _buildValue(FileValue value) {
     if (widget.builder != null) return widget.builder!(context, value);
 
     return FileValueMenuButton(

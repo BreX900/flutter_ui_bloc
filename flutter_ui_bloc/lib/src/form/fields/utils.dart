@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
 
-typedef FieldValuePicker<T> = Future<T> Function(BuildContext context, T currentValue);
+typedef FieldValuePicker<T> = Future<T?> Function(BuildContext context, T? currentValue);
 
-typedef FieldValueBuilder<T> = Widget Function(BuildContext context, T currentValue);
+typedef FieldValueBuilder<T> = Widget Function(BuildContext context, T value);
 
 /// Makes the whole FieldBlocBuilder clickable
 class InkWellFieldBlocBuilder extends StatelessWidget {

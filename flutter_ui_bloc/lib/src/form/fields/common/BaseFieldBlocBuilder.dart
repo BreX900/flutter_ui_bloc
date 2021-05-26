@@ -43,26 +43,41 @@ mixin FocusFieldBlocBuilderState<W extends FocusFieldBlocBuilder> on State<W> {
 }
 
 mixin DecorationOnFieldBlocBuilder {
+  /// [TextFieldBlocBuilder.textFieldBloc]
   SingleFieldBloc get fieldBloc;
 
-  bool get showClearIcon;
+  /// [TextFieldBlocBuilder.suffixButton]
+  SuffixButton? get suffixButton;
 
-  /// The decoration to show around the text field.
-  ///
-  /// By default, draws a horizontal line under the text field but can be
-  /// configured to show an icon, label, hint text, and error text.
-  ///
-  /// Specify null to remove the decoration entirely (including the
-  /// extra padding introduced by the decoration to save space for the labels).
+  /// [TextField.decoration]
   InputDecoration get decoration;
 
-  /// When [suffixButton] is [SuffixButton.clearText], this icon will be displayed.
-  Widget? get clearIcon;
+  /// [TextFieldBlocBuilder.clearTextIcon]
+  Widget get clearIcon;
 
-  /// This function take the `context` and the [FieldBlocState.error]
-  /// and must return a String error to display in the widget when
-  /// has an error. By default is [defaultErrorBuilder].
+  /// [TextFieldBlocBuilder.errorBuilder]
   FieldBlocErrorBuilder? get errorBuilder;
+
+  Widget? _buildSuffixIcon(BuildContext context, FieldBlocState state) {
+    switch (suffixButton) {
+      case SuffixButton.obscureText:
+        throw 'Not supported';
+      case SuffixButton.clearText:
+        return AnimatedOpacity(
+          duration: Duration(milliseconds: 400),
+          opacity: state.value == null ? 0.0 : 1.0,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(25),
+            child: clearIcon,
+            onTap: state.value == null ? null : fieldBloc.clear,
+          ),
+        );
+      case SuffixButton.asyncValidating:
+        throw 'Not supported';
+      case null:
+        return null;
+    }
+  }
 
   InputDecoration buildDecoration(BuildContext context, FieldBlocState state, bool isEnabled) {
     InputDecoration decoration = this.decoration;
@@ -75,18 +90,7 @@ mixin DecorationOnFieldBlocBuilder {
         fieldBlocState: state,
         fieldBloc: fieldBloc,
       ),
-      suffixIcon: decoration.suffixIcon ??
-          (showClearIcon
-              ? AnimatedOpacity(
-                  duration: Duration(milliseconds: 400),
-                  opacity: state.value == null ? 0.0 : 1.0,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(25),
-                    child: clearIcon ?? const Icon(Icons.clear),
-                    onTap: state.value == null ? null : fieldBloc.clear,
-                  ),
-                )
-              : null),
+      suffixIcon: decoration.suffixIcon ?? _buildSuffixIcon(context, state),
     );
 
     return decoration;

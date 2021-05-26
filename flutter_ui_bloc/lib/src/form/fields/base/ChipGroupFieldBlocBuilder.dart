@@ -55,13 +55,13 @@ class ChipGroupFieldBlocBuilder<T> extends StatefulWidget
   _ChipGroupFieldBlocBuilderState<T> createState() => _ChipGroupFieldBlocBuilderState<T>();
 
   @override
-  Widget? get clearIcon => null;
+  Widget get clearIcon => const Icon(Icons.clear);
 
   @override
   SingleFieldBloc get fieldBloc => multiSelectFieldBloc!;
 
   @override
-  bool get showClearIcon => false;
+  SuffixButton? get suffixButton => null;
 }
 
 class _ChipGroupFieldBlocBuilderState<T> extends State<ChipGroupFieldBlocBuilder<T>>

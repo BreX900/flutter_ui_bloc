@@ -7,8 +7,8 @@ abstract class TextFieldType {
   TextFieldType();
 
   factory TextFieldType.number({
-    bool? isDecimal,
-    bool? isSigned,
+    bool isDecimal,
+    bool isSigned,
   }) = _TextFieldNumberType;
 
   factory TextFieldType.email() = _TextFieldEmailType;
@@ -23,29 +23,31 @@ abstract class TextFieldType {
 }
 
 class _TextFieldNumberType extends TextFieldType {
-  final bool? isDecimal;
-  final bool? isSigned;
+  final bool isDecimal;
+  final bool isSigned;
 
   _TextFieldNumberType({this.isDecimal = true, this.isSigned = true});
 
   List<TextInputFormatter> get inputFormatters {
-    if (!isDecimal!) {
+    if (isDecimal) {
       return [
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-        _IntegerTextInputFormatter(),
+        FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
+        _DecimalTextInputFormatter(),
       ];
     }
     return [
-      FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
-      _DecimalTextInputFormatter(),
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      _IntegerTextInputFormatter(),
     ];
   }
 
   @override
-  TextInputType get keyboardType => TextInputType.numberWithOptions(
-        signed: isSigned,
-        decimal: isDecimal,
-      );
+  TextInputType get keyboardType {
+    return TextInputType.numberWithOptions(
+      signed: isSigned,
+      decimal: isDecimal,
+    );
+  }
 }
 
 class _TextFieldEmailType extends TextFieldType {
@@ -58,7 +60,7 @@ class _TextFieldPasswordType extends TextFieldType {}
 class _TextFieldGeoPointType extends _TextFieldNumberType {}
 
 class TypedTextFieldBlocBuilder extends StatelessWidget {
-  final TextFieldBloc textFieldBloc;
+  final TextFieldBloc<dynamic> textFieldBloc;
   final TextFieldType type;
   final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
@@ -76,11 +78,11 @@ class TypedTextFieldBlocBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFieldBlocBuilder(
-      textFieldBloc: textFieldBloc as TextFieldBloc<Object>,
-      inputFormatters: type.inputFormatters!,
-      keyboardType: type.keyboardType!,
-      focusNode: focusNode!,
-      nextFocusNode: nextFocusNode!,
+      textFieldBloc: textFieldBloc,
+      inputFormatters: type.inputFormatters,
+      keyboardType: type.keyboardType,
+      focusNode: focusNode,
+      nextFocusNode: nextFocusNode,
       decoration: decoration,
     );
   }

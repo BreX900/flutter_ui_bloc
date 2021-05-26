@@ -7,47 +7,71 @@ import 'package:pure_extensions/pure_extensions.dart';
 
 class DurationFieldBlocBuilder extends StatelessWidget {
   /// [InputFieldBlocBuilder.inputFieldBloc]
-  final InputFieldBloc<Duration?, dynamic> durationFieldBloc;
-
-  /// [InputFieldBlocBuilder.focusNode]
-  final FocusNode? focusNode;
-
-  /// [InputFieldBlocBuilder.nextFocusNode]
-  final FocusNode? nextFocusNode;
-
-  /// [InputFieldBlocBuilder.isEnabled]
-  final bool isEnabled;
-
-  /// [InputFieldBlocBuilder.enableOnlyWhenFormBlocCanSubmit]
-  final bool enableOnlyWhenFormBlocCanSubmit;
-
-  /// [InputFieldBlocBuilder.padding]
-  final EdgeInsets? padding;
-
-  /// [InputFieldBlocBuilder.decoration]
-  final InputDecoration decoration;
+  final InputFieldBloc<Duration?, dynamic>? inputFieldBloc;
 
   /// Defines which properties of [Duration] should be requested from the user
   /// If requests is empty the field is in [TextField.readOnly]
   final List<DurationPickerRequest> requests;
 
-  /// @macro [FieldValuePicker]
-  final FieldValuePicker<Duration?>? picker;
+  /// [TextFieldBlocBuilder.enableOnlyWhenFormBlocCanSubmit]
+  final bool enableOnlyWhenFormBlocCanSubmit;
 
-  /// @macro [FieldValueBuilder]
-  final FieldValueBuilder<Duration?>? builder;
+  /// [TextFieldBlocBuilder.animateWhenCanShow]
+  final bool animateWhenCanShow;
+
+  /// [TextFieldBlocBuilder.nextFocusNode]
+  final FocusNode? nextFocusNode;
+
+  /// [TextFieldBlocBuilder.focusNode]
+  final FocusNode? focusNode;
+
+  /// [TextFieldBlocBuilder.isEnabled]
+  final bool isEnabled;
+
+  /// [TextField.readOnly]
+  final bool readOnly;
+
+  /// [TextFieldBlocBuilder.padding]
+  final EdgeInsets? padding;
+
+  /// [TextFieldBlocBuilder.style]
+  final TextStyle? style;
+
+  /// [TextField.decoration]
+  final InputDecoration decoration;
+
+  /// [TextFieldBlocBuilder.suffixButton]
+  final SuffixButton? suffixButton;
+
+  /// [TextFieldBlocBuilder.clearTextIcon]
+  final Icon? clearIcon;
+
+  /// Pick a value from previous value when user click on the field or the field receive the focus
+  final FieldValuePicker<Duration>? picker;
+
+  /// See [TextFieldBlocBuilder.errorBuilder]
+  final FieldBlocErrorBuilder? errorBuilder;
+
+  /// Build a widget for specific value
+  final FieldValueBuilder<Duration>? builder;
 
   DurationFieldBlocBuilder({
     Key? key,
-    required this.durationFieldBloc,
+    required this.inputFieldBloc,
+    required this.requests,
+    this.enableOnlyWhenFormBlocCanSubmit = true,
+    this.animateWhenCanShow = true,
     this.focusNode,
     this.nextFocusNode,
     this.isEnabled = true,
-    this.enableOnlyWhenFormBlocCanSubmit = false,
+    this.readOnly = false,
     this.padding,
+    this.style,
     this.decoration = const InputDecoration(),
-    required this.requests,
+    this.suffixButton,
+    this.clearIcon = const Icon(Icons.clear),
     this.picker,
+    this.errorBuilder,
     this.builder,
   }) : super(key: key);
 
@@ -61,8 +85,7 @@ class DurationFieldBlocBuilder extends StatelessWidget {
     );
   }
 
-  Widget buildValue(BuildContext context, Duration? value) {
-    if (value == null) return Text('');
+  Widget buildValue(BuildContext context, Duration value) {
     final b = StringBuffer();
     if (value.inDays > 0) b.write('Days: ${value.inDays} - ');
     b.write('Time: ${(value.inHours % 24)}:'
@@ -72,15 +95,18 @@ class DurationFieldBlocBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InputFieldBlocBuilder<Duration?>(
-      inputFieldBloc: durationFieldBloc,
+    return InputFieldBlocBuilder<Duration>(
+      inputFieldBloc: inputFieldBloc,
       focusNode: focusNode,
       nextFocusNode: nextFocusNode,
       isEnabled: isEnabled,
       readOnly: requests.isEmpty,
       enableOnlyWhenFormBlocCanSubmit: enableOnlyWhenFormBlocCanSubmit,
+      animateWhenCanShow: animateWhenCanShow,
       padding: padding,
+      style: style,
       decoration: decoration,
+      errorBuilder: errorBuilder,
       picker: picker ?? pickValue,
       builder: builder ?? buildValue,
     );

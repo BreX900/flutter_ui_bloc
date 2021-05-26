@@ -3,145 +3,92 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/utils/utils.dart';
-import 'package:flutter_ui_bloc/src/form/fields/common/BaseFieldBlocBuilder.dart';
+import 'package:flutter_ui_bloc/src/form/fields/common/InputFieldBlocBuilder.dart';
 import 'package:flutter_ui_bloc/src/form/fields/utils.dart';
 
-class InputFileFieldBlocBuilder extends StatefulWidget
-    with DecorationOnFieldBlocBuilder
-    implements FocusFieldBlocBuilder {
-  final InputFieldBloc<XFile, dynamic>? inputFieldBloc;
+class InputFileFieldBlocBuilder extends StatelessWidget {
+  final InputFieldBloc<XFile?, dynamic>? inputFieldBloc;
 
-  /// [DecorationOnFieldBlocBuilder.errorBuilder]
-  @override
-  final FieldBlocErrorBuilder? errorBuilder;
-
-  /// {@macro flutter_form_bloc.FieldBlocBuilder.enableOnlyWhenFormBlocCanSubmit}
+  /// [TextFieldBlocBuilder.enableOnlyWhenFormBlocCanSubmit]
   final bool enableOnlyWhenFormBlocCanSubmit;
 
-  /// {@macro flutter_form_bloc.FieldBlocBuilder.isEnabled}
-  final bool isEnabled;
-
-  /// {@macro flutter_form_bloc.FieldBlocBuilder.padding}
-  final EdgeInsets? padding;
-
-  /// [DecorationOnFieldBlocBuilder.decoration]
-  @override
-  final InputDecoration decoration;
-
-  /// {@macro  flutter_form_bloc.FieldBlocBuilder.animateWhenCanShow}
+  /// [TextFieldBlocBuilder.animateWhenCanShow]
   final bool animateWhenCanShow;
 
-  /// {@macro flutter_form_bloc.FieldBlocBuilder.nextFocusNode}
+  /// [TextFieldBlocBuilder.nextFocusNode]
   final FocusNode? nextFocusNode;
 
-  /// {@macro flutter_form_bloc.FieldBlocBuilder.focusNode}
-  @override
+  /// [TextFieldBlocBuilder.focusNode]
   final FocusNode? focusNode;
 
-  /// [DecorationOnFieldBlocBuilder.showClearIcon]
-  @override
-  final bool showClearIcon;
+  /// [TextFieldBlocBuilder.isEnabled]
+  final bool isEnabled;
 
-  /// [DecorationOnFieldBlocBuilder.clearIcon]
-  @override
-  final Icon? clearIcon;
+  /// [TextField.readOnly]
+  final bool readOnly;
 
-  final FieldValuePicker<XFile?> picker;
+  /// [TextFieldBlocBuilder.padding]
+  final EdgeInsets? padding;
 
+  /// [TextField.decoration]
+  final InputDecoration decoration;
+
+  /// [TextFieldBlocBuilder.suffixButton]
+  final SuffixButton? suffixButton;
+
+  /// [TextFieldBlocBuilder.clearTextIcon]
+  final Icon clearIcon;
+
+  /// Pick a value from previous value when user click on the field or the field receive the focus
+  final FieldValuePicker<XFile> picker;
+
+  /// See [TextFieldBlocBuilder.errorBuilder]
+  final FieldBlocErrorBuilder? errorBuilder;
+
+  /// Build a widget for specific value
   final FieldValueBuilder<XFile>? builder;
 
   const InputFileFieldBlocBuilder({
     Key? key,
     required this.inputFieldBloc,
     this.enableOnlyWhenFormBlocCanSubmit = true,
+    this.animateWhenCanShow = true,
     this.focusNode,
     this.nextFocusNode,
     this.isEnabled = true,
-    this.animateWhenCanShow = true,
-    this.showClearIcon = true,
+    this.readOnly = false,
     this.padding,
     this.decoration = const InputDecoration(),
-    this.clearIcon,
+    this.suffixButton,
+    this.clearIcon = const Icon(Icons.clear),
     required this.picker,
     this.errorBuilder,
     this.builder,
   }) : super(key: key);
 
   @override
-  SingleFieldBloc get fieldBloc => inputFieldBloc!;
-
-  @override
-  _InputFileFieldBlocBuilderState createState() => _InputFileFieldBlocBuilderState();
-
-  @override
-  InputDecoration buildDecoration(BuildContext context, FieldBlocState state, bool isEnabled) {
-    return super.buildDecoration(context, state, isEnabled);
-  }
-}
-
-class _InputFileFieldBlocBuilderState extends State<InputFileFieldBlocBuilder>
-    with FocusFieldBlocBuilderState {
-  @override
-  void onHasFocus() {}
-
-  void _updateValue(XFile file) {
-    final updateValue = fieldBlocBuilderOnChange<XFile>(
-      isEnabled: widget.isEnabled,
-      nextFocusNode: widget.nextFocusNode,
-      onChanged: widget.inputFieldBloc!.updateValue,
-    );
-    if (updateValue != null) updateValue(file);
-  }
-
-  void pick() async {
-    FocusScope.of(context).requestFocus(FocusNode());
-    final file = await widget.picker(context, widget.inputFieldBloc!.value);
-    if (file == null) return;
-    _updateValue(file);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.inputFieldBloc == null) return const SizedBox.shrink();
+    if (inputFieldBloc == null) return const SizedBox.shrink();
 
-    return buildFocus(
-      child: CanShowFieldBlocBuilder(
-        fieldBloc: widget.inputFieldBloc!,
-        animate: widget.animateWhenCanShow,
-        builder: (context, _) {
-          return BlocBuilder<InputFieldBloc<XFile, dynamic>, InputFieldBlocState<XFile?, dynamic>>(
-            bloc: widget.inputFieldBloc,
-            builder: (context, state) {
-              final isEnabled = fieldBlocIsEnabled(
-                isEnabled: widget.isEnabled,
-                enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
-                fieldBlocState: state,
-              );
-
-              return DefaultFieldBlocBuilderPadding(
-                padding: widget.padding,
-                child: InkWell(
-                  onTap: pick,
-                  child: InputDecorator(
-                    decoration: widget.buildDecoration(context, state, isEnabled),
-                    isEmpty: state.value == null,
-                    child: state.value == null ? null : _buildValue(isEnabled, state.value!),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+    return InputFieldBlocBuilder<XFile>(
+      inputFieldBloc: inputFieldBloc,
+      enableOnlyWhenFormBlocCanSubmit: enableOnlyWhenFormBlocCanSubmit,
+      animateWhenCanShow: animateWhenCanShow,
+      focusNode: focusNode,
+      nextFocusNode: nextFocusNode,
+      isEnabled: isEnabled,
+      readOnly: readOnly,
+      padding: padding,
+      decoration: decoration,
+      suffixButton: suffixButton,
+      clearIcon: clearIcon,
+      picker: picker,
+      errorBuilder: errorBuilder,
+      builder: builder ?? _buildValue,
     );
   }
 
-  Widget _buildValue(bool isEnabled, XFile file) {
-    final child = widget.builder != null ? widget.builder!(context, file) : Text(file.name);
-
-    return DefaultFieldBlocBuilderTextStyle(
-      isEnabled: isEnabled,
-      child: child,
-    );
+  Widget _buildValue(BuildContext context, XFile file) {
+    return Text(file.name);
   }
 }

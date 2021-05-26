@@ -73,7 +73,7 @@ class TestPage extends StatelessWidget {
               ),
             ),
             DurationFieldBlocBuilder(
-              durationFieldBloc: bloc.durationFieldBloc,
+              inputFieldBloc: bloc.durationFieldBloc,
               requests: [],
               decoration: InputDecoration(
                 labelText: 'Duration',
