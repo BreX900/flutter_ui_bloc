@@ -67,14 +67,14 @@ class TestPage extends StatelessWidget {
               //     CrossFilePicker().pickSingleImage(source: ImageSource.gallery),
             ),
             SliderFieldBlocBuilder(
-              sliderFieldBloc: bloc.sliderFieldBloc,
+              inputFieldBloc: bloc.sliderFieldBloc,
               decoration: InputDecoration(
                 labelText: 'Slider',
               ),
             ),
             DurationFieldBlocBuilder(
               inputFieldBloc: bloc.durationFieldBloc,
-              requests: [],
+              requests: [DurationPickerRequest.minutes()],
               decoration: InputDecoration(
                 labelText: 'Duration',
               ),

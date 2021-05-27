@@ -107,7 +107,7 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
       value: state.value!,
       onChanged: fieldBlocBuilderOnChange<bool>(
         isEnabled: isEnabled,
-        nextFocusNode: nextFocusNode!,
+        nextFocusNode: nextFocusNode,
         onChanged: booleanFieldBloc!.updateValue,
       ),
     );

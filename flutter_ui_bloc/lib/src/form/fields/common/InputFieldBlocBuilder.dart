@@ -96,7 +96,7 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
   void updateValue(T value) {
     final updateValue = fieldBlocBuilderOnChange<T>(
       isEnabled: widget.isEnabled,
-      nextFocusNode: widget.nextFocusNode!,
+      nextFocusNode: widget.nextFocusNode,
       onChanged: widget.inputFieldBloc!.updateValue,
     );
     if (updateValue != null) updateValue(value);

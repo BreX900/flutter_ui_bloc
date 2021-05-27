@@ -122,25 +122,25 @@ class DurationPickerRequest {
 
   DurationPickerRequest.days({this.min = 0, this.max = 364})
       : assert(min >= 0),
-        assert(min > max),
+        assert(min < max),
         type = _DurationPickerRequestType.days;
 
   DurationPickerRequest.hours({this.min = 0, this.max = 24})
       : assert(min >= 0),
         assert(max <= 24),
-        assert(min > max),
+        assert(min < max),
         type = _DurationPickerRequestType.hours;
 
   DurationPickerRequest.minutes({this.min = 0, this.max = 60})
       : assert(min >= 0),
         assert(max <= 60),
-        assert(min > max),
+        assert(min < max),
         type = _DurationPickerRequestType.minutes;
 
   DurationPickerRequest.seconds({this.min = 0, this.max = 60})
       : assert(min >= 0),
         assert(max <= 60),
-        assert(min > max),
+        assert(min < max),
         type = _DurationPickerRequestType.seconds;
 }
 
@@ -241,7 +241,6 @@ class __PickerState extends State<_Picker> {
                       alignment: Alignment.center,
                       child: Text(
                         '${r.min + index}',
-                        style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
                     );

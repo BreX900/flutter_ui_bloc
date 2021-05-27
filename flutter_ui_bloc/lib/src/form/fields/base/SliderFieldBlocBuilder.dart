@@ -4,7 +4,7 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_form_bloc/src/utils/utils.dart';
 
 class SliderFieldBlocBuilder extends StatelessWidget {
-  final InputFieldBloc<double, dynamic>? sliderFieldBloc;
+  final InputFieldBloc<double, dynamic>? inputFieldBloc;
 
   /// [TextFieldBlocBuilder.isEnabled]
   final bool isEnabled;
@@ -37,7 +37,7 @@ class SliderFieldBlocBuilder extends StatelessWidget {
 
   const SliderFieldBlocBuilder({
     Key? key,
-    required this.sliderFieldBloc,
+    required this.inputFieldBloc,
     this.min = 0.0,
     this.max = 1.0,
     this.divisions,
@@ -52,14 +52,14 @@ class SliderFieldBlocBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (sliderFieldBloc == null) return const SizedBox.shrink();
+    if (inputFieldBloc == null) return const SizedBox.shrink();
 
     return CanShowFieldBlocBuilder(
-      fieldBloc: sliderFieldBloc!,
+      fieldBloc: inputFieldBloc!,
       animate: animateWhenCanShow,
       builder: (context, _) {
         return BlocBuilder<InputFieldBloc<double, dynamic>, InputFieldBlocState<double?, dynamic>>(
-          bloc: sliderFieldBloc,
+          bloc: inputFieldBloc,
           builder: (context, state) {
             final isEnabled = fieldBlocIsEnabled(
               isEnabled: this.isEnabled,
@@ -68,20 +68,29 @@ class SliderFieldBlocBuilder extends StatelessWidget {
             );
             final value = state.value ?? 0.5;
 
-            return DefaultFieldBlocBuilderPadding(
-              padding: padding,
-              child: InputDecorator(
-                decoration: decoration,
-                isEmpty: false,
-                child: Slider(
-                  value: value,
-                  min: min,
-                  max: max,
-                  divisions: divisions,
-                  onChanged: isEnabled && !readOnly ? sliderFieldBloc!.updateValue : null,
-                  label: valueStringifier?.call(context, value),
+            return Stack(
+              children: [
+                DefaultFieldBlocBuilderPadding(
+                  padding: padding,
+                  child: InputDecorator(
+                    decoration: decoration.copyWith(
+                      contentPadding: decoration.contentPadding,
+                    ),
+                    isEmpty: false,
+                    child: const SizedBox(height: 20),
+                  ),
                 ),
-              ),
+                Positioned.fill(
+                  child: Slider(
+                    value: value,
+                    min: min,
+                    max: max,
+                    divisions: divisions,
+                    onChanged: isEnabled && !readOnly ? inputFieldBloc!.updateValue : null,
+                    label: valueStringifier?.call(context, value),
+                  ),
+                ),
+              ],
             );
           },
         );
