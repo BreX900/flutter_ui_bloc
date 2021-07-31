@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [0.4.1]
+- Add error on slider
+
 ## [0.4.0]
 - Improved documentation and code style 
 

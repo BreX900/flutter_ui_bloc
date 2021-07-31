@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/utils/utils.dart';
+import 'package:flutter_ui_bloc/src/form/fields/common/BaseFieldBlocBuilder.dart';
 
-class SliderFieldBlocBuilder extends StatelessWidget {
+class SliderFieldBlocBuilder extends StatelessWidget with DecorationOnFieldBlocBuilder {
   final InputFieldBloc<double, dynamic>? inputFieldBloc;
+
+  /// [TextFieldBlocBuilder.animateWhenCanShow]
+  final bool enableOnlyWhenFormBlocCanSubmit;
+
+  /// [TextFieldBlocBuilder.animateWhenCanShow]
+  final bool animateWhenCanShow;
 
   /// [TextFieldBlocBuilder.isEnabled]
   final bool isEnabled;
@@ -12,17 +19,20 @@ class SliderFieldBlocBuilder extends StatelessWidget {
   /// [TextFieldBlocBuilder.readOnly]
   final bool readOnly;
 
-  /// [TextFieldBlocBuilder.animateWhenCanShow]
-  final bool animateWhenCanShow;
-
-  /// [TextFieldBlocBuilder.animateWhenCanShow]
-  final bool enableOnlyWhenFormBlocCanSubmit;
-
   /// [TextFieldBlocBuilder.padding]
   final EdgeInsets? padding;
 
   /// [TextField.decoration]
+  @override
   final InputDecoration decoration;
+
+  /// [TextFieldBlocBuilder.suffixButton]
+  @override
+  final SuffixButton? suffixButton;
+
+  /// [TextFieldBlocBuilder.clearTextIcon]
+  @override
+  final Widget clearIcon;
 
   /// [Slider.min]
   final double min;
@@ -33,7 +43,13 @@ class SliderFieldBlocBuilder extends StatelessWidget {
   /// [Slider.divisions]
   final int? divisions;
 
+  @override
+  final FieldBlocErrorBuilder? errorBuilder;
+
   final String Function(BuildContext context, double value)? valueStringifier;
+
+  @override
+  SingleFieldBloc<dynamic, dynamic, FieldBlocState, dynamic> get fieldBloc => inputFieldBloc!;
 
   const SliderFieldBlocBuilder({
     Key? key,
@@ -41,13 +57,16 @@ class SliderFieldBlocBuilder extends StatelessWidget {
     this.min = 0.0,
     this.max = 1.0,
     this.divisions,
-    this.valueStringifier,
     this.isEnabled = true,
     this.readOnly = false,
     this.animateWhenCanShow = true,
     this.enableOnlyWhenFormBlocCanSubmit = false,
     this.padding,
     this.decoration = const InputDecoration(),
+    this.suffixButton,
+    this.clearIcon = const Icon(Icons.clear),
+    this.errorBuilder,
+    this.valueStringifier,
   }) : super(key: key);
 
   @override
@@ -73,14 +92,15 @@ class SliderFieldBlocBuilder extends StatelessWidget {
                 DefaultFieldBlocBuilderPadding(
                   padding: padding,
                   child: InputDecorator(
-                    decoration: decoration.copyWith(
-                      contentPadding: decoration.contentPadding,
-                    ),
+                    decoration: buildDecoration(context, state, isEnabled),
                     isEmpty: false,
                     child: const SizedBox(height: 20),
                   ),
                 ),
-                Positioned.fill(
+                Positioned(
+                  top: 15.0,
+                  left: 0.0,
+                  right: 0.0,
                   child: Slider(
                     value: value,
                     min: min,
