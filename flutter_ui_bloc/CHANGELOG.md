@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [0.5.2]
+- Added `SubmitButtonFormBlocBuilder.willSubmit` 
+
 ## [0.5.1]
 - upgrade pure_extension: ^4.0.0
 

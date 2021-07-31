@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:flutter_ui_bloc/src/form/fields/utils/input_formatters.dart';
 
 abstract class TextFieldType {
   TextFieldType();
@@ -33,12 +34,12 @@ class _TextFieldNumberType extends TextFieldType {
     if (isDecimal) {
       return [
         FilteringTextInputFormatter.allow(RegExp('[0-9.,]')),
-        _DecimalTextInputFormatter(),
+        DecimalTextInputFormatter(),
       ];
     }
     return [
       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-      _IntegerTextInputFormatter(),
+      IntegerTextInputFormatter(),
     ];
   }
 
@@ -86,48 +87,5 @@ class TypedTextFieldBlocBuilder extends StatelessWidget {
       nextFocusNode: nextFocusNode,
       decoration: decoration,
     );
-  }
-}
-
-abstract class _StringTextInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final value = newValue;
-    final selection = value.selection;
-
-    final text = substringManipulation(newValue.text);
-
-    return TextEditingValue(
-      text: text,
-      selection: TextSelection(
-        baseOffset: selection.baseOffset > text.length ? text.length : selection.baseOffset,
-        extentOffset: selection.extentOffset > text.length ? text.length : selection.extentOffset,
-      ),
-      composing: TextRange.empty,
-    );
-  }
-
-  String substringManipulation(String value);
-}
-
-class _IntegerTextInputFormatter extends _StringTextInputFormatter {
-  @override
-  String substringManipulation(String value) {
-    if (value.startsWith('0')) return value.substring(1);
-    return value;
-  }
-}
-
-class _DecimalTextInputFormatter extends _IntegerTextInputFormatter {
-  @override
-  String substringManipulation(String value) {
-    value = value.replaceAll(',', '.');
-
-    if (value.startsWith(RegExp(r'[.,]'))) return value.substring(1);
-    final matches = RegExp(r'([,.])').allMatches(value);
-
-    if (matches.length > 1) return value.substring(0, value.length - matches.length + 1);
-
-    return super.substringManipulation(value);
   }
 }

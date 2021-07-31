@@ -3,12 +3,14 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/submit_button_form_bloc_builder_base.dart';
 
 typedef BlocNullWidgetBuilder<S> = Widget? Function(BuildContext context, S state);
+typedef WillSubmitCallback = Future<bool> Function();
 
 enum _SubmitButtonType { text, elevated, outlined }
 
 class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>, TSuccess,
     TFailure> extends SubmitButtonFormBlocBuilderBase<TFormBloc, TSuccess, TFailure> {
   final _SubmitButtonType type;
+
   final VoidCallback? onLongPress;
   final ButtonStyle? style;
   final FocusNode? focusNode;
@@ -25,6 +27,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     Key? key,
     TFormBloc? formBloc,
     int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
+    WillSubmitCallback? willSubmit,
     this.onLongPress,
     this.style,
     this.focusNode,
@@ -33,12 +36,13 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     this.iconBuilder,
     required this.labelBuilder,
   })  : type = _SubmitButtonType.text,
-        super(key: key, formBloc: formBloc, validationStep: validationStep);
+        super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   const SubmitButtonFormBlocBuilder.elevated({
     Key? key,
     TFormBloc? formBloc,
     int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
+    WillSubmitCallback? willSubmit,
     this.onLongPress,
     this.style,
     this.focusNode,
@@ -47,12 +51,13 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     this.iconBuilder,
     required this.labelBuilder,
   })  : type = _SubmitButtonType.elevated,
-        super(key: key, formBloc: formBloc, validationStep: validationStep);
+        super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   const SubmitButtonFormBlocBuilder.outlined({
     Key? key,
     TFormBloc? formBloc,
     int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
+    WillSubmitCallback? willSubmit,
     this.onLongPress,
     this.style,
     this.focusNode,
@@ -61,7 +66,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     this.iconBuilder,
     required this.labelBuilder,
   })  : type = _SubmitButtonType.outlined,
-        super(key: key, formBloc: formBloc, validationStep: validationStep);
+        super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   @override
   Widget buildButton(
@@ -69,7 +74,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     TFormBloc formBloc,
     FormBlocState<TSuccess, TFailure> state,
   ) {
-    final onPressed = canSubmit(state) ? formBloc.submit : null;
+    final onPressed = canSubmit(state) ? () => submit(formBloc) : null;
     final child = labelBuilder(context, state);
     final icon = iconBuilder != null ? iconBuilder!(context, state) : null;
 
@@ -149,8 +154,9 @@ class SubmitFloatingButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, T
     Key? key,
     TFormBloc? formBloc,
     int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
+    WillSubmitCallback? willSubmit,
     this.builder = buildIcon,
-  }) : super(key: key, formBloc: formBloc, validationStep: validationStep);
+  }) : super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   static Widget buildIcon(BuildContext context, FormBlocState<dynamic, dynamic> state) {
     return const Icon(Icons.check);
@@ -160,7 +166,7 @@ class SubmitFloatingButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, T
   Widget buildButton(
       BuildContext context, TFormBloc formBloc, FormBlocState<TSuccess, TFailure> state) {
     return FloatingActionButton(
-      onPressed: canSubmit(state) ? formBloc.submit : null,
+      onPressed: canSubmit(state) ? () => submit(formBloc) : null,
       child: builder(context, state),
     );
   }
@@ -174,8 +180,9 @@ class SubmitIconButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFail
     Key? key,
     TFormBloc? formBloc,
     int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
+    WillSubmitCallback? willSubmit,
     this.builder = buildIcon,
-  }) : super(key: key, formBloc: formBloc, validationStep: validationStep);
+  }) : super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   static Widget buildIcon(BuildContext context, FormBlocState<dynamic, dynamic> state) {
     return const Icon(Icons.check);
@@ -185,7 +192,7 @@ class SubmitIconButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFail
   Widget buildButton(
       BuildContext context, TFormBloc formBloc, FormBlocState<TSuccess, TFailure> state) {
     return IconButton(
-      onPressed: canSubmit(state) ? formBloc.submit : null,
+      onPressed: canSubmit(state) ? () => submit(formBloc) : null,
       icon: builder(context, state),
     );
   }

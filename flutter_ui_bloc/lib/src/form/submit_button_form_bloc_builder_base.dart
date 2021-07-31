@@ -5,11 +5,13 @@ import 'package:flutter_ui_bloc/src/form/submit_button_form_bloc_builders.dart';
 abstract class SubmitButtonFormBlocBuilderBase<TFormBloc extends FormBloc<TSuccess, TFailure>,
     TSuccess, TFailure> extends StatelessWidget {
   final TFormBloc? formBloc;
+  final WillSubmitCallback? willSubmit;
   final int? validationStep;
 
   const SubmitButtonFormBlocBuilderBase({
     Key? key,
     this.formBloc,
+    this.willSubmit,
     this.validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
   }) : super(key: key);
 
@@ -34,6 +36,11 @@ abstract class SubmitButtonFormBlocBuilderBase<TFormBloc extends FormBloc<TSucce
     TFormBloc formBloc,
     FormBlocState<TSuccess, TFailure> state,
   );
+
+  void submit(TFormBloc formBloc) async {
+    final canSubmit = (await willSubmit?.call()) ?? true;
+    if (canSubmit) formBloc.submit();
+  }
 
   @override
   Widget build(BuildContext context) {
