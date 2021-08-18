@@ -55,13 +55,17 @@ class TestPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            UploadFileFieldBlocBuilder(
+              inputFieldBloc: bloc.fileFieldBloc,
+              picker: (context, _) => CrossFilePicker().pickSingleFile(type: FileType.image),
+            ),
             InputFileFieldBlocBuilder(
               inputFieldBloc: bloc.fileFieldBloc,
-              decoration: InputDecoration(labelText: "ciao"),
+              decoration: InputDecoration(labelText: 'ciao'),
               picker: (context, _) => CrossFilePicker().pickSingleFile(type: FileType.image),
               // picker: (context, _) =>
               //     CrossFilePicker().pickSingleImage(source: ImageSource.gallery),

@@ -9,3 +9,4 @@ export 'src/form/fields/base/CircularCheckboxFieldBlocBuilder.dart';
 export 'src/form/fields/base/DurationFieldBlocBuilder.dart';
 export 'src/form/fields/base/InputFileFieldBlocBuilder.dart';
 export 'src/form/fields/base/SliderFieldBlocBuilder.dart';
+export 'src/form/fields/base/upload_file_field_bloc_builder.dart';

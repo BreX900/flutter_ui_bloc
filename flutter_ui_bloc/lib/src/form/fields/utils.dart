@@ -35,3 +35,22 @@ class InkWellFieldBlocBuilder extends StatelessWidget {
     );
   }
 }
+
+VoidCallback? fieldBlocBuilderOnPick<T>({
+  required BuildContext context,
+  required bool isEnabled,
+  required FocusNode? nextFocusNode,
+  required T? currentValue,
+  required FieldValuePicker<T> onPick,
+  required void Function(T value) onChanged,
+}) {
+  if (!isEnabled) return null;
+  return () async {
+    final value = await onPick(context, currentValue);
+    if (value == null) return;
+    onChanged(value);
+    if (nextFocusNode != null) {
+      nextFocusNode.requestFocus();
+    }
+  };
+}

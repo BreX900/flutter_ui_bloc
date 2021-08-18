@@ -32,7 +32,7 @@ mixin FocusFieldBlocBuilderState<W extends FocusFieldBlocBuilder> on State<W> {
     }
   }
 
-  void onHasFocus();
+  void onHasFocus() {}
 
   Widget buildFocus({required Widget child}) {
     return Focus(
@@ -47,13 +47,13 @@ mixin DecorationOnFieldBlocBuilder {
   SingleFieldBloc get fieldBloc;
 
   /// [TextFieldBlocBuilder.suffixButton]
-  SuffixButton? get suffixButton;
+  SuffixButton? get suffixButton => null;
 
   /// [TextField.decoration]
-  InputDecoration get decoration;
+  InputDecoration get decoration => Style.inputDecorationWithoutBorder;
 
   /// [TextFieldBlocBuilder.clearTextIcon]
-  Widget get clearIcon;
+  Widget get clearIcon => const Icon(Icons.clear);
 
   /// [TextFieldBlocBuilder.errorBuilder]
   FieldBlocErrorBuilder? get errorBuilder;
@@ -80,9 +80,7 @@ mixin DecorationOnFieldBlocBuilder {
   }
 
   InputDecoration buildDecoration(BuildContext context, FieldBlocState state, bool isEnabled) {
-    InputDecoration decoration = this.decoration;
-
-    decoration = decoration.copyWith(
+    return decoration.copyWith(
       enabled: isEnabled,
       errorText: Style.getErrorText(
         context: context,
@@ -92,7 +90,5 @@ mixin DecorationOnFieldBlocBuilder {
       ),
       suffixIcon: decoration.suffixIcon ?? _buildSuffixIcon(context, state),
     );
-
-    return decoration;
   }
 }

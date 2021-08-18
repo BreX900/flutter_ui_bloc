@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [0.4.2]
+- First implementation of [UploadFileFieldBlocBuilder]
+
 ## [0.4.1]
 - Add error on slider
 
