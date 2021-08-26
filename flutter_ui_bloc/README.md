@@ -9,3 +9,9 @@ FieldBuilder:
 ## InputFileFieldBlocBuilder
 
 You can use a [cross_file_picker](https://pub.dev/packages/cross_file_picker) for this fields
+
+## TabBar - TabBarView - DefaultTabBarView
+You can use one of these widgets to build your ui based on the `TabBar` widget and the `SelectFieldBloc`:
+- TabBarControllerFieldBlocProvider
+- TabBarFieldBlocBuilder
+- TabBarViewFieldBlocBuilder

@@ -1,14 +1,14 @@
 name: flutter_ui_bloc
 description: A new Flutter project.
-version: 0.4.2
+version: 0.4.3
 homepage: https://github.com/BreX900/flutter_ui_bloc
 repository: https://github.com/BreX900/flutter_ui_bloc
 
 # flutter pub publish --dry-run
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: ">=1.17.0"
+  sdk: '>=2.13.0 <3.0.0'
+  flutter: ">=2.0.0"
 
 dependencies:
   flutter:
@@ -17,8 +17,7 @@ dependencies:
   path: ^1.8.0
   mime: ^1.0.0
   pure_extensions: ^3.3.0
-#  pure_extensions:
-#    path: ../../dart_extensions/pure_extensions
+  flutter_extensions: ^3.3.0
   built_collection: ^5.1.0
 
   bloc: ^7.1.0

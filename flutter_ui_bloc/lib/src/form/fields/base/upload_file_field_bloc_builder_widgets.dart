@@ -52,13 +52,7 @@ class FileFieldView extends StatelessWidget {
     return InkWell(
       onTap: field.onTap,
       child: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: 48.0,
-            minWidth: 96.0,
-          ),
-          child: Text(file.name),
-        ),
+        child: Text(file.name),
       ),
     );
   }
