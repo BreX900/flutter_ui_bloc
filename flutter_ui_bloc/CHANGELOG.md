@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.4.4]
+- Now you can pass to the `SubmitButtonFormBlocBuilder` the step that must be validated in order to submit
+- `SubmitFloatingButtonFormBlocBuilder` and `SubmitIconButtonFormBlocBuilder` names aligned
+
 ## [0.4.3]
 You can use one of these widgets to build your ui based on the `TabBar` widget and the `SelectFieldBloc`:
 - TabBarControllerFieldBlocProvider

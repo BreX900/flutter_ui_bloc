@@ -31,6 +31,7 @@ class TestFormBloc extends FormBloc<int, int> {
   final fileFieldBloc = InputFieldBloc<XFile, Never>();
   final sliderFieldBloc = InputFieldBloc<double, Never>(
     initialValue: 0.5,
+    validators: [(value) => value == null ? null : (value < 0.3 ? 'Error' : null)],
   );
   final durationFieldBloc = InputFieldBloc<Duration, Never>();
 
@@ -66,9 +67,9 @@ class TestPage extends StatelessWidget {
             InputFileFieldBlocBuilder(
               inputFieldBloc: bloc.fileFieldBloc,
               decoration: InputDecoration(labelText: 'ciao'),
-              picker: (context, _) => CrossFilePicker().pickSingleFile(type: FileType.image),
-              // picker: (context, _) =>
-              //     CrossFilePicker().pickSingleImage(source: ImageSource.gallery),
+              // picker: (context, _) => CrossFilePicker().pickSingleFile(type: FileType.image),
+              picker: (context, _) =>
+                  CrossFilePicker().pickSingleImage(source: ImageSource.gallery),
             ),
             SliderFieldBlocBuilder(
               inputFieldBloc: bloc.sliderFieldBloc,
@@ -82,6 +83,10 @@ class TestPage extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Duration',
               ),
+            ),
+            SubmitButtonFormBlocBuilder.elevated(
+              formBloc: context.read<TestFormBloc>(),
+              labelBuilder: (context, _) => Text('Ciao'),
             ),
           ],
         ),
