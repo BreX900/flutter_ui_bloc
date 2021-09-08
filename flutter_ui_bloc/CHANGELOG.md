@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.4.5]
+- Improve on `SubmitButtonFormBlocBuilder` step validation
+- Added colors on `SliderFieldBlocBuilder`
+
 ## [0.4.4]
 - Now you can pass to the `SubmitButtonFormBlocBuilder` the step that must be validated in order to submit
 - `SubmitFloatingButtonFormBlocBuilder` and `SubmitIconButtonFormBlocBuilder` names aligned

@@ -17,10 +17,14 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
   final BlocNullWidgetBuilder<FormBlocState>? iconBuilder;
   final BlocWidgetBuilder<FormBlocState> labelBuilder;
 
+  static const int validateCurrentStep = -1;
+  static const int? validateAllSteps = null;
+  static const int ignoreStepValidation = -2;
+
   const SubmitButtonFormBlocBuilder.text({
     Key? key,
     TFormBloc? formBloc,
-    int? validationStep = -1,
+    int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
     this.onLongPress,
     this.style,
     this.focusNode,
@@ -34,7 +38,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
   const SubmitButtonFormBlocBuilder.elevated({
     Key? key,
     TFormBloc? formBloc,
-    int? validationStep = -1,
+    int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
     this.onLongPress,
     this.style,
     this.focusNode,
@@ -48,7 +52,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
   const SubmitButtonFormBlocBuilder.outlined({
     Key? key,
     TFormBloc? formBloc,
-    int? validationStep = -1,
+    int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
     this.onLongPress,
     this.style,
     this.focusNode,
@@ -144,7 +148,7 @@ class SubmitFloatingButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, T
   const SubmitFloatingButtonFormBlocBuilder({
     Key? key,
     TFormBloc? formBloc,
-    int? validationStep = -1,
+    int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
     this.builder = buildIcon,
   }) : super(key: key, formBloc: formBloc, validationStep: validationStep);
 
@@ -169,7 +173,7 @@ class SubmitIconButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFail
   const SubmitIconButtonFormBlocBuilder({
     Key? key,
     TFormBloc? formBloc,
-    int? validationStep = -1,
+    int? validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
     this.builder = buildIcon,
   }) : super(key: key, formBloc: formBloc, validationStep: validationStep);
 

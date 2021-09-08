@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:flutter_ui_bloc/src/form/submit_button_form_bloc_builders.dart';
 
 abstract class SubmitButtonFormBlocBuilderBase<TFormBloc extends FormBloc<TSuccess, TFailure>,
     TSuccess, TFailure> extends StatelessWidget {
@@ -9,15 +10,20 @@ abstract class SubmitButtonFormBlocBuilderBase<TFormBloc extends FormBloc<TSucce
   const SubmitButtonFormBlocBuilderBase({
     Key? key,
     this.formBloc,
-    this.validationStep = -1,
+    this.validationStep = SubmitButtonFormBlocBuilder.ignoreStepValidation,
   }) : super(key: key);
 
   bool canSubmit(FormBlocState<TSuccess, TFailure> state) {
     if (!state.canSubmit) return false;
 
     final validationStep = this.validationStep;
-    if (validationStep == null || validationStep >= 0) {
-      if (!state.isValid(validationStep)) return false;
+    if (validationStep == null ||
+        validationStep > SubmitButtonFormBlocBuilder.ignoreStepValidation) {
+      if (validationStep == SubmitButtonFormBlocBuilder.validateCurrentStep) {
+        if (!state.isValid(state.currentStep)) return false;
+      } else if (!state.isValid(validationStep)) {
+        return false;
+      }
     }
 
     return true;
