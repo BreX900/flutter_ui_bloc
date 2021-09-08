@@ -43,6 +43,15 @@ class SliderFieldBlocBuilder extends StatelessWidget with DecorationOnFieldBlocB
   /// [Slider.divisions]
   final int? divisions;
 
+  /// [Slider.activeColor]
+  final Color? activeColor;
+
+  /// [Slider.inactiveColor]
+  final Color? inactiveColor;
+
+  /// [Slider.mouseCursor]
+  final MouseCursor? mouseCursor;
+
   @override
   final FieldBlocErrorBuilder? errorBuilder;
 
@@ -57,6 +66,9 @@ class SliderFieldBlocBuilder extends StatelessWidget with DecorationOnFieldBlocB
     this.min = 0.0,
     this.max = 1.0,
     this.divisions,
+    this.activeColor,
+    this.inactiveColor,
+    this.mouseCursor,
     this.isEnabled = true,
     this.readOnly = false,
     this.animateWhenCanShow = true,
@@ -108,6 +120,9 @@ class SliderFieldBlocBuilder extends StatelessWidget with DecorationOnFieldBlocB
                     divisions: divisions,
                     onChanged: isEnabled && !readOnly ? inputFieldBloc!.updateValue : null,
                     label: valueStringifier?.call(context, value),
+                    activeColor: activeColor,
+                    inactiveColor: inactiveColor,
+                    mouseCursor: mouseCursor,
                   ),
                 ),
               ],

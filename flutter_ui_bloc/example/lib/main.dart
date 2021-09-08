@@ -73,6 +73,8 @@ class TestPage extends StatelessWidget {
             ),
             SliderFieldBlocBuilder(
               inputFieldBloc: bloc.sliderFieldBloc,
+              activeColor: Colors.greenAccent,
+              inactiveColor: Colors.amberAccent,
               decoration: InputDecoration(
                 labelText: 'Slider',
               ),
