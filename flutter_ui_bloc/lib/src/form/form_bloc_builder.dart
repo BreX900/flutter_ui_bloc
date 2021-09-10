@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
 class FormBlocBuilder<B extends FormBloc<S, F>, S, F> extends BlocBuilder<B, FormBlocState<S, F>> {
-  FormBlocBuilder({
+  const FormBlocBuilder({
     Key? key,
     B? formBloc,
     BlocBuilderCondition<FormBlocState<S, F>>? buildWhen,

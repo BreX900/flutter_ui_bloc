@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.5.0]
+- Update provider version to `^6.0.0`
+- Align code to flutter lints
+
 ## [0.4.5]
 - Improve on `SubmitButtonFormBlocBuilder` step validation
 - Added colors on `SliderFieldBlocBuilder`

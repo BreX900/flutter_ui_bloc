@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:flutter_ui_bloc/src/form/fields/common/InputFieldBlocBuilder.dart';
+import 'package:flutter_ui_bloc/src/form/fields/common/input_field_bloc_builder.dart';
 import 'package:flutter_ui_bloc/src/form/fields/utils.dart';
 import 'package:pure_extensions/pure_extensions.dart';
 
@@ -55,7 +55,7 @@ class DurationFieldBlocBuilder extends StatelessWidget {
   /// Build a widget for specific value
   final FieldValueBuilder<Duration>? builder;
 
-  DurationFieldBlocBuilder({
+  const DurationFieldBlocBuilder({
     Key? key,
     required this.inputFieldBloc,
     required this.requests,
@@ -169,7 +169,9 @@ class __PickerState extends State<_Picker> {
 
   @override
   void dispose() {
-    controllers.values.forEach((c) => c.dispose());
+    for (final c in controllers.values) {
+      c.dispose();
+    }
     super.dispose();
   }
 
@@ -213,7 +215,7 @@ class __PickerState extends State<_Picker> {
             Expanded(
               child: TextButton(
                 onPressed: () => Navigator.of(context).pop(null),
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
             ),
             Expanded(
@@ -221,7 +223,7 @@ class __PickerState extends State<_Picker> {
                 onPressed: () {
                   Navigator.of(context).pop(b.build());
                 },
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ),
           ],

@@ -13,7 +13,7 @@ class SubmitButtonTheme {
 
   static Widget? buildIcon(BuildContext context, FormBlocState state) {
     if (state is FormBlocSubmissionFailed) {
-      return Icon(Icons.error_outline);
+      return const Icon(Icons.error_outline);
     }
     return null;
   }

@@ -5,20 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_extensions/flutter_extensions.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/typedefs.dart';
-import 'package:provider/single_child_widget.dart';
 
 /// [DefaultTabController]
-class TabBarControllerFieldBlocProvider extends SingleChildStatelessWidget {
+class TabBarControllerFieldBlocProvider extends StatelessWidget {
   final SelectFieldBloc<dynamic, dynamic> selectFieldBloc;
+  final Widget child;
 
   const TabBarControllerFieldBlocProvider({
     Key? key,
     required this.selectFieldBloc,
-    Widget? child,
-  }) : super(key: key, child: child);
+    required this.child,
+  }) : super(key: key);
 
   @override
-  Widget buildWithChild(BuildContext context, Widget? child) {
+  Widget build(BuildContext context) {
     return SelectFieldBlocBuilder<dynamic, dynamic>(
       bloc: selectFieldBloc,
       buildWhen: (prev, curr) => prev.items!.length != curr.items!.length,
@@ -131,7 +131,7 @@ class TabBarFieldBlocBuilder<TValue> extends StatelessWidget implements Preferre
   static const double textAndIconTabHeight = 72.0;
 
   @override
-  Size get preferredSize => Size.fromHeight(textAndIconTabHeight + 2.0);
+  Size get preferredSize => const Size.fromHeight(textAndIconTabHeight + 2.0);
 
   @override
   Widget build(BuildContext context) {

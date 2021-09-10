@@ -5,6 +5,8 @@ import 'package:flutter_form_bloc/src/utils/utils.dart';
 import 'package:form_bloc/form_bloc.dart';
 
 abstract class FocusFieldBlocBuilder extends StatefulWidget {
+  const FocusFieldBlocBuilder({Key? key}) : super(key: key);
+
   FocusNode? get focusNode;
 }
 
@@ -64,7 +66,7 @@ mixin DecorationOnFieldBlocBuilder {
         throw 'Not supported';
       case SuffixButton.clearText:
         return AnimatedOpacity(
-          duration: Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 400),
           opacity: state.value == null ? 0.0 : 1.0,
           child: InkWell(
             borderRadius: BorderRadius.circular(25),

@@ -28,6 +28,7 @@ class _TextFieldNumberType extends TextFieldType {
 
   _TextFieldNumberType({this.isDecimal = true, this.isSigned = true});
 
+  @override
   List<TextInputFormatter> get inputFormatters {
     if (isDecimal) {
       return [

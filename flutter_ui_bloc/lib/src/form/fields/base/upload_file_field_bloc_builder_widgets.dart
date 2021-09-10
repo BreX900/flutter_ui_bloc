@@ -23,9 +23,9 @@ class FileFieldPlaceHolder extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.add),
-              const SizedBox(height: 16.0),
+            children: const [
+              Icon(Icons.add),
+              SizedBox(height: 16.0),
               Text('Upload'),
             ],
           ),
@@ -107,7 +107,7 @@ class _ImageFileFieldViewState extends State<_ImageFileFieldView> {
   Widget build(BuildContext context) {
     final bytes = _bytes;
     if (bytes == null) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }

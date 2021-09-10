@@ -86,7 +86,7 @@ class CircularCheckboxFieldBlocBuilder extends StatelessWidget {
               child: DefaultFieldBlocBuilderTextStyle(
                 isEnabled: isEnabled,
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: 48),
+                  constraints: const BoxConstraints(minHeight: 48),
                   child: body,
                 ),
               ),
@@ -135,7 +135,7 @@ class CircularCheckbox extends StatelessWidget {
 
     final size = Checkbox.width;
 
-    final baseDecoration = BoxDecoration(
+    const baseDecoration = BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(100)),
     );
 

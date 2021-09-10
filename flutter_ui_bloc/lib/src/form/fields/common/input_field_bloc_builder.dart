@@ -6,7 +6,7 @@ import 'package:flutter_form_bloc/src/can_show_field_bloc_builder.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/utils/utils.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
-import 'package:flutter_ui_bloc/src/form/fields/common/BaseFieldBlocBuilder.dart';
+import 'package:flutter_ui_bloc/src/form/fields/common/base_field_bloc_builder.dart';
 import 'package:flutter_ui_bloc/src/form/fields/utils.dart';
 import 'package:form_bloc/form_bloc.dart';
 
