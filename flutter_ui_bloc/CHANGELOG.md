@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [0.5.1]
+- upgrade pure_extension: ^4.0.0
+
 ## [0.5.0]
 - Update provider version to `^6.0.0`
 - Align code to flutter lints
