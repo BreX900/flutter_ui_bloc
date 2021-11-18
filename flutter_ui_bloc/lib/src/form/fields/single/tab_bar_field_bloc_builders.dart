@@ -31,7 +31,7 @@ class TabBarControllerFieldBlocProvider extends StatelessWidget {
 
             return SelectFieldBlocListener<dynamic, dynamic>(
               bloc: selectFieldBloc,
-              listenWhen: (prev, curr) => prev.value != curr.value,
+              listenWhen: (prev, curr) => prev.value != curr.value && prev.items != curr.items,
               listener: (context, state) {
                 controller.animateTo(max(0, state.items!.indexOf(state.value)));
               },

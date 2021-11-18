@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## [0.5.3]
+- Fix not change tab on `TabBarControllerFieldBlocProvider`
+
 ## [0.5.2]
 - Added `SubmitButtonFormBlocBuilder.willSubmit` 
 
