@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/utils/utils.dart';
-import 'package:form_bloc/form_bloc.dart';
 
 abstract class FocusFieldBlocBuilder extends StatefulWidget {
   const FocusFieldBlocBuilder({Key? key}) : super(key: key);
@@ -81,7 +80,8 @@ mixin DecorationOnFieldBlocBuilder {
     }
   }
 
-  InputDecoration buildDecoration(BuildContext context, FieldBlocState state, bool isEnabled) {
+  InputDecoration buildDecoration(
+      BuildContext context, FieldBlocState state, bool isEnabled) {
     return decoration.copyWith(
       enabled: isEnabled,
       errorText: Style.getErrorText(

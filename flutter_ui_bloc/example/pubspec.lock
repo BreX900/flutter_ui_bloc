@@ -150,9 +150,9 @@ packages:
     dependency: transitive
     description:
       path: "packages/flutter_form_bloc"
-      ref: HEAD
-      resolved-ref: a6c2aeebf153f07e51661448717e5b8fec0fd101
-      url: "https://github.com/GiancarloCode/form_bloc"
+      ref: next
+      resolved-ref: "28165b4bfd62c3ff7b27019f5f0bfbb4dea47a68"
+      url: "https://github.com/BreX900/form_bloc.git"
     source: git
     version: "0.28.0-alpha"
   flutter_keyboard_visibility:
@@ -256,13 +256,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-  json_annotation:
-    dependency: transitive
-    description:
-      name: json_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.4.0"
   matcher:
     dependency: transitive
     description:
