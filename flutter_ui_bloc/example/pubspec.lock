@@ -14,7 +14,7 @@ packages:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.2.1"
+    version: "8.0.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -70,7 +70,7 @@ packages:
       name: cross_file
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.1+5"
+    version: "0.3.2"
   cross_file_picker:
     dependency: "direct main"
     description:
@@ -98,7 +98,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -138,21 +138,23 @@ packages:
       name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.3.0"
+    version: "8.0.0"
   flutter_extensions:
     dependency: transitive
     description:
       name: flutter_extensions
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.3"
   flutter_form_bloc:
     dependency: transitive
     description:
-      name: flutter_form_bloc
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.20.2"
+      path: "packages/flutter_form_bloc"
+      ref: HEAD
+      resolved-ref: a6c2aeebf153f07e51661448717e5b8fec0fd101
+      url: "https://github.com/GiancarloCode/form_bloc"
+    source: git
+    version: "0.28.0-alpha"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
@@ -192,7 +194,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.5.1"
+    version: "0.5.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -204,7 +206,7 @@ packages:
       name: form_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.20.2"
+    version: "0.28.0-alpha"
   http:
     dependency: transitive
     description:
@@ -260,7 +262,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.0"
+    version: "4.4.0"
   matcher:
     dependency: transitive
     description:
@@ -281,7 +283,7 @@ packages:
       name: mime
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   nested:
     dependency: transitive
     description:
@@ -316,7 +318,7 @@ packages:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.11.0"
+    version: "1.11.1"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -337,14 +339,7 @@ packages:
       name: pure_extensions
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
+    version: "4.0.3"
   rational:
     dependency: transitive
     description:
@@ -365,7 +360,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.27.2"
+    version: "0.27.3"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -419,7 +414,7 @@ packages:
       name: time
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:

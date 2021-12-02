@@ -86,8 +86,8 @@ class _ChipGroupFieldBlocBuilderState<T> extends State<ChipGroupFieldBlocBuilder
               fieldBlocState: state,
             );
 
-            final values = state.value!;
-            final items = state.items!;
+            final values = state.value;
+            final items = state.items;
 
             return DefaultFieldBlocBuilderPadding(
               padding: widget.padding,

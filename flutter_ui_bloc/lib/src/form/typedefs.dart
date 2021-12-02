@@ -12,5 +12,5 @@ typedef SelectFieldBlocBuilder<TValue, TExtraData>
 typedef SelectFieldBlocListener<TValue, TExtraData>
     = BlocListener<SelectFieldBloc<TValue, TExtraData>, SelectFieldBlocState<TValue, TExtraData>>;
 
-typedef ListFieldBlocBuilder<TFieldBloc extends FieldBloc>
-    = BlocBuilder<ListFieldBloc<TFieldBloc>, ListFieldBlocState<TFieldBloc>>;
+typedef ListFieldBlocBuilder<TFieldBloc extends FieldBloc, ExtraData>
+    = BlocBuilder<ListFieldBloc<TFieldBloc, ExtraData>, ListFieldBlocState<TFieldBloc, ExtraData>>;
