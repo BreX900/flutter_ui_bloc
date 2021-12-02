@@ -30,9 +30,6 @@ You can use one of these widgets to build your ui based on the `TabBar` widget a
 ## [0.4.2]
 - First implementation of [UploadFileFieldBlocBuilder]
 
-## [0.4.2]
-- First implementation of [UploadFileFieldBlocBuilder]
-
 ## [0.4.1]
 - Add error on slider
 

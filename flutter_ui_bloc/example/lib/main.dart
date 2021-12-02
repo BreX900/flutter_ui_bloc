@@ -28,12 +28,16 @@ class MyApp extends StatelessWidget {
 }
 
 class TestFormBloc extends FormBloc<int, int> {
-  final fileFieldBloc = InputFieldBloc<XFile, Never>();
+  final fileFieldBloc = InputFieldBloc<XFile?, Never>(
+    initialValue: null,
+  );
   final sliderFieldBloc = InputFieldBloc<double, Never>(
     initialValue: 0.5,
-    validators: [(value) => value == null ? null : (value < 0.3 ? 'Error' : null)],
+    validators: [(value) => value < 0.3 ? 'Error' : null],
   );
-  final durationFieldBloc = InputFieldBloc<Duration, Never>();
+  final durationFieldBloc = InputFieldBloc<Duration?, Never>(
+    initialValue: null,
+  );
 
   TestFormBloc() {
     addFieldBlocs(fieldBlocs: [fileFieldBloc, sliderFieldBloc, durationFieldBloc]);

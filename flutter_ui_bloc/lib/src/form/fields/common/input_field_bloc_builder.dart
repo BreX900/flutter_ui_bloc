@@ -4,6 +4,8 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/can_show_field_bloc_builder.dart';
 // ignore: implementation_imports
+import 'package:flutter_form_bloc/src/theme/material_states.dart';
+// ignore: implementation_imports
 import 'package:flutter_form_bloc/src/utils/utils.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/fields/common/base_field_bloc_builder.dart';
@@ -117,10 +119,14 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
 
     return DefaultTextStyle(
       style: widget.style ??
-          Style.getDefaultTextStyle(
-            context: context,
+          Style.resolveTextStyle(
+            style: const TextStyle(),
             isEnabled: isEnabled,
-          )!,
+            color: const SimpleMaterialStateProperty(
+              normal: Colors.black,
+              disabled: Colors.grey,
+            ),
+          ),
       child: widget.builder(context, value),
     );
   }

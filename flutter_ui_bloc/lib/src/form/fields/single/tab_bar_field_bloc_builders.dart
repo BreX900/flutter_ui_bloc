@@ -21,11 +21,11 @@ class TabBarControllerFieldBlocProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return SelectFieldBlocBuilder<dynamic, dynamic>(
       bloc: selectFieldBloc,
-      buildWhen: (prev, curr) => prev.items!.length != curr.items!.length,
+      buildWhen: (prev, curr) => prev.items.length != curr.items.length,
       builder: (context, state) {
         return DefaultTabController(
-          length: state.items!.length,
-          initialIndex: max(state.items!.indexOf(state.value), 0),
+          length: state.items.length,
+          initialIndex: max(state.items.indexOf(state.value), 0),
           child: Builder(builder: (context) {
             final controller = DefaultTabController.of(context)!;
 
@@ -33,13 +33,13 @@ class TabBarControllerFieldBlocProvider extends StatelessWidget {
               bloc: selectFieldBloc,
               listenWhen: (prev, curr) => prev.value != curr.value && prev.items != curr.items,
               listener: (context, state) {
-                controller.animateTo(max(0, state.items!.indexOf(state.value)));
+                controller.animateTo(max(0, state.items.indexOf(state.value)));
               },
               child: ChangeableValueListener<TabController, int>(
                 listenable: controller,
                 selector: (controller) => controller.index,
                 listener: (context, index) {
-                  selectFieldBloc.updateValue(state.items![index]);
+                  selectFieldBloc.updateValue(state.items[index]);
                 },
                 child: child,
               ),
@@ -156,7 +156,7 @@ class TabBarFieldBlocBuilder<TValue> extends StatelessWidget implements Preferre
           enableFeedback: enableFeedback,
           onTap: onTap,
           physics: physics,
-          tabs: state.items!.map((item) => tabBuilder(context, item!)).toList(),
+          tabs: state.items.map((item) => tabBuilder(context, item!)).toList(),
         );
       },
     );
@@ -192,7 +192,7 @@ class TabBarViewFieldBlocBuilder<TValue> extends StatelessWidget {
         return TabBarView(
           physics: physics,
           dragStartBehavior: dragStartBehavior,
-          children: state.items!.map((item) => viewBuilder(context, item!)).toList(),
+          children: state.items.map((item) => viewBuilder(context, item!)).toList(),
         );
       },
     );

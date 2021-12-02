@@ -37,7 +37,7 @@ class FileFieldBlocBuilderTheme {
 }
 
 class UploadFileFieldBlocBuilder extends StatefulWidget with DecorationOnFieldBlocBuilder {
-  final InputFieldBloc<XFile, dynamic>? inputFieldBloc;
+  final InputFieldBloc<XFile?, dynamic>? inputFieldBloc;
 
   /// [TextFieldBlocBuilder.animateWhenCanShow]
   final bool enableOnlyWhenFormBlocCanSubmit;
@@ -130,8 +130,8 @@ class _UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder>
               constraints: widget.constraints ?? builderTheme.constraints,
               child: AspectRatio(
                 aspectRatio: widget.aspectRation ?? builderTheme.aspectRatio,
-                child: BlocBuilder<InputFieldBloc<XFile, dynamic>,
-                    InputFieldBlocState<XFile, dynamic>>(
+                child: BlocBuilder<InputFieldBloc<XFile?, dynamic>,
+                    InputFieldBlocState<XFile?, dynamic>>(
                   bloc: inputFieldBloc,
                   builder: (context, state) {
                     final isEnabled = _isEnabled = fieldBlocIsEnabled(
