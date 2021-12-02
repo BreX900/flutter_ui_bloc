@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:core' as core;
 
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation_errors.dart';
 import 'package:pure_extensions/pure_extensions.dart';
 
@@ -13,11 +14,10 @@ abstract class Validation<T> {
   );
   static final TextValidation url = TextValidation(
     errorCode: TextValidationError.urlCode,
-    match: RegExp(
-        r'^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$'),
+    match: RegExp(r'^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$'),
   );
 
-  ValidationError? call(T value);
+  Object? call(T value);
 }
 
 abstract class ValidationBase<T> extends Validation<T> {
@@ -26,8 +26,8 @@ abstract class ValidationBase<T> extends Validation<T> {
   const ValidationBase(this.errorCode);
 }
 
-extension ListValidations<T> on Iterable<Validation<T>> {
-  ValidationError? call(T value) {
+extension ValidatorList<T> on Iterable<Validator<T>> {
+  Object? call(T value) {
     for (final validate in this) {
       final error = validate(value);
       if (error != null) return error;
@@ -36,12 +36,12 @@ extension ListValidations<T> on Iterable<Validation<T>> {
 }
 
 class RequiredValidation<T> extends ValidationBase<T?> {
-  final List<Validation<T>> validate;
+  final List<Validator<T>> validate;
 
   RequiredValidation(this.validate, {String? errorCode}) : super(errorCode);
 
   @override
-  ValidationError? call(T? value) {
+  Object? call(T? value) {
     if (value == null) {
       return RequiredValidationError(
         validation: this,
@@ -59,7 +59,7 @@ class RequiredValidation<T> extends ValidationBase<T?> {
 
 class ValidationTransformer<I, O> extends ValidationBase<I> {
   final O Function(I value) converter;
-  final List<Validation<O>> validate;
+  final List<Validator<O>> validate;
 
   const ValidationTransformer(
     this.converter, {
@@ -69,30 +69,28 @@ class ValidationTransformer<I, O> extends ValidationBase<I> {
 
   static ValidationTransformer<String, int> int$({
     String? errorCode = InvalidValidationError.intCode,
-    List<Validation<int>> validate = const [],
+    List<Validator<int>> validate = const [],
   }) {
-    return ValidationTransformer(int.parse,
-        errorCode: errorCode, validate: validate);
+    return ValidationTransformer(int.parse, errorCode: errorCode, validate: validate);
   }
 
   static ValidationTransformer<String, double> double$({
     String? errorCode = InvalidValidationError.doubleCode,
-    List<Validation<double>> validate = const [],
+    List<Validator<double>> validate = const [],
   }) {
-    return ValidationTransformer(double.parse,
-        errorCode: errorCode, validate: validate);
+    return ValidationTransformer(double.parse, errorCode: errorCode, validate: validate);
   }
 
   static ValidationTransformer<String, Rational> rational({
     String? errorCode = InvalidValidationError.rationalCode,
-    List<Validation<Rational>> validate = const [],
+    List<Validator<Rational>> validate = const [],
   }) {
     return ValidationTransformer((value) => Rational.parse(value),
         errorCode: errorCode, validate: validate);
   }
 
   @override
-  ValidationError? call(I value) {
+  Object? call(I value) {
     try {
       return validate(converter(value));
     } catch (_) {
@@ -117,7 +115,7 @@ class EqualityValidation<T> extends ValidationBase<T> {
   }) : super(errorCode);
 
   @override
-  ValidationError? call(T value) {
+  Object? call(T value) {
     if (equals != null && equals == value) {
       return EqualityValidationError(
         validation: this,
@@ -152,7 +150,7 @@ class TextValidation extends ValidationBase<String> {
   }) : super(errorCode);
 
   @override
-  ValidationError? call(String value) {
+  Object? call(String value) {
     if (minLength != null && minLength! < value.length) {
       return TextValidationError(
         validation: this,
@@ -182,7 +180,7 @@ class TextValidation extends ValidationBase<String> {
   }
 }
 
-class NumberValidation<T extends Comparable<T>> extends ValidationBase<T> {
+class NumberValidation<T extends Comparable<Object>> extends ValidationBase<T> {
   final T? greaterThan;
   final T? lessThan;
   final T? greaterOrEqualThan;
@@ -199,7 +197,7 @@ class NumberValidation<T extends Comparable<T>> extends ValidationBase<T> {
         super(errorCode);
 
   @override
-  ValidationError? call(T value) {
+  Object? call(T value) {
     if (greaterThan != null && greaterThan!.compareTo(value) >= 0) {
       return NumberValidationError(
         validation: this,
@@ -210,14 +208,12 @@ class NumberValidation<T extends Comparable<T>> extends ValidationBase<T> {
         validation: this,
         lessThan: lessThan,
       );
-    } else if (greaterOrEqualThan != null &&
-        greaterOrEqualThan!.compareTo(value) > 0) {
+    } else if (greaterOrEqualThan != null && greaterOrEqualThan!.compareTo(value) > 0) {
       return NumberValidationError(
         validation: this,
         greaterOrEqualThan: greaterOrEqualThan,
       );
-    } else if (lessOrEqualThan != null &&
-        lessOrEqualThan!.compareTo(value) < 0) {
+    } else if (lessOrEqualThan != null && lessOrEqualThan!.compareTo(value) < 0) {
       return NumberValidationError(
         validation: this,
         lessOrEqualThan: lessOrEqualThan,
@@ -246,7 +242,7 @@ class OptionsValidation<T> extends ValidationBase<Iterable<T>> {
   }) : super(errorCode);
 
   @override
-  ValidationError? call(Iterable<T> value) {
+  Object? call(Iterable<T> value) {
     if (minLength != null && minLength! < value.length) {
       return OptionsValidationError(
         validation: this,
@@ -256,8 +252,7 @@ class OptionsValidation<T> extends ValidationBase<Iterable<T>> {
       return OptionsValidationError(validation: this, maxLength: maxLength);
     } else if (whereIn != null && whereIn!.any((v) => !value.contains(v))) {
       return OptionsValidationError(validation: this, whereIn: whereIn);
-    } else if (whereNotIn != null &&
-        whereNotIn!.any((v) => value.contains(v))) {
+    } else if (whereNotIn != null && whereNotIn!.any((v) => value.contains(v))) {
       return OptionsValidationError(validation: this, whereNotIn: whereNotIn);
     }
   }
