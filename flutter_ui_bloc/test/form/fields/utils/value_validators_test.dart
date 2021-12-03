@@ -7,25 +7,25 @@ void main() {
     group('Rational', () {
       test('"ciao"->🔴', () {
         expect(
-          ValidationTransformer.rational().call('ciao'),
+          ValidationParser.stringToRational().call('ciao'),
           isNotNull,
         );
       });
       test('"1"->🟢', () {
         expect(
-          ValidationTransformer.rational().call('1'),
+          ValidationParser.stringToRational().call('1'),
           isNull,
         );
       });
       test('"1."->🟢', () {
         expect(
-          ValidationTransformer.rational().call('1.'),
+          ValidationParser.stringToRational().call('1.'),
           isNull,
         );
       });
       test('"1"->🟢', () {
         expect(
-          ValidationTransformer.rational().call('1.1'),
+          ValidationParser.stringToRational().call('1.1'),
           isNull,
         );
       });
