@@ -36,9 +36,9 @@ extension ValidatorList<T> on Iterable<Validator<T>> {
 }
 
 class RequiredValidation<T> extends ValidationBase<T?> {
-  final List<Validator<T>> validate;
+  final List<Validator<T>> validators;
 
-  RequiredValidation(this.validate, {String? errorCode}) : super(errorCode);
+  RequiredValidation(this.validators, {String? errorCode}) : super(errorCode);
 
   @override
   Object? call(T? value) {
@@ -48,51 +48,58 @@ class RequiredValidation<T> extends ValidationBase<T?> {
         code: errorCode,
       );
     }
-    return validate(value);
+    return validators(value);
   }
 
   @override
   String toString() {
-    return 'RequiredValidation{validate: $validate}';
+    return 'RequiredValidation{validate: $validators}';
   }
 }
 
-class ValidationTransformer<I, O> extends ValidationBase<I> {
+class ValidationParser<I, O> extends ValidationBase<I> {
   final O Function(I value) converter;
-  final List<Validator<O>> validate;
+  final List<Validator<O>> validators;
 
-  const ValidationTransformer(
+  const ValidationParser(
     this.converter, {
     String? errorCode,
-    this.validate = const [],
+    this.validators = const [],
   }) : super(errorCode);
 
-  static ValidationTransformer<String, int> int$({
+  static ValidationParser<String, int> stringToInt({
     String? errorCode = InvalidValidationError.intCode,
-    List<Validator<int>> validate = const [],
+    List<Validator<int>> validators = const [],
   }) {
-    return ValidationTransformer(int.parse, errorCode: errorCode, validate: validate);
+    return ValidationParser(int.parse, errorCode: errorCode, validators: validators);
   }
 
-  static ValidationTransformer<String, double> double$({
+  static ValidationParser<String, double> stringToDouble({
     String? errorCode = InvalidValidationError.doubleCode,
-    List<Validator<double>> validate = const [],
+    List<Validator<double>> validators = const [],
   }) {
-    return ValidationTransformer(double.parse, errorCode: errorCode, validate: validate);
+    return ValidationParser(double.parse, errorCode: errorCode, validators: validators);
   }
 
-  static ValidationTransformer<String, Rational> rational({
+  static ValidationParser<String, Rational> stringToRational({
     String? errorCode = InvalidValidationError.rationalCode,
-    List<Validator<Rational>> validate = const [],
+    List<Validator<Rational>> validators = const [],
   }) {
-    return ValidationTransformer((value) => Rational.parse(value),
-        errorCode: errorCode, validate: validate);
+    return ValidationParser((value) => Rational.parse(value),
+        errorCode: errorCode, validators: validators);
+  }
+
+  static ValidationParser<double, int> doubleToInt({
+    String? errorCode = InvalidValidationError.rationalCode,
+    List<Validator<int>> validators = const [],
+  }) {
+    return ValidationParser((value) => value.toInt(), errorCode: errorCode, validators: validators);
   }
 
   @override
   Object? call(I value) {
     try {
-      return validate(converter(value));
+      return validators(converter(value));
     } catch (_) {
       return InvalidValidationError(validation: this, code: errorCode);
     }
@@ -100,7 +107,7 @@ class ValidationTransformer<I, O> extends ValidationBase<I> {
 
   @override
   String toString() {
-    return 'ValidationTransformer{converter: $converter, errorCode: $errorCode, validate: $validate}';
+    return 'ValidationTransformer{converter: $converter, errorCode: $errorCode, validate: $validators}';
   }
 }
 
