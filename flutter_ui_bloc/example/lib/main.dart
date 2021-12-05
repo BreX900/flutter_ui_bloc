@@ -1,12 +1,16 @@
+// ignore_for_file: avoid_print
+
 import 'package:cross_file_picker/cross_file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -17,11 +21,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          inputDecorationTheme: InputDecorationTheme(
+          inputDecorationTheme: const InputDecorationTheme(
             border: OutlineInputBorder(),
           ),
         ),
-        home: TestPage(),
+        home: const TestPage(),
       ),
     );
   }
@@ -46,13 +50,13 @@ class TestFormBloc extends FormBloc<int, int> {
 
   @override
   void onSubmitting() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     emitSuccess(canSubmitAgain: true);
   }
 }
 
 class TestPage extends StatelessWidget {
-  TestPage({Key? key}) : super(key: key);
+  const TestPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +74,7 @@ class TestPage extends StatelessWidget {
             ),
             InputFileFieldBlocBuilder(
               inputFieldBloc: bloc.fileFieldBloc,
-              decoration: InputDecoration(labelText: 'ciao'),
+              decoration: const InputDecoration(labelText: 'ciao'),
               // picker: (context, _) => CrossFilePicker().pickSingleFile(type: FileType.image),
               picker: (context, _) =>
                   CrossFilePicker().pickSingleImage(source: ImageSource.gallery),
@@ -79,20 +83,20 @@ class TestPage extends StatelessWidget {
               inputFieldBloc: bloc.sliderFieldBloc,
               activeColor: Colors.greenAccent,
               inactiveColor: Colors.amberAccent,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Slider',
               ),
             ),
             DurationFieldBlocBuilder(
               inputFieldBloc: bloc.durationFieldBloc,
               requests: [DurationPickerRequest.minutes()],
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Duration',
               ),
             ),
             SubmitButtonFormBlocBuilder.elevated(
               formBloc: context.read<TestFormBloc>(),
-              labelBuilder: (context, _) => Text('Ciao'),
+              labelBuilder: (context, _) => const Text('Ciao'),
             ),
           ],
         ),
