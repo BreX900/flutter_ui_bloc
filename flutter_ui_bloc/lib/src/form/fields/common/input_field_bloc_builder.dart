@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 // ignore: implementation_imports
 import 'package:flutter_form_bloc/src/can_show_field_bloc_builder.dart';
@@ -88,8 +87,7 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
   SingleFieldBloc get fieldBloc => inputFieldBloc!;
 
   @override
-  _InputFieldBlocBuilderState<T> createState() =>
-      _InputFieldBlocBuilderState<T>();
+  _InputFieldBlocBuilderState<T> createState() => _InputFieldBlocBuilderState<T>();
 }
 
 class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
@@ -140,14 +138,12 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
         fieldBloc: widget.inputFieldBloc!,
         animate: widget.animateWhenCanShow,
         builder: (_, __) {
-          return BlocBuilder<InputFieldBloc<T?, dynamic>,
-              InputFieldBlocState<T?, dynamic>>(
+          return BlocBuilder<InputFieldBloc<T?, dynamic>, InputFieldBlocState<T?, dynamic>>(
             bloc: widget.inputFieldBloc,
             builder: (context, state) {
               final isEnabled = fieldBlocIsEnabled(
                 isEnabled: widget.isEnabled,
-                enableOnlyWhenFormBlocCanSubmit:
-                    widget.enableOnlyWhenFormBlocCanSubmit,
+                enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
                 fieldBlocState: state,
               );
               final value = state.value;
@@ -155,12 +151,9 @@ class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>
               return DefaultFieldBlocBuilderPadding(
                 padding: widget.padding,
                 child: GestureDetector(
-                  onTap: isEnabled && !widget.readOnly
-                      ? () => pick(context)
-                      : null,
+                  onTap: isEnabled && !widget.readOnly ? () => pick(context) : null,
                   child: InputDecorator(
-                    decoration:
-                        widget.buildDecoration(context, state, isEnabled),
+                    decoration: widget.buildDecoration(context, state, isEnabled),
                     isEmpty: value == null,
                     child: _buildValue(state.value, isEnabled),
                   ),

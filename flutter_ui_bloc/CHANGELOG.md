@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.6.0]
+- Jump to flutter_form_bloc: `0.29.0`
+- Simplify the buttons to submit
+
 ## [0.5.3]
 - Fix not change tab on `TabBarControllerFieldBlocProvider`
 
