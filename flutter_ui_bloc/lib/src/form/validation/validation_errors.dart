@@ -59,6 +59,12 @@ abstract class ValidationError {
       } else if (e.whereNotIn != null) {
         return 'It must not contains these values (${e.whereNotIn!.join(', ')}).';
       }
+    } else if (e is FileValidationError) {
+      if (e.whereExtensionIn != null) {
+        return 'Allowed file extensions are as follows: (${e.whereExtensionIn!.join(', ')}).';
+      } else if (e.whereExtensionNotIn != null) {
+        return 'The file extensions not allowed are as follows: (${e.whereExtensionNotIn!.join(', ')}).';
+      }
     }
     return null;
   }
