@@ -65,8 +65,7 @@ abstract class ValidationError {
 }
 
 class InvalidValidationError extends ValidationError {
-  const InvalidValidationError({Validation? validation, String? code})
-      : super(validation, code);
+  const InvalidValidationError({Validation? validation, String? code}) : super(validation, code);
 
   static const String intCode = 'Invalid int.';
   static const String doubleCode = 'Invalid double.';
@@ -79,8 +78,7 @@ class InvalidValidationError extends ValidationError {
 }
 
 class RequiredValidationError extends ValidationError {
-  const RequiredValidationError({Validation? validation, String? code})
-      : super(validation, code);
+  const RequiredValidationError({Validation? validation, String? code}) : super(validation, code);
 
   @override
   String toString() {
@@ -164,4 +162,21 @@ class OptionsValidationError extends ValidationError {
   @override
   String toString() =>
       'OptionsValidationError{length:$length,minLength:$minLength,maxLength:$maxLength,whereIn:$whereIn,whereNotIn:$whereNotIn}';
+}
+
+class FileValidationError extends ValidationError {
+  final List<String>? whereExtensionIn;
+  final List<String>? whereExtensionNotIn;
+
+  FileValidationError({
+    Validation? validation,
+    String? code,
+    this.whereExtensionIn,
+    this.whereExtensionNotIn,
+  }) : super(validation, code);
+
+  @override
+  String toString() {
+    return 'FileValidationError{whereExtensionIn: $whereExtensionIn, whereExtensionNotIn: $whereExtensionNotIn}';
+  }
 }

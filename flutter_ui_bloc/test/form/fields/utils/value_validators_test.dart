@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation.dart';
 import 'package:pure_extensions/pure_extensions.dart';
 
@@ -83,6 +84,21 @@ void main() {
         expect(
           TextValidation(notMatch: RegExp('hola')).call('ciao'),
           isNull,
+        );
+      });
+    });
+
+    group('Test FileValidation', () {
+      test('"home/image.png"{whereExtensionIn: [\'png\']}->🟢', () {
+        expect(
+          const FileValidation(whereExtensionIn: ['png']).call(XFile('home/image.png')),
+          isNull,
+        );
+      });
+      test('"home/image.png"{whereExtensionNotIn: [\'png\']}->🟢', () {
+        expect(
+          const FileValidation(whereExtensionNotIn: ['png']).call(XFile('home/image.png')),
+          isNotNull,
         );
       });
     });

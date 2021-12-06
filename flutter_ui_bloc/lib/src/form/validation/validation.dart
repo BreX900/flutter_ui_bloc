@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'dart:core' as core;
 
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation_errors.dart';
 import 'package:pure_extensions/pure_extensions.dart';
@@ -21,6 +22,7 @@ abstract class Validation<T> {
 }
 
 abstract class ValidationBase<T> extends Validation<T> {
+  /// Use a custom error string to differentiate between errors
   final String? errorCode;
 
   const ValidationBase(this.errorCode);
@@ -35,6 +37,7 @@ extension ValidatorList<T> on Iterable<Validator<T>> {
   }
 }
 
+///  It allows you to convert a field from null to non-null
 class RequiredValidation<T> extends ValidationBase<T?> {
   final List<Validator<T>> validators;
 
@@ -57,6 +60,11 @@ class RequiredValidation<T> extends ValidationBase<T?> {
   }
 }
 
+/// It allows you to convert a field from an `x` type to a` y` type.
+/// * [stringToInt]
+/// * [stringToDouble]
+/// * [stringToRational]
+/// * [doubleToInt]
 class ValidationParser<I, O> extends ValidationBase<I> {
   final O Function(I value) converter;
   final List<Validator<O>> validators;
@@ -111,6 +119,7 @@ class ValidationParser<I, O> extends ValidationBase<I> {
   }
 }
 
+/// It allows you to compare two values
 class EqualityValidation<T> extends ValidationBase<T> {
   final T? equals;
   final T? identical;
@@ -126,11 +135,13 @@ class EqualityValidation<T> extends ValidationBase<T> {
     if (equals != null && equals == value) {
       return EqualityValidationError(
         validation: this,
+        code: errorCode,
         equals: equals,
       );
     } else if (identical != null && core.identical(identical, value)) {
       return EqualityValidationError(
         validation: this,
+        code: errorCode,
         identical: identical,
       );
     }
@@ -142,6 +153,7 @@ class EqualityValidation<T> extends ValidationBase<T> {
   }
 }
 
+/// It allows to validate a text field such as the length or if it is match with a regexp
 class TextValidation extends ValidationBase<String> {
   final int? minLength;
   final int? maxLength;
@@ -161,21 +173,25 @@ class TextValidation extends ValidationBase<String> {
     if (minLength != null && minLength! < value.length) {
       return TextValidationError(
         validation: this,
+        code: errorCode,
         minLength: minLength,
       );
     } else if (maxLength != null && maxLength! > value.length) {
       return TextValidationError(
         validation: this,
+        code: errorCode,
         maxLength: maxLength,
       );
     } else if (match != null && !match!.hasMatch(value)) {
       return TextValidationError(
         validation: this,
+        code: errorCode,
         white: match?.pattern,
       );
     } else if (notMatch != null && notMatch!.hasMatch(value)) {
       return TextValidationError(
         validation: this,
+        code: errorCode,
         black: notMatch?.pattern,
       );
     }
@@ -187,6 +203,12 @@ class TextValidation extends ValidationBase<String> {
   }
 }
 
+/// It allows you to validate a field of type [Comparable]
+/// but you can usually use it to validate fields of type:
+/// * [num]
+/// * [int]
+/// * [double]
+/// * [Rational]
 class NumberValidation<T extends Comparable<Object>> extends ValidationBase<T> {
   final T? greaterThan;
   final T? lessThan;
@@ -208,21 +230,25 @@ class NumberValidation<T extends Comparable<Object>> extends ValidationBase<T> {
     if (greaterThan != null && greaterThan!.compareTo(value) >= 0) {
       return NumberValidationError(
         validation: this,
+        code: errorCode,
         greaterThan: greaterThan,
       );
     } else if (lessThan != null && lessThan!.compareTo(value) <= 0) {
       return NumberValidationError(
         validation: this,
+        code: errorCode,
         lessThan: lessThan,
       );
     } else if (greaterOrEqualThan != null && greaterOrEqualThan!.compareTo(value) > 0) {
       return NumberValidationError(
         validation: this,
+        code: errorCode,
         greaterOrEqualThan: greaterOrEqualThan,
       );
     } else if (lessOrEqualThan != null && lessOrEqualThan!.compareTo(value) < 0) {
       return NumberValidationError(
         validation: this,
+        code: errorCode,
         lessOrEqualThan: lessOrEqualThan,
       );
     }
@@ -234,6 +260,8 @@ class NumberValidation<T extends Comparable<Object>> extends ValidationBase<T> {
   }
 }
 
+/// It allows you to validate a list of options
+/// by checking the minimum length and if any particular options have been selected
 class OptionsValidation<T> extends ValidationBase<Iterable<T>> {
   final int? minLength;
   final int? maxLength;
@@ -256,16 +284,59 @@ class OptionsValidation<T> extends ValidationBase<Iterable<T>> {
         minLength: minLength,
       );
     } else if (maxLength != null && maxLength! > value.length) {
-      return OptionsValidationError(validation: this, maxLength: maxLength);
+      return OptionsValidationError(
+        validation: this,
+        code: errorCode,
+        maxLength: maxLength,
+      );
     } else if (whereIn != null && whereIn!.any((v) => !value.contains(v))) {
-      return OptionsValidationError(validation: this, whereIn: whereIn);
+      return OptionsValidationError(
+        validation: this,
+        code: errorCode,
+        whereIn: whereIn,
+      );
     } else if (whereNotIn != null && whereNotIn!.any((v) => value.contains(v))) {
-      return OptionsValidationError(validation: this, whereNotIn: whereNotIn);
+      return OptionsValidationError(
+        validation: this,
+        code: errorCode,
+        whereNotIn: whereNotIn,
+      );
     }
   }
 
   @override
   String toString() {
     return 'OptionsValidation{minLength: $minLength, maxLength: $maxLength, whereIn: $whereIn, whereNotIn: $whereNotIn}';
+  }
+}
+
+/// It allows you to validate a file by checking its extension
+class FileValidation extends ValidationBase<XFile> {
+  final List<String>? whereExtensionIn;
+  final List<String>? whereExtensionNotIn;
+
+  const FileValidation({
+    String? errorCode,
+    this.whereExtensionIn,
+    this.whereExtensionNotIn,
+  }) : super(errorCode);
+
+  @override
+  Object? call(XFile value) {
+    if (whereExtensionIn != null && !whereExtensionIn!.any(value.name.endsWith)) {
+      return FileValidationError(
+        validation: this,
+        code: errorCode,
+        whereExtensionIn: whereExtensionIn,
+        whereExtensionNotIn: whereExtensionNotIn,
+      );
+    } else if (whereExtensionNotIn != null && whereExtensionNotIn!.any(value.name.endsWith)) {
+      return FileValidationError(
+        validation: this,
+        code: errorCode,
+        whereExtensionIn: whereExtensionIn,
+        whereExtensionNotIn: whereExtensionNotIn,
+      );
+    }
   }
 }

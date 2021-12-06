@@ -1,4 +1,12 @@
-# CHANGELOG
+## [0.6.1]
+- Add `Validation` class and more validations, now you can validate our fields.
+  - `RequiredValidation`: It allows you to convert a field from null to non-null
+  - `ValidationParser`: It allows you to convert a field from an `x` type to a` y` type, (stringToInt, stringToDouble, stringToRational)
+  - `EqualityValidation`: It allows you to compare two values
+  - `TextValidation`: It allows to validate a text field such as the length or if it is match with a regexp
+  - `NumberValidation`: It allows you to validate a field of type `num`, `int`, `double`
+  - `OptionsValidation`: It allows you to validate a list of options
+  - `FileValidation`: It allows you to validate a file by checking its extension
 
 ## [0.6.0]
 - Jump to flutter_form_bloc: `0.29.0`
