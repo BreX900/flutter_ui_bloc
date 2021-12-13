@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 class DefaultInputFormatters {
   List<TextInputFormatter> number({bool isDecimal = true, bool isSigned = true}) {

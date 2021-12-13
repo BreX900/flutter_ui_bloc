@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_bloc/src/form/fields/base/upload_file_field_bloc_builder.dart';
 import 'package:mime/mime.dart';

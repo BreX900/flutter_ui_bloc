@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart' show BuildContext;
-import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation.dart';
 
 abstract class ValidationError {

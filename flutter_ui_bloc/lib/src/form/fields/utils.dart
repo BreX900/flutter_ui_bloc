@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_ui_bloc/flutter_ui_bloc.dart';
 
 typedef FieldValuePicker<T> = Future<T?> Function(BuildContext context, T? currentValue);

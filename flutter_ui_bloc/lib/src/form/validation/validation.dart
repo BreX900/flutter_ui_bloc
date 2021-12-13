@@ -3,11 +3,25 @@ import 'dart:core' as core;
 
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:flutter_ui_bloc/src/form/validation/validation_base.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation_errors.dart';
 import 'package:pure_extensions/pure_extensions.dart';
 
 abstract class Validation<T> {
   const Validation();
+
+  /// If validation is not necessary
+  static const Validation<dynamic> none = ValidationNone();
+
+  /// It combines the validators into a single validation
+  ///
+  /// All validators must be valid
+  const factory Validation.every(List<Validator<T>> validators) = CompositeValidation.every;
+
+  /// It combines the validators into a single validation
+  ///
+  /// A validator just needs to be valid
+  const factory Validation.any(List<Validator<T>> validators) = CompositeValidation.any;
 
   static final TextValidation email = TextValidation(
     errorCode: TextValidationError.emailCode,
@@ -21,27 +35,14 @@ abstract class Validation<T> {
   Object? call(T value);
 }
 
-abstract class ValidationBase<T> extends Validation<T> {
-  /// Use a custom error string to differentiate between errors
-  final String? errorCode;
-
-  const ValidationBase(this.errorCode);
-}
-
-extension ValidatorList<T> on Iterable<Validator<T>> {
-  Object? call(T value) {
-    for (final validate in this) {
-      final error = validate(value);
-      if (error != null) return error;
-    }
-  }
-}
-
 ///  It allows you to convert a field from null to non-null
 class RequiredValidation<T> extends ValidationBase<T?> {
   final List<Validator<T>> validators;
 
-  RequiredValidation(this.validators, {String? errorCode}) : super(errorCode);
+  const RequiredValidation({
+    String? errorCode,
+    this.validators = const [],
+  }) : super(errorCode);
 
   @override
   Object? call(T? value) {
@@ -51,12 +52,12 @@ class RequiredValidation<T> extends ValidationBase<T?> {
         code: errorCode,
       );
     }
-    return validators(value);
+    return CompositeValidation.validateEvery(validators, value);
   }
 
   @override
   String toString() {
-    return 'RequiredValidation{validate: $validators}';
+    return 'RequiredValidation{validators: $validators}';
   }
 }
 
@@ -107,7 +108,7 @@ class ValidationParser<I, O> extends ValidationBase<I> {
   @override
   Object? call(I value) {
     try {
-      return validators(converter(value));
+      return CompositeValidation.validateEvery(validators, converter(value));
     } catch (_) {
       return InvalidValidationError(validation: this, code: errorCode);
     }

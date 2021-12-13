@@ -1,3 +1,10 @@
+## [0.7.0]
+- Removed `ChipGroupFieldBlocBuilder` and `SliderFieldBlocBuilder` because they are now present in `flutter_form_bloc` package
+
+## [0.6.2]
+- Align `RequiredValidation` to `ValidationParser`
+- Add `Validation.none` and `Validation.composite`
+
 ## [0.6.1]
 - Add `Validation` class and more validations, now you can validate our fields.
   - `RequiredValidation`: It allows you to convert a field from null to non-null

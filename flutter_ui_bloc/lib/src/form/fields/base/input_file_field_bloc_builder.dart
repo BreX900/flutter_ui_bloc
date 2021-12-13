@@ -1,8 +1,6 @@
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-// ignore: implementation_imports
-import 'package:flutter_form_bloc/src/utils/utils.dart';
 import 'package:flutter_ui_bloc/src/form/fields/common/input_field_bloc_builder.dart';
 import 'package:flutter_ui_bloc/src/form/fields/utils.dart';
 
