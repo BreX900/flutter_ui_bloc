@@ -41,7 +41,13 @@ class FileFieldView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mimeType = lookupMimeType(file.name);
+    String? mimeType = lookupMimeType(file.name);
+
+    // This is a quick fix until https://github.com/dart-lang/mime/pull/58 gets published
+    if (mimeType == null && file.name.toLowerCase().endsWith("heic")) {
+      mimeType = "image/heic";
+    }
+
     if (mimeType != null && mimeType.startsWith('image')) {
       return _ImageFileFieldView(file: file);
     }

@@ -324,14 +324,17 @@ class FileValidation extends ValidationBase<XFile> {
 
   @override
   Object? call(XFile value) {
-    if (whereExtensionIn != null && !whereExtensionIn!.any(value.name.endsWith)) {
+    final name = value.name.toLowerCase();
+    if (whereExtensionIn != null &&
+        !whereExtensionIn!.map((e) => e.toLowerCase()).any(name.endsWith)) {
       return FileValidationError(
         validation: this,
         code: errorCode,
         whereExtensionIn: whereExtensionIn,
         whereExtensionNotIn: whereExtensionNotIn,
       );
-    } else if (whereExtensionNotIn != null && whereExtensionNotIn!.any(value.name.endsWith)) {
+    } else if (whereExtensionNotIn != null &&
+        whereExtensionNotIn!.map((e) => e.toLowerCase()).any(name.endsWith)) {
       return FileValidationError(
         validation: this,
         code: errorCode,

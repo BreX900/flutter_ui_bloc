@@ -95,9 +95,21 @@ void main() {
           isNull,
         );
       });
+      test('"home/image.png"{whereExtensionIn: [\'png\']}->🟢', () {
+        expect(
+          const FileValidation(whereExtensionIn: ['png']).call(XFile('home/image.PNG')),
+          isNull,
+        );
+      });
       test('"home/image.png"{whereExtensionNotIn: [\'png\']}->🟢', () {
         expect(
           const FileValidation(whereExtensionNotIn: ['png']).call(XFile('home/image.png')),
+          isNotNull,
+        );
+      });
+      test('"home/image.png"{whereExtensionNotIn: [\'png\']}->🟢', () {
+        expect(
+          const FileValidation(whereExtensionNotIn: ['png']).call(XFile('home/image.PNG')),
           isNotNull,
         );
       });
