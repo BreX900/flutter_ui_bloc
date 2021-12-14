@@ -1,3 +1,7 @@
+## [0.7.1]
+- Fixed FileValidation when user insert a different upper/lower case
+- Fixed not show heic type
+
 ## [0.7.0]
 - Removed `ChipGroupFieldBlocBuilder` and `SliderFieldBlocBuilder` because they are now present in `flutter_form_bloc` package
 
