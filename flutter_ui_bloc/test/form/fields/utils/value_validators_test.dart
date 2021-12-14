@@ -95,7 +95,7 @@ void main() {
           isNull,
         );
       });
-      test('"home/image.png"{whereExtensionIn: [\'png\']}->🟢', () {
+      test('"home/image.PNG"{whereExtensionIn: [\'png\']}->🟢', () {
         expect(
           const FileValidation(whereExtensionIn: ['png']).call(XFile('home/image.PNG')),
           isNull,
@@ -107,7 +107,7 @@ void main() {
           isNotNull,
         );
       });
-      test('"home/image.png"{whereExtensionNotIn: [\'png\']}->🟢', () {
+      test('"home/image.PNG"{whereExtensionNotIn: [\'png\']}->🟢', () {
         expect(
           const FileValidation(whereExtensionNotIn: ['png']).call(XFile('home/image.PNG')),
           isNotNull,
