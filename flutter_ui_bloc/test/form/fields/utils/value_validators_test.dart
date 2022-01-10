@@ -61,6 +61,36 @@ void main() {
       });
     });
 
+    group('Test DateTimeValidation', () {
+      final past = DateTime.now().subtract(const Duration(seconds: 1));
+      final future = DateTime.now().add(const Duration(seconds: 1));
+
+      test('"1"{after: ...}->🟢', () {
+        expect(
+          DateTimeValidation(after: past).call(future),
+          isNull,
+        );
+      });
+      test('"1"{after: ...}->🔴', () {
+        expect(
+          DateTimeValidation(after: future).call(past),
+          isNotNull,
+        );
+      });
+      test('"0"{before: ...}->🟢', () {
+        expect(
+          DateTimeValidation(before: future).call(past),
+          isNull,
+        );
+      });
+      test('"0"{before: 0}->🔴', () {
+        expect(
+          DateTimeValidation(before: past).call(future),
+          isNotNull,
+        );
+      });
+    });
+
     group('Test StringValidation', () {
       test('"ciao"{white: hola}->🔴', () {
         expect(

@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart' show BuildContext;
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation.dart';
 
 abstract class ValidationError {
@@ -7,67 +5,6 @@ abstract class ValidationError {
   final String? code;
 
   const ValidationError(this.validation, this.code);
-
-  static String? builder(BuildContext context, Object? e, FieldBloc fieldBloc) {
-    if (e == null) return null;
-    if (e is InvalidValidationError) {
-      switch (e.code) {
-        case InvalidValidationError.intCode:
-          return 'Invalid integer value.';
-        case InvalidValidationError.doubleCode:
-        case InvalidValidationError.rationalCode:
-          return 'Invalid decimal value.';
-      }
-      return 'Invalid field.';
-    } else if (e is EqualityValidationError) {
-      return 'The field must be equal to ${e.equals ?? e.identical}.';
-    } else if (e is RequiredValidationError) {
-      return 'This field is required.';
-    } else if (e is TextValidationError) {
-      switch (e.code) {
-        case TextValidationError.urlCode:
-          return 'Invalid url.';
-        case TextValidationError.emailCode:
-          return 'Invalid email.';
-      }
-      if (e.minLength != null) {
-        return 'The text must be at least ${e.minLength} characters long.';
-      } else if (e.maxLength != null) {
-        return 'The text must be up to ${e.maxLength} characters long.';
-      } else if (e.white != null) {
-        return 'Field not match with ${e.white}.';
-      } else if (e.black != null) {
-        return 'Field must not match with ${e.black}.';
-      }
-    } else if (e is NumberValidationError) {
-      if (e.greaterThan != null) {
-        return 'It must be greater than ${e.greaterThan}.';
-      } else if (e.lessThan != null) {
-        return 'It must be less than ${e.lessThan}.';
-      } else if (e.greaterOrEqualThan != null) {
-        return 'It must be greater or equal than ${e.greaterOrEqualThan}.';
-      } else if (e.lessOrEqualThan != null) {
-        return 'It must be less or equal than ${e.lessOrEqualThan}.';
-      }
-    } else if (e is OptionsValidationError) {
-      if (e.minLength != null) {
-        return 'You can choose at least ${e.minLength} options.';
-      } else if (e.maxLength != null) {
-        return 'You can choose up to ${e.maxLength} options.';
-      } else if (e.whereIn != null) {
-        return 'It must contain these values (${e.whereIn!.join(', ')}).';
-      } else if (e.whereNotIn != null) {
-        return 'It must not contains these values (${e.whereNotIn!.join(', ')}).';
-      }
-    } else if (e is FileValidationError) {
-      if (e.whereExtensionIn != null) {
-        return 'Allowed file extensions are as follows: (${e.whereExtensionIn!.join(', ')}).';
-      } else if (e.whereExtensionNotIn != null) {
-        return 'The file extensions not allowed are as follows: (${e.whereExtensionNotIn!.join(', ')}).';
-      }
-    }
-    return null;
-  }
 }
 
 class InvalidValidationError extends ValidationError {
@@ -79,7 +16,7 @@ class InvalidValidationError extends ValidationError {
 
   @override
   String toString() {
-    return 'InvalidValidationError{code: $code}';
+    return '$runtimeType{code: $code}';
   }
 }
 
@@ -88,13 +25,13 @@ class RequiredValidationError extends ValidationError {
 
   @override
   String toString() {
-    return 'RequiredValidationError{}';
+    return '$runtimeType{}';
   }
 }
 
-class EqualityValidationError extends ValidationError {
-  final Object? equals;
-  final Object? identical;
+class EqualityValidationError<T extends Object> extends ValidationError {
+  final T? equals;
+  final T? identical;
 
   const EqualityValidationError({
     Validation? validation,
@@ -105,7 +42,7 @@ class EqualityValidationError extends ValidationError {
 
   @override
   String toString() {
-    return 'EqualityValidationError{equals:$equals,identical:$identical}';
+    return '$runtimeType{equals:$equals,identical:$identical}';
   }
 }
 
@@ -128,11 +65,11 @@ class TextValidationError extends ValidationError {
   }) : super(validation, code);
 }
 
-class NumberValidationError extends ValidationError {
-  final Comparable<Object>? greaterThan;
-  final Comparable<Object>? lessThan;
-  final Comparable<Object>? greaterOrEqualThan;
-  final Comparable<Object>? lessOrEqualThan;
+class NumberValidationError<T extends Comparable<Object>> extends ValidationError {
+  final T? greaterThan;
+  final T? lessThan;
+  final T? greaterOrEqualThan;
+  final T? lessOrEqualThan;
 
   const NumberValidationError({
     Validation? validation,
@@ -145,7 +82,22 @@ class NumberValidationError extends ValidationError {
 
   @override
   String toString() =>
-      'NumberValidationError{greaterThan:$greaterThan,lessThan:$lessThan,greaterOrEqualThan:$greaterOrEqualThan,lessOrEqualThan:$lessOrEqualThan}';
+      '$runtimeType{greaterThan:$greaterThan,lessThan:$lessThan,greaterOrEqualThan:$greaterOrEqualThan,lessOrEqualThan:$lessOrEqualThan}';
+}
+
+class DateTimeValidationError extends ValidationError {
+  final DateTime? before;
+  final DateTime? after;
+
+  const DateTimeValidationError({
+    Validation? validation,
+    String? code,
+    this.before,
+    this.after,
+  }) : super(validation, code);
+
+  @override
+  String toString() => '$runtimeType{before:$before,after:$after}';
 }
 
 class OptionsValidationError extends ValidationError {
@@ -167,7 +119,7 @@ class OptionsValidationError extends ValidationError {
 
   @override
   String toString() =>
-      'OptionsValidationError{length:$length,minLength:$minLength,maxLength:$maxLength,whereIn:$whereIn,whereNotIn:$whereNotIn}';
+      '$runtimeType{length:$length,minLength:$minLength,maxLength:$maxLength,whereIn:$whereIn,whereNotIn:$whereNotIn}';
 }
 
 class FileValidationError extends ValidationError {
@@ -183,6 +135,6 @@ class FileValidationError extends ValidationError {
 
   @override
   String toString() {
-    return 'FileValidationError{whereExtensionIn: $whereExtensionIn, whereExtensionNotIn: $whereExtensionNotIn}';
+    return '$runtimeType{whereExtensionIn: $whereExtensionIn, whereExtensionNotIn: $whereExtensionNotIn}';
   }
 }

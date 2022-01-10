@@ -1,3 +1,6 @@
+## [0.7.2]
+- First implementation of error translations
+
 ## [0.7.1]
 - Fixed FileValidation when user insert a different upper/lower case
 - Fixed not show heic type

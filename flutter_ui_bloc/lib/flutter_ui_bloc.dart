@@ -12,3 +12,4 @@ export 'src/form/submit_button_form_bloc_builders.dart';
 export 'src/form/typedefs.dart';
 export 'src/form/validation/validation.dart';
 export 'src/form/validation/validation_errors.dart';
+export 'src/form/validation/validation_localizations.dart';

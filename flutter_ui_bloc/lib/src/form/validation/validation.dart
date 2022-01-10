@@ -121,7 +121,7 @@ class ValidationParser<I, O> extends ValidationBase<I> {
 }
 
 /// It allows you to compare two values
-class EqualityValidation<T> extends ValidationBase<T> {
+class EqualityValidation<T extends Object> extends ValidationBase<T> {
   final T? equals;
   final T? identical;
 
@@ -134,16 +134,16 @@ class EqualityValidation<T> extends ValidationBase<T> {
   @override
   Object? call(T value) {
     if (equals != null && equals == value) {
-      return EqualityValidationError(
+      return EqualityValidationError<T>(
         validation: this,
         code: errorCode,
-        equals: equals,
+        equals: equals!,
       );
     } else if (identical != null && core.identical(identical, value)) {
-      return EqualityValidationError(
+      return EqualityValidationError<T>(
         validation: this,
         code: errorCode,
-        identical: identical,
+        identical: identical!,
       );
     }
   }
@@ -229,35 +229,63 @@ class NumberValidation<T extends Comparable<Object>> extends ValidationBase<T> {
   @override
   Object? call(T value) {
     if (greaterThan != null && greaterThan!.compareTo(value) >= 0) {
-      return NumberValidationError(
+      return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        greaterThan: greaterThan,
+        greaterThan: greaterThan!,
       );
     } else if (lessThan != null && lessThan!.compareTo(value) <= 0) {
-      return NumberValidationError(
+      return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        lessThan: lessThan,
+        lessThan: lessThan!,
       );
     } else if (greaterOrEqualThan != null && greaterOrEqualThan!.compareTo(value) > 0) {
-      return NumberValidationError(
+      return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        greaterOrEqualThan: greaterOrEqualThan,
+        greaterOrEqualThan: greaterOrEqualThan!,
       );
     } else if (lessOrEqualThan != null && lessOrEqualThan!.compareTo(value) < 0) {
-      return NumberValidationError(
+      return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        lessOrEqualThan: lessOrEqualThan,
+        lessOrEqualThan: lessOrEqualThan!,
       );
     }
   }
 
   @override
   String toString() {
-    return 'NumberValidation{greaterThan: $greaterThan, lessThan: $lessThan, greaterOrEqualThan: $greaterOrEqualThan, lessOrEqualThan: $lessOrEqualThan}';
+    return '$runtimeType{greaterThan: $greaterThan, lessThan: $lessThan, greaterOrEqualThan: $greaterOrEqualThan, lessOrEqualThan: $lessOrEqualThan}';
+  }
+}
+
+class DateTimeValidation extends ValidationBase<DateTime> {
+  final DateTime? before;
+  final DateTime? after;
+
+  const DateTimeValidation({
+    String? errorCode,
+    this.before,
+    this.after,
+  }) : super(errorCode);
+
+  @override
+  Object? call(DateTime value) {
+    if (before != null && !value.isBefore(before!)) {
+      return DateTimeValidationError(
+        validation: this,
+        code: errorCode,
+        before: before!,
+      );
+    } else if (after != null && !value.isAfter(after!)) {
+      return DateTimeValidationError(
+        validation: this,
+        code: errorCode,
+        after: after!,
+      );
+    }
   }
 }
 
@@ -343,4 +371,13 @@ class FileValidation extends ValidationBase<XFile> {
       );
     }
   }
+}
+
+class ValidationDelegate<T> extends Validation<T> {
+  final Validator<T> Function(T value) validator;
+
+  const ValidationDelegate(this.validator);
+
+  @override
+  Object? call(T value) => validator(value).call(value);
 }
