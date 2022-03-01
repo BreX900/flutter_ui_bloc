@@ -110,79 +110,88 @@ class _UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder>
   VoidCallback? get onTap => _onTap;
   bool get isEnabled => _isEnabled;
 
+  TextStyle? _getErrorStyle(ThemeData themeData, bool isEnabled) {
+    final color = isEnabled ? themeData.errorColor : Colors.transparent;
+    return themeData.textTheme.caption
+        ?.copyWith(color: color)
+        .merge(themeData.inputDecorationTheme.errorStyle);
+  }
+
   @override
   Widget build(BuildContext context) {
     final inputFieldBloc = widget.inputFieldBloc;
     if (inputFieldBloc == null) return const SizedBox.shrink();
 
-    final builderTheme = FileFieldBlocBuilderTheme.from(context);
-
     return CanShowFieldBlocBuilder(
       fieldBloc: inputFieldBloc,
       animate: widget.animateWhenCanShow,
       builder: (context, _) {
-        return DefaultFieldBlocBuilderPadding(
-          padding: widget.padding,
-          child: Align(
-            alignment: Alignment.center,
-            child: ConstrainedBox(
-              constraints: widget.constraints ?? builderTheme.constraints,
-              child: AspectRatio(
-                aspectRatio: widget.aspectRation ?? builderTheme.aspectRatio,
-                child: BlocBuilder<InputFieldBloc<XFile?, dynamic>,
-                    InputFieldBlocState<XFile?, dynamic>>(
-                  bloc: inputFieldBloc,
-                  builder: (context, state) {
-                    final isEnabled = _isEnabled = fieldBlocIsEnabled(
-                      isEnabled: widget.isEnabled,
-                      enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
-                      fieldBlocState: state,
-                    );
-                    final value = state.value;
+        return BlocBuilder<InputFieldBloc<XFile?, dynamic>, InputFieldBlocState<XFile?, dynamic>>(
+          bloc: inputFieldBloc,
+          builder: (context, state) {
+            final isEnabled = _isEnabled = fieldBlocIsEnabled(
+              isEnabled: widget.isEnabled,
+              enableOnlyWhenFormBlocCanSubmit: widget.enableOnlyWhenFormBlocCanSubmit,
+              fieldBlocState: state,
+            );
+            final value = state.value;
 
-                    _onTap = fieldBlocBuilderOnPick<XFile>(
-                      context: context,
-                      isEnabled: isEnabled && !widget.readOnly,
-                      currentValue: state.value,
-                      nextFocusNode: null,
-                      onPick: widget.picker,
-                      onChanged: inputFieldBloc.updateValue,
-                    );
+            _onTap = fieldBlocBuilderOnPick<XFile>(
+              context: context,
+              isEnabled: isEnabled && !widget.readOnly,
+              currentValue: state.value,
+              nextFocusNode: null,
+              onPick: widget.picker,
+              onChanged: inputFieldBloc.updateValue,
+            );
 
-                    return Stack(
-                      children: [
-                        DefaultFieldBlocBuilderPadding(
-                          padding: widget.padding,
-                          child: InputDecorator(
-                            decoration: widget.buildDecoration(context, state, isEnabled),
-                            isEmpty: false,
-                            child: const SizedBox(height: 20),
+            final error = Style.getErrorText(
+              context: context,
+              errorBuilder: widget.errorBuilder,
+              fieldBlocState: state,
+              fieldBloc: widget.fieldBloc,
+            );
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: _buildContainer(
+                    child: value == null
+                        ? KeyedSubtree(
+                            key: ValueKey('$UploadFileFieldBlocBuilder#null'),
+                            child: _buildPlaceHolder(context),
+                          )
+                        : KeyedSubtree(
+                            key: ValueKey('$UploadFileFieldBlocBuilder#${value}'),
+                            child: _buildFile(context, value),
                           ),
-                        ),
-                        Positioned.fill(
-                          bottom: 12.0,
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            child: value == null
-                                ? KeyedSubtree(
-                                    key: ValueKey('$UploadFileFieldBlocBuilder#null'),
-                                    child: _buildPlaceHolder(context),
-                                  )
-                                : KeyedSubtree(
-                                    key: ValueKey('$UploadFileFieldBlocBuilder#${value}'),
-                                    child: _buildFile(context, value),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                  ),
                 ),
-              ),
-            ),
-          ),
+                if (error != null)
+                  Text(
+                    error,
+                    style: _getErrorStyle(Theme.of(context), isEnabled),
+                  ),
+              ],
+            );
+          },
         );
       },
+    );
+  }
+
+  Widget _buildContainer({required Widget child}) {
+    final builderTheme = FileFieldBlocBuilderTheme.from(context);
+
+    return ConstrainedBox(
+      constraints: widget.constraints ?? builderTheme.constraints,
+      child: AspectRatio(
+        aspectRatio: widget.aspectRation ?? builderTheme.aspectRatio,
+        child: child,
+      ),
     );
   }
 }

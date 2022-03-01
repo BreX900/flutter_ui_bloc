@@ -49,7 +49,7 @@ class FileFieldView extends StatelessWidget {
     }
 
     if (mimeType != null && mimeType.startsWith('image')) {
-      return _ImageFileFieldView(file: file);
+      return ImageFileFieldView(file: file);
     }
 
     final field = UploadFileFieldBlocBuilder.of(context);
@@ -63,16 +63,16 @@ class FileFieldView extends StatelessWidget {
   }
 }
 
-class _ImageFileFieldView extends StatefulWidget {
+class ImageFileFieldView extends StatefulWidget {
   final XFile file;
 
-  const _ImageFileFieldView({Key? key, required this.file}) : super(key: key);
+  const ImageFileFieldView({Key? key, required this.file}) : super(key: key);
 
   @override
   _ImageFileFieldViewState createState() => _ImageFileFieldViewState();
 }
 
-class _ImageFileFieldViewState extends State<_ImageFileFieldView> {
+class _ImageFileFieldViewState extends State<ImageFileFieldView> {
   Future<dynamic>? _done;
   Uint8List? _bytes;
 
@@ -83,7 +83,7 @@ class _ImageFileFieldViewState extends State<_ImageFileFieldView> {
   }
 
   @override
-  void didUpdateWidget(covariant _ImageFileFieldView oldWidget) {
+  void didUpdateWidget(covariant ImageFileFieldView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.file != oldWidget.file) {
       _readBytes();
@@ -119,11 +119,9 @@ class _ImageFileFieldViewState extends State<_ImageFileFieldView> {
 
     final field = UploadFileFieldBlocBuilder.of(context);
 
-    return Ink.image(
-      image: MemoryImage(bytes),
-      child: InkWell(
-        onTap: field.onTap,
-      ),
+    return GestureDetector(
+      onTap: field.onTap,
+      child: Image.memory(bytes),
     );
   }
 }

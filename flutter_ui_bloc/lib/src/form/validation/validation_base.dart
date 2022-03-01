@@ -21,6 +21,7 @@ class CompositeValidation<T> extends Validation<T> {
       final error = validator(value);
       if (error != null) return error;
     }
+    return null;
   }
 
   static Object? validateAny<T>(List<Validator<T>> validators, T value) {
@@ -44,5 +45,5 @@ class ValidationNone<T> extends Validation<T> {
   const ValidationNone();
 
   @override
-  Object? call(T value) {}
+  Object? call(T value) => null;
 }

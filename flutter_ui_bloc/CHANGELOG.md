@@ -1,3 +1,6 @@
+## [0.7.3]
+- General improve on `UploadFileFieldBlocBuilder`
+
 ## [0.7.2]
 - First implementation of error translations
 

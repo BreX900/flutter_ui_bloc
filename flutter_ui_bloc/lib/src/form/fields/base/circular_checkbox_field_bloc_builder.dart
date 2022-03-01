@@ -133,7 +133,7 @@ class CircularCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final size = Checkbox.width;
+    const size = Checkbox.width;
 
     const baseDecoration = BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(100)),

@@ -146,6 +146,7 @@ class EqualityValidation<T extends Object> extends ValidationBase<T> {
         identical: identical!,
       );
     }
+    return null;
   }
 
   @override
@@ -196,6 +197,7 @@ class TextValidation extends ValidationBase<String> {
         black: notMatch?.pattern,
       );
     }
+    return null;
   }
 
   @override
@@ -253,6 +255,7 @@ class NumberValidation<T extends Comparable<Object>> extends ValidationBase<T> {
         lessOrEqualThan: lessOrEqualThan!,
       );
     }
+    return null;
   }
 
   @override
@@ -286,6 +289,7 @@ class DateTimeValidation extends ValidationBase<DateTime> {
         after: after!,
       );
     }
+    return null;
   }
 }
 
@@ -331,6 +335,7 @@ class OptionsValidation<T> extends ValidationBase<Iterable<T>> {
         whereNotIn: whereNotIn,
       );
     }
+    return null;
   }
 
   @override
@@ -370,6 +375,7 @@ class FileValidation extends ValidationBase<XFile> {
         whereExtensionNotIn: whereExtensionNotIn,
       );
     }
+    return null;
   }
 }
 

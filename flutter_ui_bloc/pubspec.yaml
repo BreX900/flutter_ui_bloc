@@ -1,6 +1,6 @@
 name: flutter_ui_bloc
 description: A new Flutter project.
-version: 0.7.2
+version: 0.7.3
 homepage: https://github.com/BreX900/flutter_ui_bloc
 repository: https://github.com/BreX900/flutter_ui_bloc
 
@@ -27,7 +27,7 @@ dependencies:
   dotted_border: ^2.0.0+2
 
 dev_dependencies:
-  mek_lints: ^0.0.1
+  mek_lints: ^0.2.0
 
   flutter_test:
     sdk: flutter
