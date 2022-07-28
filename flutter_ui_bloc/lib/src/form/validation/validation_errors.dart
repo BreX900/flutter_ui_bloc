@@ -49,8 +49,8 @@ class EqualityValidationError<T extends Object> extends ValidationError {
 class TextValidationError extends ValidationError {
   final int? minLength;
   final int? maxLength;
-  final String? white;
-  final String? black;
+  final String? match;
+  final String? notMatch;
 
   static const String emailCode = 'Invalid email.';
   static const String urlCode = 'Invalid url.';
@@ -60,8 +60,8 @@ class TextValidationError extends ValidationError {
     String? code,
     this.minLength,
     this.maxLength,
-    this.white,
-    this.black,
+    this.match,
+    this.notMatch,
   }) : super(validation, code);
 }
 

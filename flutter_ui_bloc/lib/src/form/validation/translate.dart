@@ -10,7 +10,7 @@ String translateValidationError(ValidationError e, ValidationTranslations t) {
       case InvalidValidationError.rationalCode:
         return 'Invalid decimal value.';
     }
-    return 'Invalid field.';
+    return t.invalid();
   } else if (e is EqualityValidationError) {
     return 'The field must be equal to ${e.equals ?? e.identical}.';
   } else if (e is RequiredValidationError) {
@@ -23,13 +23,13 @@ String translateValidationError(ValidationError e, ValidationTranslations t) {
         return 'Invalid email.';
     }
     if (e.minLength != null) {
-      return 'The text must be at least ${e.minLength} characters long.';
+      return t.minLength(e.minLength!);
     } else if (e.maxLength != null) {
-      return 'The text must be up to ${e.maxLength} characters long.';
-    } else if (e.white != null) {
-      return 'Field not match with ${e.white}.';
-    } else if (e.black != null) {
-      return 'Field must not match with ${e.black}.';
+      return t.maxLength(e.maxLength!);
+    } else if (e.match != null) {
+      return t.match(e.match!);
+    } else if (e.notMatch != null) {
+      return t.notMatch(e.notMatch!);
     }
   } else if (e is NumberValidationError) {
     if (e.greaterThan != null) {

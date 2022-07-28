@@ -1,3 +1,9 @@
+## [0.7.5]
+- Feat added more italian translations
+
+## [0.7.4]
+- Fix minLength and maxLength on TextValidation
+
 ## [0.7.3]
 - General improve on `UploadFileFieldBlocBuilder`
 

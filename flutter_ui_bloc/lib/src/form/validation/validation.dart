@@ -172,13 +172,13 @@ class TextValidation extends ValidationBase<String> {
 
   @override
   Object? call(String value) {
-    if (minLength != null && minLength! < value.length) {
+    if (minLength != null && value.length < minLength!) {
       return TextValidationError(
         validation: this,
         code: errorCode,
         minLength: minLength,
       );
-    } else if (maxLength != null && maxLength! > value.length) {
+    } else if (maxLength != null && value.length > maxLength!) {
       return TextValidationError(
         validation: this,
         code: errorCode,
@@ -188,13 +188,13 @@ class TextValidation extends ValidationBase<String> {
       return TextValidationError(
         validation: this,
         code: errorCode,
-        white: match?.pattern,
+        match: match?.pattern,
       );
     } else if (notMatch != null && notMatch!.hasMatch(value)) {
       return TextValidationError(
         validation: this,
         code: errorCode,
-        black: notMatch?.pattern,
+        notMatch: notMatch?.pattern,
       );
     }
     return null;
