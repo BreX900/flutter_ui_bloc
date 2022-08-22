@@ -58,5 +58,8 @@ String translateValidationError(ValidationError e, ValidationTranslations t) {
       return 'The file extensions not allowed are as follows: (${e.whereExtensionNotIn!.join(', ')}).';
     }
   }
-  throw 'Unknown $e';
+
+  assert(false, 'Unknown ValidationError $e');
+
+  return e.code?.replaceFirst(ValidationError.codePrefix, '') ?? 'Error type: $e';
 }

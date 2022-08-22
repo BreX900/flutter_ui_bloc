@@ -108,10 +108,10 @@ class ValidationEnTranslations extends ValidationTranslations {
   String maxLength(int value) => 'It must be at most $value characters.';
 
   @override
-  String match(String value) => invalid();
+  String match(String value) => 'Invalid format.';
 
   @override
-  String notMatch(String value) => invalid();
+  String notMatch(String value) => 'Invalid format.';
 
   @override
   String beforeDateTime(DateTime value) => 'It must be before ${formats.format(value)}.';
@@ -145,7 +145,8 @@ class ValidationItTranslations extends ValidationEnTranslations {
   String lessThanComparable(Object value) => 'Minore di ${formats.format(value)}.';
 
   @override
-  String greaterOrEqualThanComparable(Object value) => 'Maggiore o uguale di ${formats.format(value)}.';
+  String greaterOrEqualThanComparable(Object value) =>
+      'Maggiore o uguale di ${formats.format(value)}.';
 
   @override
   String lessOrEqualThanComparable(Object value) => 'Minore o uguale di ${formats.format(value)}.';
@@ -155,6 +156,12 @@ class ValidationItTranslations extends ValidationEnTranslations {
 
   @override
   String maxLength(int value) => 'Massimo $value caratteri.';
+
+  @override
+  String match(String value) => 'Formato non valido.';
+
+  @override
+  String notMatch(String value) => 'Formato non valido.';
 
   @override
   String beforeDateTime(DateTime value) => 'Prima di ${formats.format(value)}.';

@@ -1,3 +1,6 @@
+## [0.7.6]
+- Feat added more translations
+
 ## [0.7.5]
 - Feat added more italian translations
 

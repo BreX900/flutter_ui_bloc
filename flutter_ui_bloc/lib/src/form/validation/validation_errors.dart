@@ -5,14 +5,16 @@ abstract class ValidationError {
   final String? code;
 
   const ValidationError(this.validation, this.code);
+
+  static const String codePrefix = 'flutter_ui_bloc:validation_error_code ';
 }
 
 class InvalidValidationError extends ValidationError {
   const InvalidValidationError({Validation? validation, String? code}) : super(validation, code);
 
-  static const String intCode = 'Invalid int.';
-  static const String doubleCode = 'Invalid double.';
-  static const String rationalCode = 'Invalid Rational.';
+  static const String intCode = '${ValidationError.codePrefix}Invalid int.';
+  static const String doubleCode = '${ValidationError.codePrefix}Invalid double.';
+  static const String rationalCode = '${ValidationError.codePrefix}Invalid Rational.';
 
   @override
   String toString() {
@@ -52,8 +54,8 @@ class TextValidationError extends ValidationError {
   final String? match;
   final String? notMatch;
 
-  static const String emailCode = 'Invalid email.';
-  static const String urlCode = 'Invalid url.';
+  static const String emailCode = '${ValidationError.codePrefix}Invalid email.';
+  static const String urlCode = '${ValidationError.codePrefix}Invalid url.';
 
   const TextValidationError({
     Validation? validation,
