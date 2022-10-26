@@ -142,7 +142,7 @@ class _UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder>
               currentValue: state.value,
               nextFocusNode: null,
               onPick: widget.picker,
-              onChanged: inputFieldBloc.updateValue,
+              onChanged: inputFieldBloc.changeValue,
             );
 
             final error = Style.getErrorText(
@@ -302,7 +302,7 @@ class _UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder>
 //     final updateValue = fieldBlocBuilderOnChange<BuiltList<FileValue>>(
 //       isEnabled: widget.isEnabled,
 //       nextFocusNode: widget.nextFocusNode!,
-//       onChanged: widget.fileFieldBloc!.updateValue,
+//       onChanged: widget.fileFieldBloc!.changeValue,
 //     );
 //     if (updateValue != null) updateValue(value);
 //   }
@@ -521,7 +521,7 @@ class _UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder>
 //
 //   @override
 //   void onSubmitting() {
-//     listFileFieldBloc.updateValue(galleryFileFieldBloc.value.toBuiltList());
+//     listFileFieldBloc.changeValue(galleryFileFieldBloc.value.toBuiltList());
 //     emitSuccess();
 //   }
 // }

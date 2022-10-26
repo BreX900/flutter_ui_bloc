@@ -1,6 +1,6 @@
 name: flutter_ui_bloc
 description: Validation and custom fields for form_bloc package
-version: 0.7.6
+version: 0.8.0
 homepage: https://github.com/BreX900/flutter_ui_bloc
 repository: https://github.com/BreX900/flutter_ui_bloc
 
@@ -16,15 +16,15 @@ dependencies:
 
   path: ^1.8.0
   mime: ^1.0.1
-  pure_extensions: ^4.0.3
-  flutter_extensions: ^4.0.3
+  pure_extensions: ^4.2.0
+  flutter_extensions: ^4.2.0
 
-  bloc: ^8.0.1
-  flutter_form_bloc: ^0.29.3
+  bloc: ^8.1.0
+  flutter_form_bloc: ^0.30.0
 
-  cross_file: ^0.3.2
+  cross_file: ^0.3.3
 
-  dotted_border: ^2.0.0+2
+  dotted_border: ^2.0.0
 
 dev_dependencies:
   mek_lints: ^0.2.0

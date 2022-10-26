@@ -1,3 +1,6 @@
+## [0.8.0]
+- Feat: support flutter_form_bloc: ^0.30.0
+
 ## [0.7.6]
 - Feat added more translations
 

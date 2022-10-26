@@ -27,7 +27,7 @@ class InkWellFieldBlocBuilder extends StatelessWidget {
           return child;
         }
         return InkWell(
-          onTap: () => booleanFieldBloc!.updateValue(booleanFieldBloc!.value),
+          onTap: () => booleanFieldBloc!.changeValue(booleanFieldBloc!.value),
           child: child,
         );
       },

@@ -39,7 +39,7 @@ class TabBarControllerFieldBlocProvider extends StatelessWidget {
                 listenable: controller,
                 selector: (controller) => controller.index,
                 listener: (context, index) {
-                  selectFieldBloc.updateValue(state.items[index]);
+                  selectFieldBloc.changeValue(state.items[index]);
                 },
                 child: child,
               ),
