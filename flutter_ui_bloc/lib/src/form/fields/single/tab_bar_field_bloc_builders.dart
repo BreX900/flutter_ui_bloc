@@ -27,7 +27,7 @@ class TabBarControllerFieldBlocProvider extends StatelessWidget {
           length: state.items.length,
           initialIndex: max(state.items.indexOf(state.value), 0),
           child: Builder(builder: (context) {
-            final controller = DefaultTabController.of(context)!;
+            final controller = DefaultTabController.of(context);
 
             return SelectFieldBlocListener<dynamic, dynamic>(
               bloc: selectFieldBloc,

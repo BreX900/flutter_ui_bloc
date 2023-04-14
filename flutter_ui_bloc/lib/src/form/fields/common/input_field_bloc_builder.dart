@@ -83,7 +83,7 @@ class InputFieldBlocBuilder<T> extends StatefulWidget
   SingleFieldBloc get fieldBloc => inputFieldBloc!;
 
   @override
-  _InputFieldBlocBuilderState<T> createState() => _InputFieldBlocBuilderState<T>();
+  State<InputFieldBlocBuilder<T>> createState() => _InputFieldBlocBuilderState<T>();
 }
 
 class _InputFieldBlocBuilderState<T> extends State<InputFieldBlocBuilder<T>>

@@ -9,7 +9,7 @@ enum _SubmitButtonType { text, elevated, outlined }
 
 class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>, TSuccess,
     TFailure> extends SubmitButtonFormBlocBuilderBase<TFormBloc, TSuccess, TFailure> {
-  final _SubmitButtonType type;
+  final _SubmitButtonType _type;
 
   final VoidCallback? onLongPress;
   final ButtonStyle? style;
@@ -39,7 +39,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     this.iconBuilder,
     this.label,
     this.labelBuilder,
-  })  : type = _SubmitButtonType.text,
+  })  : _type = _SubmitButtonType.text,
         super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   const SubmitButtonFormBlocBuilder.elevated({
@@ -56,7 +56,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     this.iconBuilder,
     this.label,
     this.labelBuilder,
-  })  : type = _SubmitButtonType.elevated,
+  })  : _type = _SubmitButtonType.elevated,
         super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   const SubmitButtonFormBlocBuilder.outlined({
@@ -73,7 +73,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     this.iconBuilder,
     this.label,
     this.labelBuilder,
-  })  : type = _SubmitButtonType.outlined,
+  })  : _type = _SubmitButtonType.outlined,
         super(key: key, formBloc: formBloc, validationStep: validationStep, willSubmit: willSubmit);
 
   Widget buildLabel(BuildContext context, FormBlocState<TSuccess, TFailure> state) {
@@ -94,7 +94,7 @@ class SubmitButtonFormBlocBuilder<TFormBloc extends FormBloc<TSuccess, TFailure>
     final child = buildLabel(context, state);
     final icon = buildIcon(context, state);
 
-    switch (type) {
+    switch (_type) {
       case _SubmitButtonType.text:
         return icon != null
             ? TextButton.icon(

@@ -116,32 +116,32 @@ class DurationFieldBlocBuilder extends StatelessWidget {
 enum _DurationPickerRequestType { days, hours, minutes, seconds }
 
 class DurationPickerRequest {
-  final _DurationPickerRequestType type;
+  final _DurationPickerRequestType _type;
   final int min;
   final int max;
 
   DurationPickerRequest.days({this.min = 0, this.max = 364})
       : assert(min >= 0),
         assert(min < max),
-        type = _DurationPickerRequestType.days;
+        _type = _DurationPickerRequestType.days;
 
   DurationPickerRequest.hours({this.min = 0, this.max = 24})
       : assert(min >= 0),
         assert(max <= 24),
         assert(min < max),
-        type = _DurationPickerRequestType.hours;
+        _type = _DurationPickerRequestType.hours;
 
   DurationPickerRequest.minutes({this.min = 0, this.max = 60})
       : assert(min >= 0),
         assert(max <= 60),
         assert(min < max),
-        type = _DurationPickerRequestType.minutes;
+        _type = _DurationPickerRequestType.minutes;
 
   DurationPickerRequest.seconds({this.min = 0, this.max = 60})
       : assert(min >= 0),
         assert(max <= 60),
         assert(min < max),
-        type = _DurationPickerRequestType.seconds;
+        _type = _DurationPickerRequestType.seconds;
 }
 
 class _Picker extends StatefulWidget {
@@ -163,7 +163,7 @@ class __PickerState extends State<_Picker> {
     super.initState();
     b = widget.duration?.toBuilder() ?? DurationBuilder();
     controllers = Map.fromEntries(widget.requests.map((r) {
-      return MapEntry(r.type, FixedExtentScrollController(initialItem: getDurationValue(r.type)));
+      return MapEntry(r._type, FixedExtentScrollController(initialItem: getDurationValue(r._type)));
     }));
   }
 
@@ -233,9 +233,9 @@ class __PickerState extends State<_Picker> {
             children: widget.requests.map((r) {
               return Expanded(
                 child: CupertinoPicker.builder(
-                  scrollController: controllers[r.type],
+                  scrollController: controllers[r._type],
                   itemExtent: 48,
-                  onSelectedItemChanged: (index) => updateBuilder(r.type, r.min + index),
+                  onSelectedItemChanged: (index) => updateBuilder(r._type, r.min + index),
                   childCount: r.max,
                   itemBuilder: (context, index) {
                     return Container(

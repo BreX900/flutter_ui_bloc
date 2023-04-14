@@ -67,8 +67,8 @@ mixin DecorationOnFieldBlocBuilder {
           opacity: state.value == null ? 0.0 : 1.0,
           child: InkWell(
             borderRadius: BorderRadius.circular(25),
-            child: clearIcon,
             onTap: state.value == null ? null : fieldBloc.clear,
+            child: clearIcon,
           ),
         );
       case SuffixButton.asyncValidating:

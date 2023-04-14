@@ -5,7 +5,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation_base.dart';
 import 'package:flutter_ui_bloc/src/form/validation/validation_errors.dart';
-import 'package:pure_extensions/pure_extensions.dart';
+import 'package:rational/rational.dart';
 
 abstract class Validation<T> {
   const Validation();
@@ -137,13 +137,13 @@ class EqualityValidation<T extends Object> extends ValidationBase<T> {
       return EqualityValidationError<T>(
         validation: this,
         code: errorCode,
-        equals: equals!,
+        equals: equals,
       );
     } else if (identical != null && core.identical(identical, value)) {
       return EqualityValidationError<T>(
         validation: this,
         code: errorCode,
-        identical: identical!,
+        identical: identical,
       );
     }
     return null;
@@ -234,25 +234,25 @@ class NumberValidation<T extends Comparable<Object>> extends ValidationBase<T> {
       return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        greaterThan: greaterThan!,
+        greaterThan: greaterThan,
       );
     } else if (lessThan != null && lessThan!.compareTo(value) <= 0) {
       return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        lessThan: lessThan!,
+        lessThan: lessThan,
       );
     } else if (greaterOrEqualThan != null && greaterOrEqualThan!.compareTo(value) > 0) {
       return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        greaterOrEqualThan: greaterOrEqualThan!,
+        greaterOrEqualThan: greaterOrEqualThan,
       );
     } else if (lessOrEqualThan != null && lessOrEqualThan!.compareTo(value) < 0) {
       return NumberValidationError<T>(
         validation: this,
         code: errorCode,
-        lessOrEqualThan: lessOrEqualThan!,
+        lessOrEqualThan: lessOrEqualThan,
       );
     }
     return null;

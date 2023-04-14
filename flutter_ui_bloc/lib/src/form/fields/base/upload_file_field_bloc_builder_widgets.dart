@@ -69,7 +69,7 @@ class ImageFileFieldView extends StatefulWidget {
   const ImageFileFieldView({Key? key, required this.file}) : super(key: key);
 
   @override
-  _ImageFileFieldViewState createState() => _ImageFileFieldViewState();
+  State<ImageFileFieldView> createState() => _ImageFileFieldViewState();
 }
 
 class _ImageFileFieldViewState extends State<ImageFileFieldView> {
@@ -93,6 +93,7 @@ class _ImageFileFieldViewState extends State<ImageFileFieldView> {
   void _readBytes() {
     _bytes = null;
     late Future<dynamic> done;
+    // ignore: discarded_futures
     done = widget.file.readAsBytes().then((bytes) {
       if (_done != done) return null;
       setState(() {

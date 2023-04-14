@@ -83,18 +83,18 @@ class UploadFileFieldBlocBuilder extends StatefulWidget with DecorationOnFieldBl
     this.builder,
   }) : super(key: key);
 
-  static _UploadFileFieldBlocBuilderState of(BuildContext context) {
-    return context.findAncestorStateOfType<_UploadFileFieldBlocBuilderState>()!;
+  static UploadFileFieldBlocBuilderState of(BuildContext context) {
+    return context.findAncestorStateOfType<UploadFileFieldBlocBuilderState>()!;
   }
 
   @override
-  _UploadFileFieldBlocBuilderState createState() => _UploadFileFieldBlocBuilderState();
+  State<UploadFileFieldBlocBuilder> createState() => UploadFileFieldBlocBuilderState();
 
   @override
   SingleFieldBloc<dynamic, dynamic, FieldBlocState, dynamic> get fieldBloc => inputFieldBloc!;
 }
 
-class _UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder> {
+class UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder> {
   Widget _buildPlaceHolder(BuildContext context) {
     if (widget.placeHolder != null) return widget.placeHolder!;
     return const FileFieldPlaceHolder();
@@ -111,8 +111,8 @@ class _UploadFileFieldBlocBuilderState extends State<UploadFileFieldBlocBuilder>
   bool get isEnabled => _isEnabled;
 
   TextStyle? _getErrorStyle(ThemeData themeData, bool isEnabled) {
-    final color = isEnabled ? themeData.errorColor : Colors.transparent;
-    return themeData.textTheme.caption
+    final color = isEnabled ? themeData.colorScheme.error : Colors.transparent;
+    return themeData.textTheme.bodySmall
         ?.copyWith(color: color)
         .merge(themeData.inputDecorationTheme.errorStyle);
   }
